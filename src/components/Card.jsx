@@ -33,7 +33,7 @@ const Card = ({ card }) => {
       to={`/detalles/${id}`} 
       className={`group relative bg-slate-800 rounded-xl overflow-hidden border ${currentConfig.border} ${currentConfig.hover} transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10`}
     >
-      <div className="relative aspect-[3/4] overflow-hidden">
+      <div className="relative aspect-3/4 overflow-hidden">
         <img 
           src={image} 
           alt={name} 
