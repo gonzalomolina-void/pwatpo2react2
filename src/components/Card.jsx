@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
+const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
 const Card = ({ card }) => {
   // Por ahora hardcodeamos 'es', luego vendrá de i18next
   const lang = 'es';
   const { id, cost, image, atk, def } = card;
   const { name, type, rarity } = card[lang] || card['es'];
+  const imageUrl = `${CARDS_URL}${image}`;
 
   // Configuración de colores por rareza
   const rarityConfig = {
@@ -35,7 +37,7 @@ const Card = ({ card }) => {
     >
       <div className="relative aspect-3/4 overflow-hidden">
         <img 
-          src={image} 
+          src={imageUrl} 
           alt={name} 
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           onError={(e) => { e.target.src = '/cards/Portada.png'; }}

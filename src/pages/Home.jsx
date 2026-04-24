@@ -5,6 +5,7 @@ import SearchBar from '../components/SearchBar';
 
 const TYPE_OPTIONS = ['Criatura', 'Hechizo', 'Artefacto'];
 const RARITY_OPTIONS = ['Pobre', 'Común', 'Poco Común', 'Raro', 'Épico', 'Legendario'];
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Home() {
   const [cards, setCards] = useState([]);
@@ -50,9 +51,8 @@ export default function Home() {
 
   if (initialLoading) {
     return (
-      <div className="py-12 flex flex-col items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-        <p className="text-slate-400 animate-pulse">Invocando criaturas del Nexo...</p>
+      <div className="py-12 flex items-center justify-center min-h-[50vh]">
+        <LoadingSpinner message="Invocando criaturas del Nexo..." />
       </div>
     );
   }
