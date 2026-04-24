@@ -30,7 +30,6 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="py-12 flex flex-col items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
         <LoadingSpinner message={t('catalog.loading')} />
       </div>
     );

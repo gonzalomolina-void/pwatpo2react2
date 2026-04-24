@@ -4,7 +4,7 @@ const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
 const Card = ({ card }) => {
   const { t, i18n } = useTranslation();
-  const lang = i18n.language === 'en' ? 'en' : 'es';
+  const lang = i18n.language;
   
   const { id, cost, image, atk, def } = card;
   const { name, type, rarity } = card[lang] || card['es'];
@@ -27,17 +27,6 @@ const Card = ({ card }) => {
   };
 
   // Traducción de tipos de carta
-  const getTranslatedType = (type) => {
-    const types = {
-      'Criatura': t('card.types.creature'),
-      'Creature': t('card.types.creature'),
-      'Hechizo': t('card.types.spell'),
-      'Spell': t('card.types.spell'),
-      'Artefacto': t('card.types.artifact'),
-      'Artifact': t('card.types.artifact'),
-    };
-    return types[type] || type;
-  };
 
   const currentConfig = rarityConfig[rarity] || { 
     text: 'text-slate-400', 
@@ -71,7 +60,7 @@ const Card = ({ card }) => {
         </div>
         
         <p className="text-xs font-medium text-slate-400 uppercase tracking-tighter">
-          {getTranslatedType(type)}
+          {type}
         </p>
         
         <div className="flex justify-between items-center pt-2 border-t border-slate-700/50">

@@ -11,13 +11,6 @@
     "error": "Could not load the card catalog. Please try again later.",
     "retry": "Retry"
   },
-  "card": {
-    "types": {
-      "creature": "Creature",
-      "spell": "Spell",
-      "artifact": "Artifact"
-    }
-  },
   "footer": {
     "subtitle": "Explore the universe of cards"
   },

@@ -11,13 +11,6 @@
     "error": "No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.",
     "retry": "Reintentar"
   },
-  "card": {
-    "types": {
-      "creature": "Criatura",
-      "spell": "Hechizo",
-      "artifact": "Artefacto"
-    }
-  },
   "footer": {
     "subtitle": "Explorá el universo de las cartas"
   },
