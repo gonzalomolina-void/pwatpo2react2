@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const SPLASH_BASE_URL = import.meta.env.VITE_SPLASH_BASE_URL;
+const SPLASH_BASE_URL = import.meta.env.VITE_SPLASH_URL;
 
 /**
  * Listado de conceptos para las imágenes del Splash.
@@ -36,7 +36,7 @@ export default function SplashScreen({ onComplete }) {
     const timer = setTimeout(() => {
       setIsExiting(true);
       setTimeout(onComplete, 800);
-    }, 3000);
+    }, 100000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -76,7 +76,7 @@ export default function SplashScreen({ onComplete }) {
           TCG NEXUS
         </h1>
         <p className="text-blue-400 font-bold uppercase tracking-[0.3em] text-sm md:text-base animate-pulse">
-          {selectedConcept.alt}...
+          {selectedConcept.alt.es}...
         </p>
 
         {/* Barra de progreso decorativa */}
