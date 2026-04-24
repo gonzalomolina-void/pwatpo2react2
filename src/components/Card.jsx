@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Card = ({ card }) => {
-  // Por ahora hardcodeamos 'es', luego vendrá de i18next
-  const lang = 'es';
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'en' ? 'en' : 'es';
+  
   const { id, cost, image, atk, def } = card;
   const { name, type, rarity } = card[lang] || card['es'];
 
-  // Configuración de colores por rareza
+  // Configuración de colores por rareza (traducida)
   const rarityConfig = {
     'Legendario': { text: 'text-orange-400', border: 'border-orange-500/50', hover: 'hover:border-orange-400' },
     'Legendary': { text: 'text-orange-400', border: 'border-orange-500/50', hover: 'hover:border-orange-400' },
@@ -20,6 +22,19 @@ const Card = ({ card }) => {
     'Común': { text: 'text-slate-100', border: 'border-slate-200/50', hover: 'hover:border-slate-100' },
     'Pobre': { text: 'text-slate-500', border: 'border-slate-600/50', hover: 'hover:border-slate-500' },
     'Poor': { text: 'text-slate-500', border: 'border-slate-600/50', hover: 'hover:border-slate-500' },
+  };
+
+  // Traducción de tipos de carta
+  const getTranslatedType = (type) => {
+    const types = {
+      'Criatura': t('card.types.creature'),
+      'Creature': t('card.types.creature'),
+      'Hechizo': t('card.types.spell'),
+      'Spell': t('card.types.spell'),
+      'Artefacto': t('card.types.artifact'),
+      'Artifact': t('card.types.artifact'),
+    };
+    return types[type] || type;
   };
 
   const currentConfig = rarityConfig[rarity] || { 
@@ -53,7 +68,9 @@ const Card = ({ card }) => {
           </span>
         </div>
         
-        <p className="text-xs font-medium text-slate-400 uppercase tracking-tighter">{type}</p>
+        <p className="text-xs font-medium text-slate-400 uppercase tracking-tighter">
+          {getTranslatedType(type)}
+        </p>
         
         <div className="flex justify-between items-center pt-2 border-t border-slate-700/50">
           <div className="flex gap-4">

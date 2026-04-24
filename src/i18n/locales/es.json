@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "favorites": "Favoritos"
+  },
+  "catalog": {
+    "title": "Catálogo de Cartas",
+    "description": "Explora la colección completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.",
+    "noCards": "No hay cartas disponibles en este momento.",
+    "loading": "Invocando criaturas del Nexo...",
+    "error": "No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.",
+    "retry": "Reintentar"
+  },
+  "card": {
+    "types": {
+      "creature": "Criatura",
+      "spell": "Hechizo",
+      "artifact": "Artefacto"
+    }
+  },
+  "footer": {
+    "subtitle": "Explorá el universo de las cartas"
+  },
+  "detail": {
+    "title": "Detalle de Carta",
+    "viewing": "Viendo la información de la carta con ID:"
+  },
+  "favorites": {
+    "title": "Mis Favoritos",
+    "message": "Acá aparecerán las cartas que marques como favoritas."
+  }
+}

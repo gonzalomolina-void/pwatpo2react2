@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 import Card from '../components/Card';
 
 export default function Home() {
+  const { t } = useTranslation();
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +16,7 @@ export default function Home() {
         const data = await cardService.getCards();
         setCards(data);
       } catch (err) {
-        setError('No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.');
+        setError(t('catalog.error'));
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -22,13 +24,13 @@ export default function Home() {
     };
 
     fetchCards();
-  }, []);
+  }, [t]);
 
   if (isLoading) {
     return (
       <div className="py-12 flex flex-col items-center justify-center min-h-[50vh]">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-        <p className="text-slate-400 animate-pulse">Invocando criaturas del Nexo...</p>
+        <p className="text-slate-400 animate-pulse">{t('catalog.loading')}</p>
       </div>
     );
   }
@@ -42,7 +44,7 @@ export default function Home() {
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
           >
-            Reintentar
+            {t('catalog.retry')}
           </button>
         </div>
       </div>
@@ -53,16 +55,16 @@ export default function Home() {
     <div className="py-12">
       <header className="mb-12">
         <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
-          Catálogo de Cartas
+          {t('Catalogo de cartas')}
         </h1>
         <p className="text-slate-400 max-w-2xl">
-          Explora la colección completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.
+          {t('Explora la colección completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.')}
         </p>
       </header>
 
       {cards.length === 0 ? (
         <div className="text-center py-12 text-slate-500">
-          No hay cartas disponibles en este momento.
+          {t('catalog.noCards')}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
