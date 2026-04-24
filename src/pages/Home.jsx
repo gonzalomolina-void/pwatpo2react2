@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import cardService from '../services/cardService';
 import Card from '../components/Card';
+import SearchBar from '../components/SearchBar';
+
+const TYPE_OPTIONS = ['Criatura', 'Hechizo', 'Artefacto'];
+const RARITY_OPTIONS = ['Pobre', 'Común', 'Poco Común', 'Raro', 'Épico', 'Legendario'];
 
 export default function Home() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('');
-  const [filterRarity, setFilterRarity] = useState('');
+  const [activeFilters, setActiveFilters] = useState({ filterType: '', filterRarity: '' });
 
   const fetchCards = async (searchQuery = '') => {
     try {
@@ -29,14 +30,14 @@ export default function Home() {
     fetchCards();
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = useCallback(({ searchTerm, filterType, filterRarity }) => {
+    setActiveFilters({ filterType, filterRarity });
     fetchCards(searchTerm);
-  };
+  }, []);
 
   const filteredCards = cards.filter(card => {
-    const matchType = filterType === '' || card.es.type === filterType;
-    const matchRarity = filterRarity === '' || card.es.rarity === filterRarity;
+    const matchType = activeFilters.filterType === '' || card.es.type === activeFilters.filterType;
+    const matchRarity = activeFilters.filterRarity === '' || card.es.rarity === activeFilters.filterRarity;
     return matchType && matchRarity;
   });
 
@@ -75,44 +76,11 @@ export default function Home() {
           Explora la coleccion completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.
         </p>
 
-        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 mb-8">
-          <input
-            type="text"
-            placeholder="Buscar por nombre..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-grow px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
-          />
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
-          >
-            <option value="">Todos los Tipos</option>
-            <option value="Criatura">Criatura</option>
-            <option value="Hechizo">Hechizo</option>
-            <option value="Artefacto">Artefacto</option>
-          </select>
-          <select
-            value={filterRarity}
-            onChange={(e) => setFilterRarity(e.target.value)}
-            className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
-          >
-            <option value="">Todas las Rarezas</option>
-            <option value="Pobre">Pobre</option>
-            <option value="Común">Común</option>
-            <option value="Poco Común">Poco Común</option>
-            <option value="Raro">Raro</option>
-            <option value="Épico">Épico</option>
-            <option value="Legendario">Legendario</option>
-          </select>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-          >
-            Buscar
-          </button>
-        </form>
+        <SearchBar
+          onSearch={handleSearch}
+          typeOptions={TYPE_OPTIONS}
+          rarityOptions={RARITY_OPTIONS}
+        />
       </header>
 
       {filteredCards.length === 0 ? (
