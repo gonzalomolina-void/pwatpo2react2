@@ -36,7 +36,7 @@ export default function SplashScreen({ onComplete }) {
     const timer = setTimeout(() => {
       setIsExiting(true);
       setTimeout(onComplete, 800);
-    }, 100000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
