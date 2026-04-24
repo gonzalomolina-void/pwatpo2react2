@@ -8,13 +8,18 @@ const RARITY_OPTIONS = ['Pobre', 'Común', 'Poco Común', 'Raro', 'Épico', 'Leg
 
 export default function Home() {
   const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
-  const [activeFilters, setActiveFilters] = useState({ filterType: '', filterRarity: '' });
+  const [activeFilters, setActiveFilters] = useState({ selectedTypes: [], selectedRarities: [] });
 
-  const fetchCards = async (searchQuery = '') => {
+  const fetchCards = async (searchQuery = '', isInitial = false) => {
     try {
-      setIsLoading(true);
+      if (isInitial) {
+        setInitialLoading(true);
+      } else {
+        setIsSearching(true);
+      }
       setError(null);
       const params = searchQuery ? { search: searchQuery } : {};
       const data = await cardService.getCards(params);
@@ -22,26 +27,28 @@ export default function Home() {
     } catch (err) {
       setError('No se pudo cargar el catalogo de cartas. Por favor, reintenta mas tarde.');
     } finally {
-      setIsLoading(false);
+      setInitialLoading(false);
+      setIsSearching(false);
     }
   };
 
   useEffect(() => {
-    fetchCards();
+    fetchCards('', true);
   }, []);
 
-  const handleSearch = useCallback(({ searchTerm, filterType, filterRarity }) => {
-    setActiveFilters({ filterType, filterRarity });
+  const handleSearch = useCallback(({ searchTerm, selectedTypes, selectedRarities }) => {
+    setActiveFilters({ selectedTypes, selectedRarities });
     fetchCards(searchTerm);
   }, []);
 
   const filteredCards = cards.filter(card => {
-    const matchType = activeFilters.filterType === '' || card.es.type === activeFilters.filterType;
-    const matchRarity = activeFilters.filterRarity === '' || card.es.rarity === activeFilters.filterRarity;
+    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.includes(card.es.type);
+    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.includes(card.es.rarity);
     return matchType && matchRarity;
   });
 
-  if (isLoading) {
+
+  if (initialLoading) {
     return (
       <div className="py-12 flex flex-col items-center justify-center min-h-[50vh]">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
@@ -55,7 +62,7 @@ export default function Home() {
       <div className="py-12 text-center">
         <div className="bg-red-500/10 border border-red-500/50 p-6 rounded-xl inline-block max-w-md">
           <p className="text-red-400 font-medium mb-4">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
           >
@@ -83,12 +90,20 @@ export default function Home() {
         />
       </header>
 
+      { }
+      {isSearching && (
+        <div className="flex items-center gap-2 mb-4 text-slate-400 text-sm">
+          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
+          Buscando...
+        </div>
+      )}
+
       {filteredCards.length === 0 ? (
         <div className="text-center py-12 text-slate-500 text-xl">
           No se encontraron resultados
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity ${isSearching ? 'opacity-50' : 'opacity-100'}`}>
           {filteredCards.map(card => (
             <Card key={card.id} card={card} />
           ))}
