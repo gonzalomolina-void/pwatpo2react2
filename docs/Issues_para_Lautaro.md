@@ -128,3 +128,71 @@ Como creador de contenido, quiero generar nuevas cartas automáticamente usando 
 - [ ] Conexión con API de Gemini/Nano Banana.
 - [ ] Previsualización de la carta generada (Nombre, Lore, Stats).
 ```
+
+---
+
+## 📌 Issue 9: Login simulado (US9)
+**Responsable sugerido:** Gonzalo (Developer)
+
+**Contenido para la descripción:**
+```markdown
+### User Story
+Como usuario, quiero poder iniciar sesión en la aplicación, para acceder a funciones personalizadas y mantener mi estado de sesión.
+
+### Criterios de Aceptación:
+- [ ] Creación de un formulario de Login (Email/Password).
+- [ ] Implementación de `AuthContext` para manejar el estado global de autenticación.
+- [ ] Simulación de autenticación mediante servicio que consulte MockAPI.io.
+- [ ] Persistencia del estado de login y datos del usuario en `localStorage`.
+```
+
+---
+
+## 📌 Issue 10: Splash Screen de Carga (US10)
+**Responsable sugerido:** Gonzalo (Developer)
+
+**Contenido para la descripción:**
+```markdown
+### User Story
+Como usuario, quiero ver una pantalla de presentación épica al abrir la aplicación, para sentir que estoy entrando a un juego de cartas profesional.
+
+### Criterios de Aceptación:
+- [ ] Creación de una imagen temática (Splash) usando IA (Gemini).
+- [ ] Implementación de componente `SplashScreen` con animaciones de entrada/salida.
+- [ ] Lógica de visualización única por sesión (usando `sessionStorage` o estado global).
+- [ ] Timeout de 2-3 segundos simulando la carga inicial de assets.
+```
+
+---
+
+## 📌 Issue 11: Spinner Épico (US11)
+**Responsable sugerido:** Gonzalo (Developer)
+
+**Contenido para la descripción:**
+```markdown
+### User Story
+Como usuario, quiero ver una animación de carga temática cuando la aplicación está procesando datos, para saber que el sistema está trabajando y mantener la inmersión en el juego.
+
+### Criterios de Aceptación:
+- [ ] Diseño de un spinner personalizado con estética de TCG (ej. carta girando, orbe de energía, etc).
+- [ ] Creación de componente `LoadingSpinner` reutilizable mediante Tailwind CSS.
+- [ ] Implementación inicial en la vista de Login y servicios de API (fetch).
+- [ ] Asegurar que la animación sea fluida y no bloqueante.
+```
+
+---
+
+## 📌 Issue 12: Deployment y Gestión de Assets (US12)
+**Responsable sugerido:** Lautaro (PM)
+
+**Contenido para la descripción:**
+```markdown
+### User Story
+Como desarrollador, quiero configurar el entorno de producción, para que los assets y la API funcionen correctamente al desplegar la aplicación en Vercel.
+
+### Criterios de Aceptación:
+- [ ] Configuración de variables de entorno (`.env` y `.env.local`).
+- [ ] Implementación de lógica para cargar imágenes desde GitHub Raw en producción y localmente en desarrollo.
+- [ ] Creación de archivo `.vercelignore` para optimizar el despliegue.
+- [ ] Verificación de rutas y links funcionales en el entorno de build final.
+```
