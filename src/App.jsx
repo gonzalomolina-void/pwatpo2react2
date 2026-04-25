@@ -27,7 +27,7 @@ function App() {
         <div className="min-h-screen flex flex-col bg-slate-900 text-slate-100 font-sans">
           <Header />
           
-          <main className="flex-grow container mx-auto px-4">
+          <main className="grow container mx-auto px-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/detalles/:id" element={<Detail />} />

@@ -13,10 +13,11 @@ const cardService = {
       const response = await fetch(url);
       
       if (!response.ok) {
+        if (response.status === 404) return [];
         throw new Error(`Error fetching cards: ${response.statusText}`);
       }
       
-      return await response.ok ? response.json() : [];
+      return await response.json();
     } catch (error) {
       console.error('Error in cardService.getCards:', error);
       throw error;
