@@ -6,16 +6,17 @@ import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Favorites from './pages/Favorites';
 import SplashScreen from './components/SplashScreen';
+import { preferencesService } from './services/preferencesService';
 
 function App() {
   // Usamos un inicializador de estado (lazy initializer) para calcular
-  // el valor inicial síncronamente desde sessionStorage y evitar el render extra.
+  // el valor inicial síncronamente y evitar el render extra.
   const [showSplash, setShowSplash] = useState(() => {
-    return !sessionStorage.getItem('tcg_nexus_splash_seen');
+    return !preferencesService.hasSeenSplashScreen();
   });
 
   const handleSplashComplete = () => {
-    sessionStorage.setItem('tcg_nexus_splash_seen', 'true');
+    preferencesService.setSplashScreenSeen();
     setShowSplash(false);
   };
 
