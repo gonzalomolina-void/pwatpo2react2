@@ -19,13 +19,13 @@ const AcercaDe = () => {
     { 
       nombre: 'Lautaro Mellado', 
       legajo: 'FAI-2659', 
-      rol: 'Developer',
+      rol: 'PM',
       avatar: avatarLautaro
     },
     { 
       nombre: 'Gonzalo Molina', 
       legajo: '42524', 
-      rol: 'PM',
+      rol: 'Developer',
       avatar: avatarGonzalo
     }
   ];
