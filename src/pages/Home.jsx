@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import cardService from '../services/cardService';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const TYPE_OPTIONS = ['Criatura', 'Hechizo', 'Artefacto'];
 const RARITY_OPTIONS = ['Pobre', 'Común', 'Poco Común', 'Raro', 'Épico', 'Legendario'];
-import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Home() {
   const [cards, setCards] = useState([]);
@@ -48,7 +48,6 @@ export default function Home() {
     return matchType && matchRarity;
   });
 
-
   if (initialLoading) {
     return (
       <div className="py-12 flex items-center justify-center min-h-[50vh]">
@@ -90,7 +89,6 @@ export default function Home() {
         />
       </header>
 
-      { }
       {isSearching && (
         <div className="flex items-center gap-2 mb-4 text-slate-400 text-sm">
           <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
