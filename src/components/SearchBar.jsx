@@ -10,7 +10,6 @@ export default function SearchBar({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRarities, setSelectedRarities] = useState([]);
-
   const debounceTimer = useRef(null);
 
   const emitSearch = (overrides = {}) => {
@@ -28,8 +27,8 @@ export default function SearchBar({
     setSearchTerm(value);
 
     if (debounceTimer.current) {
-   clearTimeout(debounceTimer.current);
-}
+       clearTimeout(debounceTimer.current);
+    }
 
     debounceTimer.current = setTimeout(() => {
       emitSearch({ searchTerm: value });
