@@ -67,7 +67,7 @@ export default function SearchBar({
           placeholder="Buscar por nombre..."
           value={searchTerm}
           onChange={handleTextChange}
-          className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
+          className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-colors"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -25,7 +25,7 @@ function App() {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       <Router>
-        <div className="min-h-screen flex flex-col bg-slate-900 text-slate-100 font-sans">
+        <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-500">
           <Header />
           
           <main className="grow container mx-auto px-4">

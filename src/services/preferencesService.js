@@ -2,9 +2,10 @@ import storageService from './storageService';
 
 const SPLASH_KEY = 'tcg_nexus_splash_seen';
 const LANG_KEY = 'tcg_nexus_lang';
+const THEME_KEY = 'tcg_nexus_theme';
 
 export const preferencesService = {
-  // --- Cosas efímeras (Sesión) ---
+  // ... (session methods)
   hasSeenSplashScreen: () => {
     return sessionStorage.getItem(SPLASH_KEY) === 'true';
   },
@@ -20,5 +21,13 @@ export const preferencesService = {
   
   setLanguage: (lang) => {
     storageService.set(LANG_KEY, lang);
+  },
+
+  getTheme: () => {
+    return storageService.get(THEME_KEY) || 'dark';
+  },
+
+  setTheme: (theme) => {
+    storageService.set(THEME_KEY, theme);
   }
 };
