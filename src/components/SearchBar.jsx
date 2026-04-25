@@ -11,9 +11,7 @@ export default function SearchBar({
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRarities, setSelectedRarities] = useState([]);
 
-
   const debounceTimer = useRef(null);
-
 
   const emitSearch = (overrides = {}) => {
     const payload = {
@@ -25,27 +23,24 @@ export default function SearchBar({
     onSearch(payload);
   };
 
-
   const handleTextChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
 
-
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
+    if (debounceTimer.current) {
+   clearTimeout(debounceTimer.current);
+}
 
     debounceTimer.current = setTimeout(() => {
       emitSearch({ searchTerm: value });
     }, debounceMs);
   };
 
-
   useEffect(() => {
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, []);
-
 
   const handleTypesChange = (newTypes) => {
     setSelectedTypes(newTypes);
@@ -59,7 +54,6 @@ export default function SearchBar({
 
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-8">
-      { }
       <div className="relative flex-grow">
         <svg
           className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"
@@ -78,7 +72,6 @@ export default function SearchBar({
         />
       </div>
 
-      { }
       {typeOptions.length > 0 && (
         <CheckboxDropdown
           label="Tipos"

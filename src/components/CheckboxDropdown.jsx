@@ -46,7 +46,6 @@ function CheckboxDropdown({ label, options, selected, onChange }) {
 
       {isOpen && (
         <div className="absolute z-20 mt-2 w-full min-w-[200px] bg-slate-800 border border-slate-700 rounded-lg shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1">
-          { }
           {selected.length > 0 && (
             <button
               type="button"
