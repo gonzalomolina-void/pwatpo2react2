@@ -1,16 +1,82 @@
-# React + Vite
+# 🌌 TCG Nexus: La Enciclopedia del Nexo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![TCG Nexus Banner](./docs/ArteConceptual/Portada.png)
 
-Currently, two official plugins are available:
+Bienvenido a **TCG Nexus**, una enciclopedia interactiva y multilingüe diseñada para los maestros de las cartas. Explora un universo de criaturas legendarias, hechizos ancestrales y artefactos poderosos en esta plataforma de vanguardia.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Este proyecto ha sido desarrollado para la cátedra de **Programación Web Avanzada (PWA)** de la **UNCOMA** (Trabajo Práctico React Parte II - 2026).
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Características Principales
 
-## Expanding the ESLint configuration
+- 🃏 **Exploración Infinita:** Sumérgete en un catálogo dinámico con *Infinite Scroll* consumiendo datos en tiempo real.
+- 🔍 **Buscador Inteligente:** Encuentra cualquier carta por su nombre mediante filtrado directo en la API.
+- 🌎 **Multilingüe (i18n):** Soporte completo para **Español** e **Inglés** con detección automática de idioma.
+- ❤️ **Colección de Favoritos:** Guarda tus cartas preferidas con persistencia local (*LocalStorage*).
+- 📱 **Diseño Ultra-Responsivo:** Una experiencia visual de primer nivel en cualquier dispositivo gracias a Tailwind CSS.
+- 🤖 **Forja de Cartas (IA):** Generación dinámica de cartas y lore utilizando la potencia de Gemini / Nano Banana.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🎨 Arte Conceptual del Universo
+
+El Nexo cobra vida a través de sus protagonistas. Aquí te presentamos algunas de las entidades que habitan nuestro mundo:
+
+| ![Lyra](./docs/ArteConceptual/Lyra.png) | ![Grak](./docs/ArteConceptual/Grak.png) | ![Sir Kaelen](./docs/ArteConceptual/SirKaelen.png) | 
+|:---:|:---:|:---:|
+| **Lyra** | **Grak** | **Sir Kaelen** | 
+| *La Tejedora de Luz* | *El Devastador de Tierras* | *El Guardián del Honor* | 
+
+---
+
+## 🛠️ Stack Tecnológico
+
+- **Core:** [React 19](https://react.dev/) + [Vite 8](https://vitejs.dev/)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/) (Modern CSS engine)
+- **Navegación:** [React Router 7](https://reactrouter.com/)
+- **Internacionalización:** [react-i18next](https://react.i18next.com/)
+- **Backend Mock:** [MockAPI.io](https://mockapi.io/)
+- **Inteligencia Artificial:** Google Gemini / Nano Banana API
+
+---
+
+## 🚀 Instalación y Uso
+
+Si quieres probar el Nexo en tu propia terminal:
+
+1. **Clona el repositorio:**
+   ```bash
+   git clone https://github.com/tu-usuario/tcg-nexus.git
+   cd tcg-nexus
+   ```
+
+2. **Instala las dependencias:**
+   ```bash
+   npm install
+   ```
+
+3. **Inicia el servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Accede a la app:**
+   Abre [http://localhost:5173](http://localhost:5173) en tu navegador.
+
+---
+
+## 👥 El Equipo (The Nexus Council)
+
+- **Lautaro (PM / Scrum Master):** Coordinación, Arquitectura e Internacionalización.
+- **Juan (Developer):** Servicios API, Home y Detalle de Cartas.
+- **Gonzalo (Developer):** Scroll Infinito, Favoritos y Persistencia.
+
+---
+
+## 📄 Licencia
+
+Este proyecto es para fines educativos bajo los requerimientos de la UNCOMA. El arte conceptual pertenece a sus respectivos creadores dentro del universo de TCG Nexus.
+
+---
+*Desarrollado con ❤️ para PWA - Universidad Nacional del Comahue*

@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
-/* Acá podés meter tus estilos globales si necesitás, pero por ahora con esto vuela */
+@theme {
+  /* Podés agregar variables de tema acá si querés */
+}
+
+/* 
+  En Tailwind v4, para usar el modo oscuro por clase (.dark), 
+  tenemos que definir esta variante manualmente.
+*/
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light dark;
+}
+
 body {
-  @apply bg-slate-900 text-slate-100;
+  margin: 0;
+  min-height: 100vh;
+  /* El color de fondo se maneja en App.jsx para transiciones suaves */
 }

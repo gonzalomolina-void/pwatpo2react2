@@ -25,7 +25,7 @@ export default function Home() {
       const params = searchQuery ? { search: searchQuery } : {};
       const data = await cardService.getCards(params);
       setCards(data);
-    } catch (err) {
+    } catch {
       setError('No se pudo cargar el catalogo de cartas. Por favor, reintenta mas tarde.');
     } finally {
       setInitialLoading(false);
@@ -34,7 +34,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchCards('', true);
+    const initFetch = async () => {
+      await fetchCards('', true);
+    };
+    initFetch();
   }, []);
 
   const handleSearch = useCallback(({ searchTerm, selectedTypes, selectedRarities }) => {
@@ -75,10 +78,10 @@ export default function Home() {
   return (
     <div className="py-12">
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
+        <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-500 bg-clip-text text-transparent inline-block">
           Catalogo de Cartas
         </h1>
-        <p className="text-slate-400 max-w-2xl mb-8">
+        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mb-8">
           Explora la coleccion completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.
         </p>
 
@@ -90,14 +93,14 @@ export default function Home() {
       </header>
 
       {isSearching && (
-        <div className="flex items-center gap-2 mb-4 text-slate-400 text-sm">
+        <div className="flex items-center gap-2 mb-4 text-slate-500 dark:text-slate-400 text-sm">
           <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
           Buscando...
         </div>
       )}
 
       {filteredCards.length === 0 ? (
-        <div className="text-center py-12 text-slate-500 text-xl">
+        <div className="text-center py-12 text-slate-400 dark:text-slate-500 text-xl">
           No se encontraron resultados
         </div>
       ) : (
