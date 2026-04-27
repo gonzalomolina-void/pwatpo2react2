@@ -25,5 +25,13 @@ Este documento centraliza las mejoras pendientes, refactorizaciones y "magic str
 *   **Validación de IDs:** En `cardService.js`, mejorar la validación de los IDs antes de realizar el fetch.
 *   **Tipado (JSDoc):** Agregar documentación de tipos a los retornos de los servicios para mejorar el autocompletado en los componentes.
 
+## 4. Optimización de Repositorio (Git)
+
+### Hallazgo: Historial Pesado por Assets Originales
+*   **Problema:** Se subieron 78MB de imágenes Splash originales a la rama `develop` antes de implementar la estrategia de optimización.
+*   **Impacto:** El historial de Git retiene ese peso, haciendo que los clones del repositorio sean más lentos.
+*   **Decisión Temporal:** Se pospone la reescritura del historial (usando herramientas como `git filter-repo` o `BFG`) para evitar conflictos de merge críticos con el equipo durante el desarrollo del TP.
+*   **Tarea Pendiente:** Evaluar la limpieza profunda del historial antes de la entrega final o al cierre del cuatrimestre.
+
 ---
 *Última actualización: Abril 2026*

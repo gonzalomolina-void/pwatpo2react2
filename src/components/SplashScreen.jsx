@@ -56,11 +56,11 @@ export default function SplashScreen({ onComplete }) {
           
           <picture>
             <source 
-              srcSet={`${SPLASH_BASE_URL}${selectedConcept.id}_wide.png`} 
+              srcSet={`${SPLASH_BASE_URL}${selectedConcept.id}_wide.webp`} 
               media="(min-width: 768px)" alt={selectedConcept.alt.es}
             />
             <img 
-              src={`${SPLASH_BASE_URL}${selectedConcept.id}_mobile.png`} 
+              src={`${SPLASH_BASE_URL}${selectedConcept.id}_mobile.webp`} 
               alt={selectedConcept.alt.es} 
               className="relative rounded-2xl shadow-2xl w-full h-full object-cover transform transition-transform duration-500 hover:scale-102"
               onError={(e) => {
