@@ -65,7 +65,7 @@ export default function Detail() {
             src={imageUrl}
             alt={name}
             className="w-full h-auto object-cover"
-            onError={(e) => { e.target.src = '/cards/Portada.png'; }}
+            onError={(e) => { e.target.src = `${CARDS_URL}Portada.png`; }}
           />
           <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-full text-lg font-bold border border-slate-700">
             💎 {cost}
