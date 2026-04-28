@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 import favoritesService from '../services/favoritesService';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -12,6 +13,8 @@ const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFav, setIsFav] = useState(false);
@@ -47,14 +50,13 @@ export default function Detail() {
   if (loading) {
     return (
       <div className="py-12 flex items-center justify-center min-h-[50vh]">
-        <LoadingSpinner message="Invocando carta del Nexo..." />
+        <LoadingSpinner message={t('detail.loading')} />
       </div>
     );
   }
 
   if (!card) return null;
 
-  const lang = 'es';
   const localized = card[lang] || card['es'];
   const { name, type, rarity, description } = localized;
   const { cost, atk, def, image } = card;
@@ -64,7 +66,7 @@ export default function Detail() {
   return (
     <div className="py-12">
       <div className="mb-8">
-        <BackButton to="/" label="Volver al catálogo" />
+        <BackButton to="/" label={t('detail.backToCatalog')} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
@@ -108,12 +110,12 @@ export default function Detail() {
           </div>
 
           <div className="p-5 bg-slate-800/30 rounded-xl border border-slate-700/50">
-            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">Lore</h2>
+            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">{t('detail.loreTitle')}</h2>
             <p className="text-slate-300 text-lg leading-relaxed italic">"{description}"</p>
           </div>
 
           <div className="text-xs text-slate-600 uppercase tracking-widest">
-            Edición: TCG Nexus — Primera Edición
+            {t('detail.edition')}
           </div>
         </div>
       </div>

@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import BackButton from '../components/BackButton';
 
 export default function NotFound() {
+  const { t } = useTranslation();
+
   return (
     <div className="py-20 flex flex-col items-center justify-center text-center min-h-[60vh] relative overflow-hidden">
 
@@ -18,20 +21,19 @@ export default function NotFound() {
         </div>
 
         <h1 className="text-[10rem] font-black leading-none bg-linear-to-b from-purple-400 via-blue-500 to-slate-800 bg-clip-text text-transparent select-none drop-shadow-2xl">
-          404
+          {t('notFound.title')}
         </h1>
 
       </div>
 
       <h2 className="text-2xl font-bold bg-linear-to-r from-purple-300 to-blue-400 bg-clip-text text-transparent mb-3">
-        Carta no encontrada
+        {t('notFound.heading')}
       </h2>
       <p className="text-slate-400 max-w-md mb-10 text-lg leading-relaxed">
-        Esta carta se ha perdido en el Nexo dimensional. 
-        Quizás fue devorada por Xal'Thun, o simplemente nunca existió.
+        {t('notFound.description')}
       </p>
 
-      <BackButton to="/" label="Volver al catálogo" />
+      <BackButton to="/" label={t('notFound.backToCatalog')} />
     </div>
   );
 }

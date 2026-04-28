@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
 
 // Importar avatars de los integrantes
@@ -8,24 +9,25 @@ import avatarGonzalo from '../assets/Grommash.webp';
 
 const AcercaDe = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const integrantes = [
     { 
       nombre: 'Juan Cruz Espinoza', 
       legajo: 'FAI-4767', 
-      rol: 'Developer',
+      rol: t('about.roles.Developer'),
       avatar: avatarJuan
     },
     { 
       nombre: 'Lautaro Mellado', 
       legajo: 'FAI-2659', 
-      rol: 'PM',
+      rol: t('about.roles.PM'),
       avatar: avatarLautaro
     },
     { 
       nombre: 'Gonzalo Molina', 
       legajo: '42524', 
-      rol: 'Developer',
+      rol: t('about.roles.Developer'),
       avatar: avatarGonzalo
     }
   ];
@@ -35,8 +37,8 @@ const AcercaDe = () => {
       <button 
         className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-lg hover:scale-110 hover:border-blue-500 transition-all shadow-lg active:scale-95" 
         onClick={() => setIsOpen(true)}
-        aria-label="Acerca de nosotros"
-        title="Ver Lore del equipo"
+        aria-label={t('about.title')}
+        title={t('about.title')}
       >
         📜
       </button>
@@ -44,18 +46,18 @@ const AcercaDe = () => {
       <Modal 
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)} 
-        title="Acerca de nosotros"
+        title={t('about.title')}
       >
         <div className="text-center">
           <p className="text-slate-500 dark:text-slate-400 text-sm italic mb-6">
-            Proyecto desarrollado para la cátedra de Programación Web Avanzada.
+            {t('about.description')}
           </p>
           
           <blockquote className="max-w-md mx-auto p-4 mb-8 border-l-4 border-blue-500 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg font-serif italic">
             <p className="text-slate-800 dark:text-slate-100 text-lg leading-relaxed mb-2">
-              "Preguntate en todo momento: ¿Es esto necesario?"
+              "{t('about.quote')}"
             </p>
-            <cite className="text-sm font-bold text-slate-500 dark:text-slate-400 block text-right">— Marco Aurelio</cite>
+            <cite className="text-sm font-bold text-slate-500 dark:text-slate-400 block text-right">— {t('about.quoteAuthor')}</cite>
           </blockquote>
 
           <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -66,7 +68,7 @@ const AcercaDe = () => {
                 </div>
                 <div className="text-center space-y-1">
                   <strong className="text-xs text-slate-800 dark:text-slate-100 block leading-tight">{i.nombre}</strong>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-500 block uppercase tracking-tighter">Legajo: {i.legajo}</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-500 block uppercase tracking-tighter">{t('about.legajo')}: {i.legajo}</span>
                   <span className="inline-block mt-2 text-[10px] font-black px-2 py-0.5 bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full uppercase border border-blue-500/30">
                     {i.rol}
                   </span>

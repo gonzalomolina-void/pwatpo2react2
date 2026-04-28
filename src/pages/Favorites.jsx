@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import cardService from '../services/cardService';
@@ -6,6 +8,8 @@ import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Favorites() {
+  const { t } = useTranslation();
+
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

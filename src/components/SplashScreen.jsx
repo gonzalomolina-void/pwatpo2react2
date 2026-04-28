@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const SPLASH_BASE_URL = import.meta.env.VITE_SPLASH_URL;
 
@@ -8,14 +9,13 @@ const SPLASH_BASE_URL = import.meta.env.VITE_SPLASH_URL;
 const SPLASH_CONCEPTS = [
   { id: 'TheNexusGateway', alt: { es: 'El Portal del Nexo',  en: 'The Nexus Gateway'} },
   { id: 'ClashOfPowers', alt: {es: 'Choque de Poderes', en: 'Clash of Powers'} },
-  { id: 'TheInfiniteArchive', alt: {es: 'El Archivo Infinito', en: 'Guardian of the Crystal'} },
+  { id: 'TheInfiniteArchive', alt: {es: 'El Archivo Infinito', en: 'The Infinite Archive'} },
   { id: 'GuardianOfTheCrystal', alt: {es: 'Guardián del Cristal', en: 'Guardian of the Crystal'} },
   { id: 'TheAncientSummoning', alt: {es: 'La Invocación Ancestral', en: 'The Ancient Summoning'} }
 ];
 
 /**
  * Función para obtener un concepto aleatorio de forma segura.
- * La definimos fuera para que el linter no chille por impureza en el render.
  */
 const getRandomConcept = () => {
   const randomIndex = Math.floor(Math.random() * SPLASH_CONCEPTS.length);
@@ -27,9 +27,9 @@ const getRandomConcept = () => {
  */
 export default function SplashScreen({ onComplete }) {
   const [isExiting, setIsExiting] = useState(false);
+  const { i18n } = useTranslation();
+  const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   
-  // Usamos un inicializador de estado perezoso (lazy initializer)
-  // Esto se ejecuta solo una vez cuando el componente se monta.
   const [selectedConcept] = useState(getRandomConcept);
 
   useEffect(() => {
@@ -40,6 +40,8 @@ export default function SplashScreen({ onComplete }) {
 
     return () => clearTimeout(timer);
   }, [onComplete]);
+
+  const conceptAlt = selectedConcept.alt[lang] || selectedConcept.alt['es'];
 
   return (
     <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 transition-opacity duration-700 ease-in-out ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
@@ -57,11 +59,11 @@ export default function SplashScreen({ onComplete }) {
           <picture>
             <source 
               srcSet={`${SPLASH_BASE_URL}${selectedConcept.id}_wide.png`} 
-              media="(min-width: 768px)" alt={selectedConcept.alt.es}
+              media="(min-width: 768px)" alt={conceptAlt}
             />
             <img 
               src={`${SPLASH_BASE_URL}${selectedConcept.id}_mobile.png`} 
-              alt={selectedConcept.alt.es} 
+              alt={conceptAlt} 
               className="relative rounded-2xl shadow-2xl w-full h-full object-cover transform transition-transform duration-500 hover:scale-102"
               onError={(e) => {
                 e.target.src = '/cards/Portada.png';
@@ -76,7 +78,7 @@ export default function SplashScreen({ onComplete }) {
           TCG NEXUS
         </h1>
         <p className="text-blue-400 font-bold uppercase tracking-[0.3em] text-sm md:text-base animate-pulse">
-          {selectedConcept.alt.es}...
+          {conceptAlt}...
         </p>
 
         {/* Barra de progreso decorativa */}
