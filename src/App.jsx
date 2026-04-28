@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Favorites from './pages/Favorites';
+import NotFound from './pages/NotFound';
 import SplashScreen from './components/SplashScreen';
 import { preferencesService } from './services/preferencesService';
 
@@ -25,7 +26,7 @@ function App() {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       <Router>
-        <div className="min-h-screen flex flex-col bg-slate-900 text-slate-100 font-sans">
+        <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-500">
           <Header />
           
           <main className="grow container mx-auto px-4">
@@ -33,8 +34,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/detalles/:id" element={<Detail />} />
               <Route path="/favoritos" element={<Favorites />} />
-              {/* Ruta por defecto para 404 - la puliremos en el issue 6 */}
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
 

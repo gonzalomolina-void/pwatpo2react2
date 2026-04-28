@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function CheckboxDropdown({ label, options, selected, onChange }) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -26,14 +28,14 @@ function CheckboxDropdown({ label, options, selected, onChange }) {
       ? label
       : selected.length <= 2
         ? selected.join(', ')
-        : `${selected.length} seleccionados`;
+        : `${selected.length} ${t('search.selected')}`;
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 w-full md:w-48 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white hover:border-blue-500 focus:outline-none focus:border-blue-500 transition-colors text-left"
+        className="flex items-center justify-between gap-2 w-full md:w-48 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white hover:border-blue-500 focus:outline-none focus:border-blue-500 transition-colors text-left"
       >
         <span className="truncate text-sm">{displayText}</span>
         <svg
@@ -45,29 +47,29 @@ function CheckboxDropdown({ label, options, selected, onChange }) {
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 mt-2 w-full min-w-[200px] bg-slate-800 border border-slate-700 rounded-lg shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1">
+        <div className="absolute z-20 mt-2 w-full min-w-[200px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1">
           {selected.length > 0 && (
             <button
               type="button"
               onClick={() => onChange([])}
-              className="w-full px-4 py-2 text-xs text-blue-400 hover:bg-slate-700/50 text-left transition-colors border-b border-slate-700"
+              className="w-full px-4 py-2 text-xs text-blue-500 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-left transition-colors border-b border-slate-100 dark:border-slate-700"
             >
-              Limpiar selección
+              {t('search.clear')}
             </button>
           )}
 
           {options.map((option) => (
             <label
               key={option}
-              className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 cursor-pointer transition-colors"
+              className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
             >
               <input
                 type="checkbox"
                 checked={selected.includes(option)}
                 onChange={() => toggleOption(option)}
-                className="w-4 h-4 rounded border-slate-600 bg-slate-900 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
               />
-              <span className="text-sm text-slate-200">{option}</span>
+              <span className="text-sm text-slate-700 dark:text-slate-200">{option}</span>
             </label>
           ))}
         </div>

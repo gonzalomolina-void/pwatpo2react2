@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import CheckboxDropdown from './CheckboxDropdown';
 
 export default function SearchBar({
@@ -7,6 +8,7 @@ export default function SearchBar({
   rarityOptions = [],
   debounceMs = 300,
 }) {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRarities, setSelectedRarities] = useState([]);
@@ -64,16 +66,16 @@ export default function SearchBar({
         </svg>
         <input
           type="text"
-          placeholder="Buscar por nombre..."
+          placeholder={t('search.placeholder')}
           value={searchTerm}
           onChange={handleTextChange}
-          className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
+          className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-colors"
         />
       </div>
 
       {typeOptions.length > 0 && (
         <CheckboxDropdown
-          label="Tipos"
+          label={t('search.types')}
           options={typeOptions}
           selected={selectedTypes}
           onChange={handleTypesChange}
@@ -81,7 +83,7 @@ export default function SearchBar({
       )}
       {rarityOptions.length > 0 && (
         <CheckboxDropdown
-          label="Rarezas"
+          label={t('search.rarities')}
           options={rarityOptions}
           selected={selectedRarities}
           onChange={handleRaritiesChange}
