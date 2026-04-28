@@ -1,71 +1,129 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const TYPE_OPTIONS = ['Criatura', 'Hechizo', 'Artefacto'];
-const RARITY_OPTIONS = ['Pobre', 'Común', 'Poco Común', 'Raro', 'Épico', 'Legendario'];
-
 export default function Home() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith('es') ? 'es' : 'en';
+
+  const TYPE_OPTIONS = [
+    t('home.filters.types.Criatura'),
+    t('home.filters.types.Hechizo'),
+    t('home.filters.types.Artefacto')
+  ];
+  const RARITY_OPTIONS = [
+    t('home.filters.rarities.Pobre'),
+    t('home.filters.rarities.Común'),
+    t('home.filters.rarities.Poco Común'),
+    t('home.filters.rarities.Raro'),
+    t('home.filters.rarities.Épico'),
+    t('home.filters.rarities.Legendario')
+  ];
+
   const [cards, setCards] = useState([]);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeFilters, setActiveFilters] = useState({ selectedTypes: [], selectedRarities: [] });
-
-  const fetchCards = async (searchQuery = '', isInitial = false) => {
-    try {
-      if (isInitial) {
-        setInitialLoading(true);
-      } else {
-        setIsSearching(true);
-      }
-      setError(null);
-      const params = searchQuery ? { search: searchQuery } : {};
-      const data = await cardService.getCards(params);
-      setCards(data);
-    } catch (err) {
-      setError('No se pudo cargar el catalogo de cartas. Por favor, reintenta mas tarde.');
-    } finally {
-      setInitialLoading(false);
-      setIsSearching(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCards('', true);
-  }, []);
-
-  const handleSearch = useCallback(({ searchTerm, selectedTypes, selectedRarities }) => {
-    setActiveFilters({ selectedTypes, selectedRarities });
-    fetchCards(searchTerm);
-  }, []);
-
-  const filteredCards = cards.filter(card => {
-    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.includes(card.es.type);
-    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.includes(card.es.rarity);
-    return matchType && matchRarity;
+  const [activeFilters, setActiveFilters] = useState({ 
+    searchTerm: '', 
+    selectedTypes: [], 
+    selectedRarities: [] 
   });
 
-  if (initialLoading) {
-    return (
-      <div className="py-12 flex items-center justify-center min-h-[50vh]">
-        <LoadingSpinner message="Invocando criaturas del Nexo..." />
-      </div>
-    );
-  }
+  // Estados para Scroll Infinito
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
+  const LIMIT = 12;
+
+  // Elemento centinela para el IntersectionObserver
+  const lastCardElementRef = useCallback(node => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+      }
+    });
+    
+    if (node) observer.current.observe(node);
+  }, [isLoading, hasMore]);
+
+  const fetchCards = useCallback(async (currentPage, filters, isNewSearch = false) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const params = {
+        page: currentPage,
+        limit: LIMIT,
+      };
+
+      if (filters.searchTerm) {
+        params.search = filters.searchTerm;
+      }
+
+      const data = await cardService.getCards(params);
+
+      setCards(prevCards => {
+        if (isNewSearch) return data;
+        // Evitar duplicados por ID
+        const newCards = data.filter(newCard => !prevCards.some(pc => pc.id === newCard.id));
+        return [...prevCards, ...newCards];
+      });
+
+      setHasMore(data.length === LIMIT);
+    } catch (err) {
+      setError(t('home.error'));
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [t]);
+
+  // Efecto para carga inicial y cambios de página
+  useEffect(() => {
+    const load = async () => {
+      await fetchCards(page, activeFilters);
+    };
+    load();
+  }, [page, activeFilters, fetchCards]);
+
+  // Manejo de búsqueda y filtros
+  const handleSearch = useCallback(({ searchTerm, selectedTypes, selectedRarities }) => {
+    const newFilters = { searchTerm, selectedTypes, selectedRarities };
+    setActiveFilters(newFilters);
+    
+    setPage(1);
+    setHasMore(true);
+    fetchCards(1, newFilters, true);
+  }, [fetchCards]);
+
+  // Filtrado local para tipos y rarezas
+  const filteredCards = cards.filter(card => {
+    const cardData = card[lang] || card['es'];
+    
+    const matchType = activeFilters.selectedTypes.length === 0 || 
+                      activeFilters.selectedTypes.includes(cardData.type);
+    const matchRarity = activeFilters.selectedRarities.length === 0 || 
+                        activeFilters.selectedRarities.includes(cardData.rarity);
+    
+    return matchType && matchRarity;
+  });
 
   if (error) {
     return (
       <div className="py-12 text-center">
-        <div className="bg-red-500/10 border border-red-500/50 p-6 rounded-xl inline-block max-w-md">
-          <p className="text-red-400 font-medium mb-4">{error}</p>
+        <div className="inline-block max-w-md rounded-xl border border-red-500/50 bg-red-500/10 p-6">
+          <p className="mb-4 font-medium text-red-400">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+            className="rounded-lg bg-red-500 px-6 py-2 text-white transition-colors hover:bg-red-600"
           >
-            Reintentar
+            {t('home.retry')}
           </button>
         </div>
       </div>
@@ -75,11 +133,11 @@ export default function Home() {
   return (
     <div className="py-12">
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
-          Catalogo de Cartas
+        <h1 className="mb-4 inline-block bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text pb-2 text-4xl font-extrabold text-transparent dark:from-blue-400 dark:to-purple-500">
+          {t('home.title')}
         </h1>
-        <p className="text-slate-400 max-w-2xl mb-8">
-          Explora la coleccion completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.
+        <p className="mb-8 max-w-2xl text-slate-600 dark:text-slate-400">
+          {t('home.description')}
         </p>
 
         <SearchBar
@@ -89,23 +147,47 @@ export default function Home() {
         />
       </header>
 
-      {isSearching && (
-        <div className="flex items-center gap-2 mb-4 text-slate-400 text-sm">
-          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
-          Buscando...
-        </div>
-      )}
-
-      {filteredCards.length === 0 ? (
-        <div className="text-center py-12 text-slate-500 text-xl">
-          No se encontraron resultados
+      {isLoading && page === 1 ? (
+        <div className="flex min-h-[40vh] items-center justify-center py-12">
+          <LoadingSpinner message={t('home.loading')} />
         </div>
       ) : (
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity ${isSearching ? 'opacity-50' : 'opacity-100'}`}>
-          {filteredCards.map(card => (
-            <Card key={card.id} card={card} />
-          ))}
-        </div>
+        <>
+          {filteredCards.length === 0 ? (
+            <div className="py-12 text-center text-xl text-slate-400 dark:text-slate-500">
+              {t('home.noResults')}
+            </div>
+          ) : (
+            <div className={`grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
+              {filteredCards.map((card, index) => {
+                if (filteredCards.length === index + 1) {
+                  return (
+                    <div ref={lastCardElementRef} key={card.id}>
+                      <Card card={card} />
+                    </div>
+                  );
+                } else {
+                  return <Card key={card.id} card={card} />;
+                }
+              })}
+            </div>
+          )}
+
+          {/* Indicador de carga para páginas siguientes */}
+          {isLoading && page > 1 && (
+            <div className="flex justify-center py-12">
+              <LoadingSpinner message={t('home.loading')} />
+            </div>
+          )}
+
+          {/* Mensaje de final del catálogo */}
+          {!hasMore && filteredCards.length > 0 && (
+            <div className="mt-12 border-t border-slate-200 py-12 text-center text-slate-500 italic dark:border-slate-800">
+              {/* Aquí podrías agregar una clave 'home.allLoaded' si quieres */}
+              Has llegado al final del Nexo.
+            </div>
+          )}
+        </>
       )}
     </div>
   );

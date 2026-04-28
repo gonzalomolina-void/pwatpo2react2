@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import CheckboxDropdown from './CheckboxDropdown';
 
 export default function SearchBar({
@@ -7,6 +8,7 @@ export default function SearchBar({
   rarityOptions = [],
   debounceMs = 300,
 }) {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRarities, setSelectedRarities] = useState([]);
@@ -52,10 +54,10 @@ export default function SearchBar({
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 mb-8">
-      <div className="relative flex-grow">
+    <div className="mb-8 flex flex-col gap-4 md:flex-row">
+      <div className="relative grow">
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"
+          className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-slate-500"
           fill="none" viewBox="0 0 24 24" stroke="currentColor"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -64,16 +66,16 @@ export default function SearchBar({
         </svg>
         <input
           type="text"
-          placeholder="Buscar por nombre..."
+          placeholder={t('search.placeholder')}
           value={searchTerm}
           onChange={handleTextChange}
-          className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2 pr-4 pl-10 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
         />
       </div>
 
       {typeOptions.length > 0 && (
         <CheckboxDropdown
-          label="Tipos"
+          label={t('search.types')}
           options={typeOptions}
           selected={selectedTypes}
           onChange={handleTypesChange}
@@ -81,7 +83,7 @@ export default function SearchBar({
       )}
       {rarityOptions.length > 0 && (
         <CheckboxDropdown
-          label="Rarezas"
+          label={t('search.rarities')}
           options={rarityOptions}
           selected={selectedRarities}
           onChange={handleRaritiesChange}
