@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
 const Card = ({ card }) => {
-  // Por ahora hardcodeamos 'es', luego vendrá de i18next
-  const lang = 'es';
+  const { i18n } = useTranslation();
+  const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const { id, cost, image, atk, def } = card;
   const { name, type, rarity } = card[lang] || card['es'];
   const imageUrl = `${CARDS_URL}${image}`;
 
-  // Configuración de colores por rareza
+  // Configuración de colores por rareza (soporta ambos idiomas para mayor robustez)
   const rarityConfig = {
     'Legendario': { text: 'text-orange-400', border: 'border-orange-500/50', hover: 'hover:border-orange-400' },
     'Legendary': { text: 'text-orange-400', border: 'border-orange-500/50', hover: 'hover:border-orange-400' },
@@ -20,6 +21,7 @@ const Card = ({ card }) => {
     'Uncommon': { text: 'text-green-400', border: 'border-green-500/50', hover: 'hover:border-green-400' },
     'Normal': { text: 'text-slate-100', border: 'border-slate-200/50', hover: 'hover:border-slate-100' },
     'Común': { text: 'text-slate-100', border: 'border-slate-200/50', hover: 'hover:border-slate-100' },
+    'Common': { text: 'text-slate-100', border: 'border-slate-200/50', hover: 'hover:border-slate-100' },
     'Pobre': { text: 'text-slate-500', border: 'border-slate-600/50', hover: 'hover:border-slate-500' },
     'Poor': { text: 'text-slate-500', border: 'border-slate-600/50', hover: 'hover:border-slate-500' },
   };
