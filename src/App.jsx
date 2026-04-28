@@ -26,10 +26,10 @@ function App() {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       <Router>
-        <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-500">
+        <div className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 transition-colors duration-500 dark:bg-slate-900 dark:text-slate-100">
           <Header />
           
-          <main className="grow container mx-auto px-4">
+          <main className="container mx-auto grow px-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/detalles/:id" element={<Detail />} />

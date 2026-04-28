@@ -22,7 +22,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-lg hover:scale-110 hover:border-yellow-500 dark:hover:border-blue-400 transition-all shadow-lg active:scale-95"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-slate-100 text-lg shadow-lg transition-all hover:scale-110 hover:border-yellow-500 active:scale-95 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-400"
       title={theme === 'dark' ? 'Invocar Modo Luz' : 'Abrazar las Sombras'}
       aria-label="Cambiar tema"
     >

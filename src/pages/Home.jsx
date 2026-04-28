@@ -117,11 +117,11 @@ export default function Home() {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <div className="bg-red-500/10 border border-red-500/50 p-6 rounded-xl inline-block max-w-md">
-          <p className="text-red-400 font-medium mb-4">{error}</p>
+        <div className="inline-block max-w-md rounded-xl border border-red-500/50 bg-red-500/10 p-6">
+          <p className="mb-4 font-medium text-red-400">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+            className="rounded-lg bg-red-500 px-6 py-2 text-white transition-colors hover:bg-red-600"
           >
             {t('home.retry')}
           </button>
@@ -133,10 +133,10 @@ export default function Home() {
   return (
     <div className="py-12">
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-500 bg-clip-text text-transparent inline-block">
+        <h1 className="mb-4 inline-block bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text pb-2 text-4xl font-extrabold text-transparent dark:from-blue-400 dark:to-purple-500">
           {t('home.title')}
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mb-8">
+        <p className="mb-8 max-w-2xl text-slate-600 dark:text-slate-400">
           {t('home.description')}
         </p>
 
@@ -148,17 +148,17 @@ export default function Home() {
       </header>
 
       {isLoading && page === 1 ? (
-        <div className="py-12 flex items-center justify-center min-h-[40vh]">
+        <div className="flex min-h-[40vh] items-center justify-center py-12">
           <LoadingSpinner message={t('home.loading')} />
         </div>
       ) : (
         <>
           {filteredCards.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 dark:text-slate-500 text-xl">
+            <div className="py-12 text-center text-xl text-slate-400 dark:text-slate-500">
               {t('home.noResults')}
             </div>
           ) : (
-            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
+            <div className={`grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
               {filteredCards.map((card, index) => {
                 if (filteredCards.length === index + 1) {
                   return (
@@ -175,14 +175,14 @@ export default function Home() {
 
           {/* Indicador de carga para páginas siguientes */}
           {isLoading && page > 1 && (
-            <div className="py-12 flex justify-center">
+            <div className="flex justify-center py-12">
               <LoadingSpinner message={t('home.loading')} />
             </div>
           )}
 
           {/* Mensaje de final del catálogo */}
           {!hasMore && filteredCards.length > 0 && (
-            <div className="py-12 text-center text-slate-500 italic border-t border-slate-200 dark:border-slate-800 mt-12">
+            <div className="mt-12 border-t border-slate-200 py-12 text-center text-slate-500 italic dark:border-slate-800">
               {/* Aquí podrías agregar una clave 'home.allLoaded' si quieres */}
               Has llegado al final del Nexo.
             </div>
