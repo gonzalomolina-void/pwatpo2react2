@@ -35,7 +35,7 @@ const AcercaDe = () => {
   return (
     <>
       <button 
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-lg hover:scale-110 hover:border-blue-500 transition-all shadow-lg active:scale-95" 
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-lg shadow-lg transition-all hover:scale-110 hover:border-blue-500 active:scale-95 dark:border-slate-700 dark:bg-slate-800" 
         onClick={() => setIsOpen(true)}
         aria-label={t('about.title')}
         title={t('about.title')}
@@ -49,27 +49,27 @@ const AcercaDe = () => {
         title={t('about.title')}
       >
         <div className="text-center">
-          <p className="text-slate-500 dark:text-slate-400 text-sm italic mb-6">
+          <p className="mb-6 text-sm text-slate-500 italic dark:text-slate-400">
             {t('about.description')}
           </p>
           
-          <blockquote className="max-w-md mx-auto p-4 mb-8 border-l-4 border-blue-500 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg font-serif italic">
-            <p className="text-slate-800 dark:text-slate-100 text-lg leading-relaxed mb-2">
+          <blockquote className="mx-auto mb-8 max-w-md rounded-r-lg border-l-4 border-blue-500 bg-slate-50 p-4 font-serif italic dark:bg-slate-900/50">
+            <p className="mb-2 text-lg leading-relaxed text-slate-800 dark:text-slate-100">
               "{t('about.quote')}"
             </p>
-            <cite className="text-sm font-bold text-slate-500 dark:text-slate-400 block text-right">— {t('about.quoteAuthor')}</cite>
+            <cite className="block text-right text-sm font-bold text-slate-500 dark:text-slate-400">— {t('about.quoteAuthor')}</cite>
           </blockquote>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="mb-8 flex flex-wrap justify-center gap-4">
             {integrantes.map((i, index) => (
-              <div key={index} className="flex flex-col items-center p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 rounded-xl w-36 shadow-md hover:border-blue-500/30 transition-colors">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] mb-3">
-                  <img src={i.avatar} alt={i.nombre} className="w-full h-full object-cover" />
+              <div key={index} className="flex w-36 flex-col items-center rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-md transition-colors hover:border-blue-500/30 dark:border-slate-700/50 dark:bg-slate-900/40">
+                <div className="mb-3 h-16 w-16 overflow-hidden rounded-full border-2 border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                  <img src={i.avatar} alt={i.nombre} className="h-full w-full object-cover" />
                 </div>
-                <div className="text-center space-y-1">
-                  <strong className="text-xs text-slate-800 dark:text-slate-100 block leading-tight">{i.nombre}</strong>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-500 block uppercase tracking-tighter">{t('about.legajo')}: {i.legajo}</span>
-                  <span className="inline-block mt-2 text-[10px] font-black px-2 py-0.5 bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full uppercase border border-blue-500/30">
+                <div className="space-y-1 text-center">
+                  <strong className="block text-xs leading-tight text-slate-800 dark:text-slate-100">{i.nombre}</strong>
+                  <span className="block text-[10px] tracking-tighter text-slate-500 uppercase dark:text-slate-500">{t('about.legajo')}: {i.legajo}</span>
+                  <span className="mt-2 inline-block rounded-full border border-blue-500/30 bg-blue-500/20 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase dark:text-blue-400">
                     {i.rol}
                   </span>
                 </div>
@@ -77,8 +77,8 @@ const AcercaDe = () => {
             ))}
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-700/50">
-            <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+          <div className="border-t border-slate-200 pt-4 dark:border-slate-700/50">
+            <p className="text-xs font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
               PWA TPO2 - React 2026
             </p>
           </div>

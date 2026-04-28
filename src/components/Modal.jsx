@@ -5,16 +5,16 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return createPortal(
     <div 
-      className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-300"
+      className="animate-in fade-in fixed inset-0 z-100 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm duration-300"
       onClick={onClose}
     >
       <section 
-        className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col relative animate-in zoom-in-95 duration-300"
+        className="animate-in zoom-in-95 relative flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl duration-300 dark:border-slate-700 dark:bg-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón Cerrar */}
         <button 
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors text-2xl leading-none"
+          className="absolute top-4 right-4 text-2xl leading-none text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-white"
           onClick={onClose} 
           aria-label="Cerrar"
         >
@@ -23,13 +23,13 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
         {/* Encabezado */}
         {title && (
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+          <div className="border-b border-slate-100 px-6 py-4 dark:border-slate-700">
             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">{title}</h3>
           </div>
         )}
 
         {/* Cuerpo con scroll oculto pero funcional */}
-        <div className="p-6 overflow-y-auto scrollbar-hide text-slate-700 dark:text-slate-300">
+        <div className="scrollbar-hide overflow-y-auto p-6 text-slate-700 dark:text-slate-300">
           {children}
         </div>
       </section>

@@ -47,14 +47,14 @@ export default function SplashScreen({ onComplete }) {
     <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 transition-opacity duration-700 ease-in-out ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
       {/* Fondo con brillo místico */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-blue-500/20 blur-[120px] rounded-full animate-pulse"></div>
-        <div className="absolute top-1/4 left-1/4 w-75 h-75 bg-purple-500/10 blur-[100px] rounded-full animate-pulse [animation-delay:1s]"></div>
+        <div className="absolute top-1/2 left-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-blue-500/20 blur-[120px]"></div>
+        <div className="absolute top-1/4 left-1/4 h-75 w-75 animate-pulse rounded-full bg-purple-500/10 blur-[100px] [animation-delay:1s]"></div>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center w-full max-w-3xl px-6 text-center">
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center px-6 text-center">
         {/* Contenedor de la Imagen Épica */}
-        <div className="relative mb-8 group w-full max-w-md md:max-w-none aspect-9/16 md:aspect-video">
-          <div className="absolute -inset-1 bg-linear-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+        <div className="group relative mb-8 aspect-9/16 w-full max-w-md md:aspect-video md:max-w-none">
+          <div className="absolute -inset-1 rounded-2xl bg-linear-to-r from-blue-500 to-purple-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
           
           <picture>
             <source 
@@ -64,7 +64,7 @@ export default function SplashScreen({ onComplete }) {
             <img 
               src={`${SPLASH_BASE_URL}${selectedConcept.id}_mobile.png`} 
               alt={conceptAlt} 
-              className="relative rounded-2xl shadow-2xl w-full h-full object-cover transform transition-transform duration-500 hover:scale-102"
+              className="relative h-full w-full transform rounded-2xl object-cover shadow-2xl transition-transform duration-500 hover:scale-102"
               onError={(e) => {
                 e.target.src = '/cards/Portada.png';
                 e.target.onerror = null;
@@ -74,16 +74,16 @@ export default function SplashScreen({ onComplete }) {
         </div>
 
         {/* Título y Lemas */}
-        <h1 className="text-5xl md:text-6xl font-black italic tracking-tighter mb-2 bg-linear-to-b from-white to-slate-400 bg-clip-text text-transparent drop-shadow-lg uppercase">
+        <h1 className="mb-2 bg-linear-to-b from-white to-slate-400 bg-clip-text text-5xl font-black tracking-tighter text-transparent uppercase italic drop-shadow-lg md:text-6xl">
           TCG NEXUS
         </h1>
-        <p className="text-blue-400 font-bold uppercase tracking-[0.3em] text-sm md:text-base animate-pulse">
+        <p className="animate-pulse text-sm font-bold tracking-[0.3em] text-blue-400 uppercase md:text-base">
           {conceptAlt}...
         </p>
 
         {/* Barra de progreso decorativa */}
-        <div className="mt-8 w-48 md:w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden mx-auto">
-          <div className="h-full bg-linear-to-r from-blue-500 via-cyan-400 to-purple-500 animate-[progress_3s_ease-in-out_infinite]"></div>
+        <div className="mx-auto mt-8 h-1.5 w-48 overflow-hidden rounded-full bg-slate-800 md:w-64">
+          <div className="h-full animate-[progress_3s_ease-in-out_infinite] bg-linear-to-r from-blue-500 via-cyan-400 to-purple-500"></div>
         </div>
       </div>
 
