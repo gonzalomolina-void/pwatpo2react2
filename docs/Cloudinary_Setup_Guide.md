@@ -10,13 +10,25 @@ Para mantener la paridad con la estructura del proyecto, organizá tu **Media Li
 1.  Creá una carpeta llamada `cards/` y subí todas las cartas optimizadas (`.webp`).
 2.  Creá una carpeta llamada `splash/` y subí las pantallas de carga (versiones `wide` y `mobile`).
 
-## 2. Obtención de la URL Base
-Una vez subida una imagen (ej. `cards/Grak.webp`), hacé clic en ella para ver su URL.
-- **URL Completa:** `https://res.cloudinary.com/tu-cloud-name/image/upload/v12345/cards/Grak.webp`
-- **Lo que necesitamos:** La parte de la ruta hasta el nombre de la carpeta:
+## 2. Configuración de Upload Presets (EVITAR NOMBRES RAROS)
+Por defecto, Cloudinary agrega un sufijo aleatorio a los archivos (ej. `Grak_abc123`). Para que las URLs coincidan con nuestro código, debés configurar el **Upload Preset**:
+
+1.  Andá a **Settings (Engranaje)** -> **Upload**.
+2.  Buscá la sección **Upload presets** y editá el que uses por defecto (ej. `ml_default`).
+3.  **Unique filename:** Cambialo a **`Off`**. (Esto quita los sufijos).
+4.  **Use filename or external ID:** Cambialo a **`On`**.
+5.  **Use asset folder as public ID prefix:** Cambialo a **`On`**. (Esto hace que la URL incluya la carpeta, ej: `cards/Grak.webp`).
+6.  **Folder:** Dejá este campo vacío para que respete la carpeta donde soltás el archivo.
+7.  ¡Dale a **Save**!
+
+> **Nota:** Estos cambios solo afectan a las subidas nuevas. Lo que ya tiene sufijo deberá ser resubido.
+
+## 3. Obtención de la URL Base
+Una vez configurado, la URL de una imagen subida a la carpeta `cards` será:
+- **URL:** `https://res.cloudinary.com/tu-cloud-name/image/upload/cards/Grak.webp`
+- **Variable de entorno:** La ruta hasta la carpeta inclusive:
   `https://res.cloudinary.com/tu-cloud-name/image/upload/cards/`
 
-> **Tip de Pro:** Podés omitir el número de versión (`v12345/`) en la variable de entorno para que las URLs sean más limpias; Cloudinary resolverá la imagen igual.
 
 ---
 
