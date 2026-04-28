@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "favorites": "Favorites"
+  },
+  "footer": {
+    "copyright": "TCG Nexus - Uncoma PWA",
+    "description": "Explore the universe of cards"
+  },
+  "home": {
+    "title": "Card Catalog",
+    "description": "Explore the complete TCG Nexus card collection. Creatures, spells, and artifacts await for your deck.",
+    "loading": "Summoning creatures from the Nexus...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "error": "Could not load the card catalog. Please try again later.",
+    "retry": "Retry",
+    "filters": {
+      "types": {
+        "Criatura": "Creature",
+        "Hechizo": "Spell",
+        "Artefacto": "Artifact"
+      },
+      "rarities": {
+        "Pobre": "Poor",
+        "Común": "Common",
+        "Poco Común": "Uncommon",
+        "Raro": "Rare",
+        "Épico": "Epic",
+        "Legendario": "Legendary"
+      }
+    }
+  },
+  "detail": {
+    "loading": "Summoning card from the Nexus...",
+    "backToCatalog": "Back to catalog",
+    "loreTitle": "Lore",
+    "edition": "Edition: TCG Nexus — First Edition",
+    "atk": "ATK",
+    "def": "DEF"
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Card not found",
+    "description": "This card has been lost in the dimensional Nexus. Perhaps it was devoured by Xal'Thun, or it simply never existed.",
+    "backToCatalog": "Back to catalog"
+  },
+  "backButton": {
+    "defaultLabel": "Back"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "empty": "You don't have any favorite cards yet. Explore the catalog and add some!",
+    "backToCatalog": "Go to catalog"
+  },
+  "about": {
+    "title": "About us",
+    "description": "Project developed for the Advanced Web Programming course.",
+    "quote": "Ask yourself at every moment: Is this necessary?",
+    "quoteAuthor": "Marcus Aurelius",
+    "roles": {
+      "Developer": "Developer",
+      "PM": "PM"
+    },
+    "legajo": "Student ID"
+  },
+  "search": {
+    "placeholder": "Search by name...",
+    "types": "Types",
+    "rarities": "Rarities",
+    "selected": "selected",
+    "clear": "Clear selection"
+  }
+}

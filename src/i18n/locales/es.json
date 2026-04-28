@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "favorites": "Favoritos"
+  },
+  "footer": {
+    "copyright": "TCG Nexus - Uncoma PWA",
+    "description": "Explorá el universo de las cartas"
+  },
+  "home": {
+    "title": "Catálogo de Cartas",
+    "description": "Explora la colección completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.",
+    "loading": "Invocando criaturas del Nexo...",
+    "searching": "Buscando...",
+    "noResults": "No se encontraron resultados",
+    "error": "No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.",
+    "retry": "Reintentar",
+    "filters": {
+      "types": {
+        "Criatura": "Criatura",
+        "Hechizo": "Hechizo",
+        "Artefacto": "Artefacto"
+      },
+      "rarities": {
+        "Pobre": "Pobre",
+        "Común": "Común",
+        "Poco Común": "Poco Común",
+        "Raro": "Raro",
+        "Épico": "Épico",
+        "Legendario": "Legendario"
+      }
+    }
+  },
+  "detail": {
+    "loading": "Invocando carta del Nexo...",
+    "backToCatalog": "Volver al catálogo",
+    "loreTitle": "Lore",
+    "edition": "Edición: TCG Nexus — Primera Edición",
+    "atk": "ATK",
+    "def": "DEF"
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Carta no encontrada",
+    "description": "Esta carta se ha perdido en el Nexo dimensional. Quizás fue devorada por Xal'Thun, o simplemente nunca existió.",
+    "backToCatalog": "Volver al catálogo"
+  },
+  "backButton": {
+    "defaultLabel": "Volver"
+  },
+  "favorites": {
+    "title": "Mis Favoritos",
+    "empty": "Aún no tienes cartas favoritas. ¡Explora el catálogo y agrega algunas!",
+    "backToCatalog": "Ir al catálogo"
+  },
+  "about": {
+    "title": "Acerca de nosotros",
+    "description": "Proyecto desarrollado para la cátedra de Programación Web Avanzada.",
+    "quote": "Preguntate en todo momento: ¿Es esto necesario?",
+    "quoteAuthor": "Marco Aurelio",
+    "roles": {
+      "Developer": "Developer",
+      "PM": "PM"
+    },
+    "legajo": "Legajo"
+  },
+  "search": {
+    "placeholder": "Buscar por nombre...",
+    "types": "Tipos",
+    "rarities": "Rarezas",
+    "selected": "seleccionados",
+    "clear": "Limpiar selección"
+  }
+}
