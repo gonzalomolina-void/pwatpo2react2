@@ -27,19 +27,23 @@ const getRandomConcept = () => {
  */
 export default function SplashScreen({ onComplete }) {
   const [isExiting, setIsExiting] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false); // Nuevo estado
   const { i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   
   const [selectedConcept] = useState(getRandomConcept);
 
   useEffect(() => {
+    // Solo arrancamos el timer si la imagen ya se cargó
+    if (!imageLoaded) return;
+
     const timer = setTimeout(() => {
       setIsExiting(true);
       setTimeout(onComplete, 800);
-    }, 3000);
+    }, 2500); // Bajamos un toque el tiempo ya que esperamos a la carga
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [onComplete, imageLoaded]);
 
   const conceptAlt = selectedConcept.alt[lang] || selectedConcept.alt['es'];
 
@@ -53,7 +57,7 @@ export default function SplashScreen({ onComplete }) {
 
       <div className="relative z-10 flex w-full max-w-3xl flex-col items-center px-6 text-center">
         {/* Contenedor de la Imagen Épica */}
-        <div className="group relative mb-8 aspect-9/16 w-full max-w-md md:aspect-video md:max-w-none">
+        <div className={`group relative mb-8 aspect-9/16 w-full max-w-md transition-opacity duration-1000 md:aspect-video md:max-w-none ${imageLoaded ? 'opacity-100' : 'opacity-0 scale-95'}`}>
           <div className="absolute -inset-1 rounded-2xl bg-linear-to-r from-blue-500 to-purple-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
           
           <picture>
@@ -64,10 +68,12 @@ export default function SplashScreen({ onComplete }) {
             <img 
               src={`${SPLASH_BASE_URL}${selectedConcept.id}_mobile.png`} 
               alt={conceptAlt} 
+              onLoad={() => setImageLoaded(true)} // ¡ACÁ ESTÁ LA MAGIA!
               className="relative h-full w-full transform rounded-2xl object-cover shadow-2xl transition-transform duration-500 hover:scale-102"
               onError={(e) => {
                 e.target.src = '/cards/Portada.png';
                 e.target.onerror = null;
+                setImageLoaded(true); // Si falla, igual seguimos para no trabar la app
               }}
             />
           </picture>

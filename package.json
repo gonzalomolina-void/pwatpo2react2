@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "preview": "vite preview",
     "optimize:cards": "node optimize-images.js ToOptimize public/cards 500",
     "optimize:splash": "node optimize-images.js ToOptimizeSplash public/splash 1920"
