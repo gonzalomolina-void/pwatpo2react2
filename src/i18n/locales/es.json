@@ -50,8 +50,16 @@
   },
   "favorites": {
     "title": "Mis Favoritos",
-    "empty": "Aún no tienes cartas favoritas. ¡Explora el catálogo y agrega algunas!",
-    "backToCatalog": "Ir al catálogo"
+    "description": "Aquí tienes tu colección personal de cartas marcadas como favoritas.",
+    "loading": "Cargando favoritos...",
+    "error": "No se pudieron cargar tus favoritos.",
+    "empty": "No tienes favoritos todavía",
+    "emptySub": "Explora el catálogo y guarda tus cartas favoritas",
+    "backToCatalog": "Explorar Catálogo"
+  },
+  "card": {
+    "addFavorite": "Agregar a favoritos",
+    "removeFavorite": "Eliminar de favoritos"
   },
   "about": {
     "title": "Acerca de nosotros",
