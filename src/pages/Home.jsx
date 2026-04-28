@@ -160,15 +160,8 @@ export default function Home() {
           ) : (
             <div className={`grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
               {filteredCards.map((card, index) => {
-                if (filteredCards.length === index + 1) {
-                  return (
-                    <div ref={lastCardElementRef} key={card.id}>
-                      <Card card={card} />
-                    </div>
-                  );
-                } else {
-                  return <Card key={card.id} card={card} />;
-                }
+                const isLast = filteredCards.length === index + 1;
+                return <Card key={card.id} card={card} ref={isLast ? lastCardElementRef : null} />;
               })}
             </div>
           )}
