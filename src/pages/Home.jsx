@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
@@ -71,13 +70,14 @@ export default function Home() {
 
       setCards(prevCards => {
         if (isNewSearch) return data;
+        // Evitar duplicados por ID
         const newCards = data.filter(newCard => !prevCards.some(pc => pc.id === newCard.id));
         return [...prevCards, ...newCards];
       });
 
       setHasMore(data.length === LIMIT);
     } catch (err) {
-      setError(t('catalog.error'));
+      setError(t('home.error'));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -86,7 +86,6 @@ export default function Home() {
 
   // Efecto para carga inicial y cambios de página
   useEffect(() => {
-    // Usamos una función asíncrona interna para evitar el error de set-state-in-effect
     const load = async () => {
       await fetchCards(page, activeFilters);
     };
@@ -103,10 +102,9 @@ export default function Home() {
     fetchCards(1, newFilters, true);
   }, [fetchCards]);
 
-  // Filtrado local para tipos y rarezas (MockAPI no siempre filtra bien por múltiples campos)
+  // Filtrado local para tipos y rarezas
   const filteredCards = cards.filter(card => {
-    const lang = 'es'; // Usamos 'es' para comparar con TYPE_OPTIONS y RARITY_OPTIONS
-    const cardData = card[lang] || card;
+    const cardData = card[lang] || card['es'];
     
     const matchType = activeFilters.selectedTypes.length === 0 || 
                       activeFilters.selectedTypes.includes(cardData.type);
@@ -115,14 +113,6 @@ export default function Home() {
     
     return matchType && matchRarity;
   });
-
-  if (initialLoading) {
-    return (
-      <div className="py-12 flex items-center justify-center min-h-[50vh]">
-        <LoadingSpinner message={t('home.loading')} />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -157,22 +147,15 @@ export default function Home() {
         />
       </header>
 
-      {isSearching && (
-        <div className="flex items-center gap-2 mb-4 text-slate-500 dark:text-slate-400 text-sm">
-          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
-          {t('home.searching')}
-        </div>
-      )}
-
-      {filteredCards.length === 0 ? (
-        <div className="text-center py-12 text-slate-400 dark:text-slate-500 text-xl">
-          {t('home.noResults')}
+      {isLoading && page === 1 ? (
+        <div className="py-12 flex items-center justify-center min-h-[40vh]">
+          <LoadingSpinner message={t('home.loading')} />
         </div>
       ) : (
         <>
-          {filteredCards.length === 0 && !isLoading ? (
-            <div className="text-center py-12 text-slate-500 text-xl">
-              {t('catalog.noResults', 'No se encontraron resultados')}
+          {filteredCards.length === 0 ? (
+            <div className="text-center py-12 text-slate-400 dark:text-slate-500 text-xl">
+              {t('home.noResults')}
             </div>
           ) : (
             <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
@@ -190,17 +173,18 @@ export default function Home() {
             </div>
           )}
 
-          {/* Indicador de carga */}
-          {isLoading && (
+          {/* Indicador de carga para páginas siguientes */}
+          {isLoading && page > 1 && (
             <div className="py-12 flex justify-center">
-              <LoadingSpinner message={page === 1 ? t('catalog.loading') : t('catalog.loadingMore', 'Invocando más cartas...')} />
+              <LoadingSpinner message={t('home.loading')} />
             </div>
           )}
 
           {/* Mensaje de final del catálogo */}
           {!hasMore && filteredCards.length > 0 && (
-            <div className="py-12 text-center text-slate-500 italic border-t border-slate-800 mt-12">
-              {t('catalog.allLoaded', 'Has llegado al final del Nexo.')}
+            <div className="py-12 text-center text-slate-500 italic border-t border-slate-200 dark:border-slate-800 mt-12">
+              {/* Aquí podrías agregar una clave 'home.allLoaded' si quieres */}
+              Has llegado al final del Nexo.
             </div>
           )}
         </>
