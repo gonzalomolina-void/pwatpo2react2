@@ -55,10 +55,10 @@ export default function Home() {
     <div className="py-12">
       <header className="mb-12">
         <h1 className="text-4xl font-extrabold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
-          {t('Catalogo de cartas')}
+          {t('catalog.title')}
         </h1>
         <p className="text-slate-400 max-w-2xl">
-          {t('Explora la colección completa de cartas de TCG Nexus. Criaturas, hechizos y artefactos te esperan para tu mazo.')}
+          {t('catalog.description')}
         </p>
       </header>
 
