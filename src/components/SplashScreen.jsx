@@ -57,7 +57,7 @@ export default function SplashScreen({ onComplete }) {
 
       <div className="relative z-10 flex w-full max-w-3xl flex-col items-center px-6 text-center">
         {/* Contenedor de la Imagen Épica */}
-        <div className={`group relative mb-8 aspect-9/16 w-full max-w-md transition-opacity duration-1000 md:aspect-video md:max-w-none ${imageLoaded ? 'opacity-100' : 'opacity-0 scale-95'}`}>
+        <div className={`group relative mb-8 aspect-9/16 w-full max-w-md transition-opacity duration-1000 md:aspect-video md:max-w-none ${imageLoaded ? 'opacity-100' : 'scale-95 opacity-0'}`}>
           <div className="absolute -inset-1 rounded-2xl bg-linear-to-r from-blue-500 to-purple-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
           
           <picture>
