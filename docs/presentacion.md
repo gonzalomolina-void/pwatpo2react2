@@ -1,7 +1,7 @@
 # 🎴 TCG Nexus: Presentación del Proyecto
 
 ## 📖 Introducción
-**TCG Nexus** es una enciclopedia interactiva y multilingüe diseñada para entusiastas de los juegos de cartas coleccionables. Desarrollada como una **Progressive Web App (PWA)**, la aplicación permite explorar un vasto catálogo de cartas, conocer su historia (lore), estadísticas de combate y gestionar una colección personal de favoritos con persistencia local.
+**TCG Nexus** es una enciclopedia interactiva y multilingüe diseñada para entusiastas de los juegos de cartas coleccionables. Desarrollada como una **Progressive Web App (PWA)** (aunque no se solicitaba de esta forma en el enunciado), la aplicación permite explorar un vasto catálogo de cartas, conocer su historia (lore), estadísticas de combate y gestionar una colección personal de favoritos con persistencia local.
 
 ---
 
@@ -42,15 +42,15 @@ El sistema es **completamente bilingüe** (Español/Inglés):
 *   **Persistencia:** El idioma elegido se guarda en `localStorage` para futuras visitas.
 
 ### 🧩 Patrones de Diseño y Refactorización
-Como Tech Lead, se priorizó la calidad del código mediante:
+Se priorizó la calidad del código mediante:
 *   **Custom Hooks:** Extracción de la lógica compleja de la Home hacia `useInfiniteCards.js`, separando la lógica de negocio de la interfaz.
-*   **Servicios Desacoplados:** Capa de servicios (`cardService`, `storageService`) que abstrae las peticiones fetch y el acceso al almacenamiento.
+*   **Servicios Desacoplados:** Capa de servicios (`cardService`, `storageService`, `favoritesService`, `preferencesService`) que abstrae las peticiones fetch y el acceso al almacenamiento.
 *   **Documentación DX:** Implementación exhaustiva de **JSDoc** con `@typedef` para proveer tipado fuerte y autocompletado en un entorno JavaScript.
 *   **React Portals:** Uso de portales para modales (Acerca De), garantizando que ignoren los contextos de apilamiento (z-index) del layout principal.
 
 ### ⚡ Performance y PWA
 *   **Imagen Fallback:** Manejo de errores en carga de imágenes (`onError`) para mostrar portadas por defecto.
-*   **Optimización de Assets:** Uso de formatos de última generación (`.webp`) y estrategia de hosting en Cloudinary/GitHub CDN.
+*   **Optimización de Assets:** Uso de formatos de última generación (`.webp`) y estrategia de hosting en Cloudinary.
 *   **Manifest PWA:** Configuración de `manifest.json` para que la aplicación sea instalable y se comporte como una App nativa.
 
 ---
