@@ -131,19 +131,19 @@ Como creador de contenido, quiero generar nuevas cartas automáticamente usando 
 
 ---
 
-## 📌 Issue 9: Login simulado (US9)
-**Responsable sugerido:** Gonzalo (Developer)
+## 📌 Issue 9: Pipeline de Deployment vía GitHub Releases (US9)
+**Responsable sugerido:** Lautaro (PM)
 
 **Contenido para la descripción:**
 ```markdown
 ### User Story
-Como usuario, quiero poder iniciar sesión en la aplicación, para acceder a funciones personalizadas y mantener mi estado de sesión.
+Como desarrollador, quiero automatizar el despliegue a Vercel mediante GitHub Releases, para tener un control profesional del ciclo de vida de producción.
 
 ### Criterios de Aceptación:
-- [ ] Creación de un formulario de Login (Email/Password).
-- [ ] Implementación de `AuthContext` para manejar el estado global de autenticación.
-- [ ] Simulación de autenticación mediante servicio que consulte MockAPI.io.
-- [ ] Persistencia del estado de login y datos del usuario en `localStorage`.
+- [ ] Configuración de `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID` en GitHub Secrets.
+- [ ] Creación del workflow `.github/workflows/deploy-release.yml` con gatillo `on: release: types: [published]`.
+- [ ] Desactivación de despliegues automáticos en Vercel mediante `exit 0` en Ignored Build Step.
+- [ ] Verificación de que el build solo se dispara al publicar un Release.
 ```
 
 ---
