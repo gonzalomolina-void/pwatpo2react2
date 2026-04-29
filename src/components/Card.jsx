@@ -6,6 +6,11 @@ import { getRarityConfig } from '../utils/rarityConfig';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+
 const Card = forwardRef(({ card }, ref) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
@@ -22,6 +27,7 @@ const Card = forwardRef(({ card }, ref) => {
   const { name, type, rarity } = card[lang] || card['es'];
   const imageUrl = `${CARDS_URL}${image}`;
   const currentConfig = getRarityConfig(rarity);
+  const fallbackImage = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`;
 
   return (
     <Link 
@@ -34,7 +40,7 @@ const Card = forwardRef(({ card }, ref) => {
           src={imageUrl} 
           alt={name} 
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          onError={(e) => { e.target.src = '/cards/Portada.png'; }}
+          onError={(e) => { e.target.src = fallbackImage; }}
         />
         <button
           onClick={handleFavorite}
