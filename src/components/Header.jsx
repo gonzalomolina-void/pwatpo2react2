@@ -17,7 +17,12 @@ export default function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
         <div className="flex items-center gap-4">
           <AcercaDe />
-          <Link to="/" className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent sm:text-2xl dark:from-blue-400 dark:to-purple-500" onClick={closeMenu}>
+          <Link 
+            to="/" 
+            className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent sm:text-2xl dark:from-blue-400 dark:to-purple-500" 
+            onClick={closeMenu}
+            aria-label={t('nav.home')}
+          >
             TCG Nexus
           </Link>
         </div>

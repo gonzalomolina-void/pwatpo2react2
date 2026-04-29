@@ -5,10 +5,14 @@ const cardService = {
     try {
       const url = new URL(`${API_URL}/cards`);
       
-      // Añadir parámetros de búsqueda/paginación si existen
-      Object.keys(params).forEach(key => 
-        url.searchParams.append(key, params[key])
-      );
+      // Usar URLSearchParams para un manejo más limpio de los parámetros
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, value);
+        }
+      });
+      url.search = searchParams.toString();
 
       const response = await fetch(url);
       
