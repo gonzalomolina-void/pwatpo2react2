@@ -20,17 +20,17 @@
     "retry": "Reintentar",
     "filters": {
       "types": {
-        "Criatura": "Criatura",
-        "Hechizo": "Hechizo",
-        "Artefacto": "Artefacto"
+        "creature": "Criatura",
+        "spell": "Hechizo",
+        "artifact": "Artefacto"
       },
       "rarities": {
-        "Pobre": "Pobre",
-        "Común": "Común",
-        "Poco Común": "Poco Común",
-        "Raro": "Raro",
-        "Épico": "Épico",
-        "Legendario": "Legendario"
+        "poor": "Pobre",
+        "common": "Común",
+        "uncommon": "Poco Común",
+        "rare": "Raro",
+        "epic": "Épico",
+        "legendary": "Legendario"
       }
     }
   },
@@ -70,10 +70,10 @@
     "quote": "Preguntate en todo momento: ¿Es esto necesario?",
     "quoteAuthor": "Marco Aurelio",
     "roles": {
-      "Developer": "Developer",
-      "PM": "PM"
+      "developer": "Developer",
+      "pm": "PM"
     },
-    "legajo": "Legajo"
+    "studentId": "Legajo"
   },
   "search": {
     "placeholder": "Buscar por nombre...",

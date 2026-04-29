@@ -9,17 +9,17 @@ export default function Home() {
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
   const TYPE_OPTIONS = [
-    t('home.filters.types.Criatura'),
-    t('home.filters.types.Hechizo'),
-    t('home.filters.types.Artefacto')
+    t('home.filters.types.creature'),
+    t('home.filters.types.spell'),
+    t('home.filters.types.artifact')
   ];
   const RARITY_OPTIONS = [
-    t('home.filters.rarities.Pobre'),
-    t('home.filters.rarities.Común'),
-    t('home.filters.rarities.Poco Común'),
-    t('home.filters.rarities.Raro'),
-    t('home.filters.rarities.Épico'),
-    t('home.filters.rarities.Legendario')
+    t('home.filters.rarities.poor'),
+    t('home.filters.rarities.common'),
+    t('home.filters.rarities.uncommon'),
+    t('home.filters.rarities.rare'),
+    t('home.filters.rarities.epic'),
+    t('home.filters.rarities.legendary'),
   ];
 
   const {
