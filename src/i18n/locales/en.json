@@ -3,6 +3,9 @@
     "home": "Home",
     "favorites": "Favorites"
   },
+  "app": {
+    "title": "TCG Nexus - Card Encyclopedia"
+  },
   "footer": {
     "copyright": "TCG Nexus - Uncoma PWA",
     "description": "Explore the universe of cards"
@@ -50,8 +53,16 @@
   },
   "favorites": {
     "title": "My Favorites",
-    "empty": "You don't have any favorite cards yet. Explore the catalog and add some!",
-    "backToCatalog": "Go to catalog"
+    "description": "Here is your personal collection of cards marked as favorites.",
+    "loading": "Loading favorites...",
+    "error": "Could not load your favorites.",
+    "empty": "You don't have any favorite cards yet",
+    "emptySub": "Explore the catalog and save your favorite cards",
+    "backToCatalog": "Explore Catalog"
+  },
+  "card": {
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites"
   },
   "about": {
     "title": "About us",
@@ -70,5 +81,10 @@
     "rarities": "Rarities",
     "selected": "selected",
     "clear": "Clear selection"
+  },
+  "theme": {
+    "toggle": "Change theme",
+    "toLight": "Summon Light Mode",
+    "toDark": "Embrace the Shadows"
   }
 }

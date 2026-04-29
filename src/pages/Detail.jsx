@@ -96,25 +96,25 @@ export default function Detail() {
 
         <div className="space-y-6">
           <div>
-            <h1 className="mb-2 text-4xl font-extrabold text-slate-100">{name}</h1>
+            <h1 className="mb-2 text-4xl font-extrabold text-slate-900 dark:text-slate-100">{name}</h1>
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium tracking-wider text-slate-400 uppercase">{type}</span>
-              <span className="text-slate-700">•</span>
+              <span className="text-sm font-medium tracking-wider text-slate-500 uppercase dark:text-slate-400">{type}</span>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
               <span className={`text-sm font-black tracking-widest uppercase ${rarityStyle.text}`}>{rarity}</span>
             </div>
           </div>
 
-          <div className={`flex gap-8 rounded-xl border bg-slate-800/50 p-5 ${rarityStyle.border}`}>
+          <div className={`flex gap-8 rounded-xl border bg-white p-5 shadow-sm dark:bg-slate-800/50 ${rarityStyle.border}`}>
             <StatBadge icon="⚔️" value={atk} color="text-red-500" size="lg" />
             <StatBadge icon="🛡️" value={def} color="text-blue-500" size="lg" />
           </div>
 
-          <div className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-5">
-            <h2 className="mb-3 text-sm font-bold tracking-widest text-slate-500 uppercase">{t('detail.loreTitle')}</h2>
-            <p className="text-lg leading-relaxed text-slate-300 italic">"{description}"</p>
+          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/30">
+            <h2 className="mb-3 text-sm font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">{t('detail.loreTitle')}</h2>
+            <p className="text-lg leading-relaxed text-slate-700 italic dark:text-slate-300">"{description}"</p>
           </div>
 
-          <div className="text-xs tracking-widest text-slate-600 uppercase">
+          <div className="text-xs font-medium tracking-widest text-slate-400 uppercase dark:text-slate-600">
             {t('detail.edition')}
           </div>
         </div>

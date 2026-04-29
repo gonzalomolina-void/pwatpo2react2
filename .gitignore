@@ -23,7 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .env.local
-public/cards/*.webp
-public/splash/*.webp
-ToOptimize/
-ToOptimizeSplash/
+ToOptimize/*.png
+ToOptimize/*.jp*
+ToOptimizeSplash/*.png
+/public/cards/*.webp
+/public/splash/*.webp

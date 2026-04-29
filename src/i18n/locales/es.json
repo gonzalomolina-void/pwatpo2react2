@@ -3,6 +3,9 @@
     "home": "Home",
     "favorites": "Favoritos"
   },
+  "app": {
+    "title": "TCG Nexus - Enciclopedia de Cartas"
+  },
   "footer": {
     "copyright": "TCG Nexus - Uncoma PWA",
     "description": "Explorá el universo de las cartas"
@@ -78,5 +81,10 @@
     "rarities": "Rarezas",
     "selected": "seleccionados",
     "clear": "Limpiar selección"
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "toLight": "Invocar Modo Luz",
+    "toDark": "Abrazar las Sombras"
   }
 }

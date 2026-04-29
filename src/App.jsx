@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -10,6 +11,13 @@ import SplashScreen from './components/SplashScreen';
 import { preferencesService } from './services/preferencesService';
 
 function App() {
+  const { t, i18n } = useTranslation();
+
+  // Actualizar el título del documento dinámicamente según el idioma
+  useEffect(() => {
+    document.title = t('app.title');
+  }, [t, i18n.language]);
+
   // Usamos un inicializador de estado (lazy initializer) para calcular
   // el valor inicial síncronamente y evitar el render extra.
   const [showSplash, setShowSplash] = useState(() => {

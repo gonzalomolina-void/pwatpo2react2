@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint . --fix",
+    "preview": "vite preview",
+    "optimize:cards": "node optimize-images.js ToOptimize public/cards 500",
+    "optimize:splash": "node optimize-images.js ToOptimizeSplash public/splash 1920"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.4",
@@ -31,6 +33,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "eslint-plugin-tailwindcss": "^3.18.3",
     "globals": "^17.5.0",
+    "sharp": "^0.34.5",
     "vite": "^8.0.9"
   }
 }

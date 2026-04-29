@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import favoritesService from '../services/favoritesService';
 import { getRarityConfig } from '../utils/rarityConfig';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
-const Card = ({ card }) => {
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+
+const Card = forwardRef(({ card }, ref) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [isFav, setIsFav] = useState(() => favoritesService.isFavorite(card.id));
@@ -22,9 +27,11 @@ const Card = ({ card }) => {
   const { name, type, rarity } = card[lang] || card['es'];
   const imageUrl = `${CARDS_URL}${image}`;
   const currentConfig = getRarityConfig(rarity);
+  const fallbackImage = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`;
 
   return (
     <Link 
+      ref={ref}
       to={`/detalles/${id}`} 
       className={`group relative overflow-hidden rounded-xl border bg-white dark:bg-slate-800 ${currentConfig.border} ${currentConfig.hover} ${currentConfig.glow} transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10`}
     >
@@ -33,7 +40,7 @@ const Card = ({ card }) => {
           src={imageUrl} 
           alt={name} 
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          onError={(e) => { e.target.src = '/cards/Portada.png'; }}
+          onError={(e) => { e.target.src = fallbackImage; }}
         />
         <button
           onClick={handleFavorite}
@@ -52,7 +59,7 @@ const Card = ({ card }) => {
           💎 {cost}
         </div>
       </div>
-      
+
       <div className="space-y-2 p-4">
         <div className="flex items-start justify-between">
           <h3 className="truncate pr-2 text-lg font-bold text-slate-800 dark:text-slate-100">{name}</h3>
@@ -60,9 +67,9 @@ const Card = ({ card }) => {
             {rarity}
           </span>
         </div>
-        
+
         <p className="text-xs font-medium tracking-tighter text-slate-500 uppercase dark:text-slate-400">{type}</p>
-        
+
         <div className="flex items-center justify-between border-t border-slate-100 pt-2 dark:border-slate-700/50">
           <div className="flex gap-4">
             <span className="flex items-center gap-1.5 text-sm font-black text-red-500">
@@ -76,6 +83,8 @@ const Card = ({ card }) => {
       </div>
     </Link>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 export default Card;
