@@ -1,4 +1,4 @@
-# 💡 Ideas para el Futuro: TCG Nexus
+# 💡 Ideas para el Futuro: HEXA
 
 Acá vamos guardando todas esas locuras que se nos ocurren para que no se pierdan en el olvido del desarrollo. ¡A meterle ficha!
 

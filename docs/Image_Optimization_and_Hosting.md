@@ -1,4 +1,4 @@
-# 🖼️ Estrategia de Optimización y Hosting de Imágenes (TCG Nexus)
+# 🖼️ Estrategia de Optimización y Hosting de Imágenes (HEXA)
 
 Este documento detalla la estrategia para el manejo de assets visuales pesados, priorizando el rendimiento de la PWA y la limpieza del repositorio de Git.
 
@@ -27,7 +27,7 @@ Cloudinary no es solo un "alojamiento", es un motor de transformación de imáge
 *   **Transformaciones por URL:** Podés subir la imagen original y pedir versiones diferentes cambiando la URL.
 *   **CDN Global:** Las imágenes se sirven desde el servidor más cercano al usuario.
 
-### Parámetros "Mágicos" para TCG Nexus:
+### Parámetros "Mágicos" para HEXA:
 Agregando estos parámetros a la URL de Cloudinary (`/image/upload/[PARAMETROS]/v123/foto.jpg`):
 *   `f_auto`: Selecciona automáticamente el mejor formato (WebP, AVIF) según el navegador.
 *   `q_auto`: Aplica la compresión máxima sin perder calidad visual.

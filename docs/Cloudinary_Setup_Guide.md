@@ -57,4 +57,4 @@ VITE_SPLASH_URL=https://res.cloudinary.com/tu-cloud-name/image/upload/splash/
 - **Optimización Automática:** Si agregás `,f_auto,q_auto` a la URL, Cloudinary comprimirá la imagen aún más según el navegador del usuario.
 
 ---
-*Documentación técnica para TCG Nexus — PWA UNCOMA (Abril 2026).*
+*Documentación técnica para HEXA — PWA UNCOMA (Abril 2026).*

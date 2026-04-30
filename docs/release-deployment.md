@@ -1,6 +1,6 @@
 # 🚀 Despliegue en Vercel vía GitHub Releases
 
-Este documento detalla la configuración necesaria para que **TCG Nexus** solo se despliegue en producción cuando se publica un **Release** en GitHub, evitando despliegues automáticos innecesarios en cada merge a `main`.
+Este documento detalla la configuración necesaria para que **HEXA** solo se despliegue en producción cuando se publica un **Release** en GitHub, evitando despliegues automáticos innecesarios en cada merge a `main`.
 
 ---
 

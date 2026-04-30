@@ -1,4 +1,4 @@
-# 📩 Issues para Crear en GitHub (TCG Nexus)
+# 📩 Issues para Crear en GitHub (HEXA)
 
 Hola Lau, acá tenés la lista de issues para que los vayas creando en el repo. Acordate de darle a **"New Issue"**, pegar el título y después el contenido del bloque de código en la descripción. ¡Con esto el tablero Kanban queda de 10!
 

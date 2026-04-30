@@ -1,6 +1,6 @@
-# 📋 Planificación del Proyecto: TCG Nexus
+# 📋 Planificación del Proyecto: HEXA
 
-Este documento detalla la estrategia de desarrollo para la aplicación **TCG Nexus**, siguiendo los lineamientos del TP React Parte II 2026.
+Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**, siguiendo los lineamientos del TP React Parte II 2026.
 
 ## 👥 Equipo y Roles
 *   **Lautaro (PM / Scrum Master):** Coordinación, gestión del tablero Kanban, configuración de arquitectura base e internacionalización.

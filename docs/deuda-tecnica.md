@@ -1,4 +1,4 @@
-# 🛠️ Registro de Deuda Técnica - TCG Nexus
+# 🛠️ Registro de Deuda Técnica - HEXA
 
 ## 1. Arquitectura y DX (Developer Experience)
 
@@ -9,6 +9,10 @@
 ### ✅ Refactor de "Fat Components" (Completado)
 *   **Acción:** Se extrajo la lógica de `Home.jsx` al hook personalizado `useInfiniteCards.js`.
 *   **Resultado:** Separación clara de incumbencias (Separation of Concerns) y componente Home puramente representativo.
+
+### ✅ Aislamiento de Infraestructura (Completado)
+*   **Acción:** Creación de `preferencesService.js` para centralizar el acceso a `localStorage` y `sessionStorage`.
+*   **Resultado:** Se oculta la implementación del almacenamiento (Infrastructure) al resto de la aplicación (Domain/UI).
 
 ### ⏳ Constantes de Dominio
 *   **Archivo:** `src/pages/Home.jsx`

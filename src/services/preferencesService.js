@@ -1,8 +1,8 @@
 import storageService from './storageService';
 
-const SPLASH_KEY = 'tcg_nexus_splash_seen';
-const LANG_KEY = 'tcg_nexus_lang';
-const THEME_KEY = 'tcg_nexus_theme';
+const SPLASH_KEY = 'hexa_splash_seen';
+const LANG_KEY = 'hexa_lang';
+const THEME_KEY = 'hexa_theme';
 
 export const preferencesService = {
   // ... (session methods)

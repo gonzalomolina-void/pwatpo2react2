@@ -1,7 +1,7 @@
-# 🎴 TCG Nexus: Presentación del Proyecto
+# 🎴 HEXA: Presentación del Proyecto
 
 ## 📖 Introducción
-**TCG Nexus** es una enciclopedia interactiva y multilingüe diseñada para entusiastas de los juegos de cartas coleccionables. Desarrollada como una **Progressive Web App (PWA)** (aunque no se solicitaba de esta forma en el enunciado), la aplicación permite explorar un vasto catálogo de cartas, conocer su historia (lore), estadísticas de combate y gestionar una colección personal de favoritos con persistencia local.
+**HEXA** es una enciclopedia interactiva y multilingüe diseñada para entusiastas de los juegos de cartas coleccionables. Desarrollada como una **Progressive Web App (PWA)** (aunque no se solicitaba de esta forma en el enunciado), la aplicación permite explorar un vasto catálogo de cartas, conocer su historia (lore), estadísticas de combate y gestionar una colección personal de favoritos con persistencia local.
 
 ---
 

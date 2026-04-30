@@ -13,7 +13,7 @@ Referencia de todos los textos incorporados en el branch de **Detail / NotFound 
 | `detail.loading` | Invocando carta del Nexo... | Summoning card from the Nexus... |
 | `detail.backToCatalog` | Volver al catálogo | Back to catalog |
 | `detail.loreTitle` | Lore | Lore |
-| `detail.edition` | Edición: TCG Nexus — Primera Edición | Edition: TCG Nexus — First Edition |
+| `detail.edition` | Edición: HEXA — Primera Edición | Edition: HEXA — First Edition |
 
 ---
 
