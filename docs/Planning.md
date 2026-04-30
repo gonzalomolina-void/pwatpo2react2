@@ -66,6 +66,13 @@ Este documento detalla la estrategia de desarrollo para la aplicación **TCG Nex
     *   Integración con la API de Gemini (o Nano Banana) para obtener nombre, estadísticas y lore.
     *   Visualización previa de la carta generada.
 
+### US9: Pipeline de Deployment vía GitHub Releases
+**Como** desarrollador, **quiero** automatizar el despliegue a Vercel mediante GitHub Releases, **para** tener un control profesional del ciclo de vida de producción.
+*   **Criterios de Aceptación:**
+    *   Configuración de Secrets en GitHub (Vercel Token, Org ID, Project ID).
+    *   Implementación de GitHub Action disparada por `release published`.
+    *   Desactivación de builds automáticos en Vercel.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -81,7 +88,8 @@ Este documento detalla la estrategia de desarrollo para la aplicación **TCG Nex
 | 6 | Página de Detalle y manejo de 404 (US6) | **Juan** | Media |
 | 7 | Sistema de Favoritos y Persistencia (US7) | **Gonzalo** | Alta |
 | 8 | Integración de IA para creación de cartas (US8) | **Juan** | Muy Alta |
-| 9 | Documentación Final (README) | **Lautaro** | Baja |
+| 9 | Pipeline de Deployment vía GitHub Releases (US9) | **Lautaro** | Media |
+| 10 | Documentación Final (README) | **Lautaro** | Baja |
 
 ---
 

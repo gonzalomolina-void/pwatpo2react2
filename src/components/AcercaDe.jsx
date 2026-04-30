@@ -15,19 +15,19 @@ const AcercaDe = () => {
     { 
       nombre: 'Juan Cruz Espinoza', 
       legajo: 'FAI-4767', 
-      rol: t('about.roles.Developer'),
+      rol: t('about.roles.developer'),
       avatar: avatarJuan
     },
     { 
       nombre: 'Lautaro Mellado', 
       legajo: 'FAI-2659', 
-      rol: t('about.roles.PM'),
+      rol: t('about.roles.pm'),
       avatar: avatarLautaro
     },
     { 
       nombre: 'Gonzalo Molina', 
       legajo: '42524', 
-      rol: t('about.roles.Developer'),
+      rol: t('about.roles.developer'),
       avatar: avatarGonzalo
     }
   ];
@@ -68,7 +68,7 @@ const AcercaDe = () => {
                 </div>
                 <div className="space-y-1 text-center">
                   <strong className="block text-xs leading-tight text-slate-800 dark:text-slate-100">{i.nombre}</strong>
-                  <span className="block text-[10px] tracking-tighter text-slate-500 uppercase dark:text-slate-500">{t('about.legajo')}: {i.legajo}</span>
+                  <span className="block text-[10px] tracking-tighter text-slate-500 uppercase dark:text-slate-500">{t('about.studentId')}: {i.legajo}</span>
                   <span className="mt-2 inline-block rounded-full border border-blue-500/30 bg-blue-500/20 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase dark:text-blue-400">
                     {i.rol}
                   </span>

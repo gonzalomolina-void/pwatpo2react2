@@ -75,7 +75,7 @@ export default function Detail() {
             src={imageUrl}
             alt={name}
             className="h-auto w-full object-cover"
-            onError={(e) => { e.target.src = `${CARDS_URL}Portada.png`; }}
+            onError={(e) => { e.target.src = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`; }}
           />
           <button
             onClick={handleFavorite}

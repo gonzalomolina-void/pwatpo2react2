@@ -28,3 +28,4 @@ ToOptimize/*.jp*
 ToOptimizeSplash/*.png
 /public/cards/*.webp
 /public/splash/*.webp
+.vercel

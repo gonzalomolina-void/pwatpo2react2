@@ -20,17 +20,17 @@
     "retry": "Retry",
     "filters": {
       "types": {
-        "Criatura": "Creature",
-        "Hechizo": "Spell",
-        "Artefacto": "Artifact"
+        "creature": "Creature",
+        "spell": "Spell",
+        "artifact": "Artifact"
       },
       "rarities": {
-        "Pobre": "Poor",
-        "Común": "Common",
-        "Poco Común": "Uncommon",
-        "Raro": "Rare",
-        "Épico": "Epic",
-        "Legendario": "Legendary"
+        "poor": "Poor",
+        "common": "Common",
+        "uncommon": "Uncommon",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
       }
     }
   },
@@ -70,10 +70,10 @@
     "quote": "Ask yourself at every moment: Is this necessary?",
     "quoteAuthor": "Marcus Aurelius",
     "roles": {
-      "Developer": "Developer",
-      "PM": "PM"
+      "developer": "Developer",
+      "pm": "PM"
     },
-    "legajo": "Student ID"
+    "studentId": "Student ID"
   },
   "search": {
     "placeholder": "Search by name...",
