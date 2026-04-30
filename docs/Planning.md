@@ -65,6 +65,7 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Formulario simple para ingresar un "prompt" o temática.
     *   Integración con la API de Gemini (o Nano Banana) para obtener nombre, estadísticas y lore.
     *   Visualización previa de la carta generada.
+*   **Documentación Adicional:** Ver [Plan de Implementación: La Forja](./Forja_AI_Plan.md).
 
 ### US9: Pipeline de Deployment vía GitHub Releases
 **Como** desarrollador, **quiero** automatizar el despliegue a Vercel mediante GitHub Releases, **para** tener un control profesional del ciclo de vida de producción.

@@ -3,24 +3,15 @@ import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
+import { TYPE_OPTIONS, RARITY_OPTIONS } from '../constants/game';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
-  const TYPE_OPTIONS = [
-    t('home.filters.types.creature'),
-    t('home.filters.types.spell'),
-    t('home.filters.types.artifact')
-  ];
-  const RARITY_OPTIONS = [
-    t('home.filters.rarities.poor'),
-    t('home.filters.rarities.common'),
-    t('home.filters.rarities.uncommon'),
-    t('home.filters.rarities.rare'),
-    t('home.filters.rarities.epic'),
-    t('home.filters.rarities.legendary'),
-  ];
+  // Mapeamos las constantes a sus traducciones
+  const typeOptionsTranslated = TYPE_OPTIONS.map(type => t(`home.filters.types.${type}`));
+  const rarityOptionsTranslated = RARITY_OPTIONS.map(rarity => t(`home.filters.rarities.${rarity}`));
 
   const {
     cards,
@@ -64,8 +55,8 @@ export default function Home() {
 
         <SearchBar
           onSearch={handleSearch}
-          typeOptions={TYPE_OPTIONS}
-          rarityOptions={RARITY_OPTIONS}
+          typeOptions={typeOptionsTranslated}
+          rarityOptions={rarityOptionsTranslated}
         />
       </header>
 

@@ -14,10 +14,9 @@
 *   **Acción:** Creación de `preferencesService.js` para centralizar el acceso a `localStorage` y `sessionStorage`.
 *   **Resultado:** Se oculta la implementación del almacenamiento (Infrastructure) al resto de la aplicación (Domain/UI).
 
-### ⏳ Constantes de Dominio
-*   **Archivo:** `src/pages/Home.jsx`
-*   **Problema:** `TYPE_OPTIONS` y `RARITY_OPTIONS` siguen definidos localmente.
-*   **Tarea Pendiente:** Mover a un archivo central (ej: `src/constants/game.js`) para uso compartido con la futura US8 (Creador de cartas).
+### ✅ Constantes de Dominio (Completado)
+*   **Acción:** Se crearon las constantes en `src/constants/game.js` y se refactorizó `Home.jsx` para consumirlas.
+*   **Resultado:** Código más mantenible y reutilizable para la futura US8.
 
 ### 🚀 Escalabilidad del Estado
 *   **Contexto:** El sistema de favoritos usa `useState` y prop drilling/contexto simple.
@@ -36,8 +35,8 @@
 *   **Acción:** Creación de `manifest.json` y vinculación en `index.html`.
 *   **Tarea Pendiente:** Implementar un Service Worker (vía Vite PWA Plugin) para soporte offline real de las cartas ya cacheadas.
 
-### ⏳ Manejo de Entorno (Vite)
-*   **Tarea Pendiente:** Crear un `.env.example` para guiar la configuración de futuras integración (IA/Cloudinary).
+### ✅ Manejo de Entorno (Vite) (Completado)
+*   **Acción:** Se creó el archivo `.env.example` con las variables necesarias para IA y Cloudinary.
 
 ## 4. Calidad y Testing
 
