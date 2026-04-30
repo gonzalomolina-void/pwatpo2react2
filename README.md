@@ -47,8 +47,8 @@ Si quieres probar HEXA en tu propia terminal:
 
 1. **Clona el repositorio:**
    ```bash
-   git clone https://github.com/tu-usuario/hexa-tcg.git
-   cd hexa-tcg
+   git clone https://github.com/gonzalomolina-void/pwatpo2react2.git
+   cd pwatpo2react2
    ```
 
 2. **Instala las dependencias:**
