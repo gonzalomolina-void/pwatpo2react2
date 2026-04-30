@@ -1,0 +1,91 @@
+{
+  "nav": {
+    "home": "Home",
+    "favorites": "Favorites"
+  },
+  "app": {
+    "title": "HEXA - Card Encyclopedia"
+  },
+  "footer": {
+    "copyright": "HEXA - Uncoma PWA",
+    "description": "Explore the universe of cards"
+  },
+  "home": {
+    "title": "Card Catalog",
+    "description": "Explore the complete HEXA card collection. Creatures, spells, and artifacts await for your deck.",
+    "loading": "Summoning creatures from HEXA...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "error": "Could not load the card catalog. Please try again later.",
+    "retry": "Retry",
+    "endOfCatalog": "You have reached the end of HEXA.",
+    "filters": {
+      "types": {
+        "creature": "Creature",
+        "spell": "Spell",
+        "artifact": "Artifact"
+      },
+      "rarities": {
+        "poor": "Poor",
+        "common": "Common",
+        "uncommon": "Uncommon",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
+      }
+    }
+  },
+  "detail": {
+    "loading": "Summoning card from HEXA...",
+    "backToCatalog": "Back to catalog",
+    "loreTitle": "Lore",
+    "edition": "Edition: HEXA — First Edition",
+    "atk": "ATK",
+    "def": "DEF"
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Card not found",
+    "description": "This card has been lost in the HEXA universe. Perhaps it was devoured by Xal'Thun, or it simply never existed.",
+    "backToCatalog": "Back to catalog"
+  },
+  "backButton": {
+    "defaultLabel": "Back"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "description": "Here is your personal collection of cards marked as favorites.",
+    "loading": "Loading favorites...",
+    "error": "Could not load your favorites.",
+    "empty": "You don't have any favorite cards yet",
+    "emptySub": "Explore the catalog and save your favorite cards",
+    "backToCatalog": "Explore Catalog"
+  },
+  "card": {
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites"
+  },
+  "about": {
+    "title": "About us",
+    "description": "Project developed for the Advanced Web Programming course.",
+    "quote": "Ask yourself at every moment: Is this necessary?",
+    "quoteAuthor": "Marcus Aurelius",
+    "roles": {
+      "developer": "Developer",
+      "pm": "PM"
+    },
+    "studentId": "Student ID"
+  },
+  "search": {
+    "placeholder": "Search by name...",
+    "types": "Types",
+    "rarities": "Rarities",
+    "selected": "selected",
+    "clear": "Clear selection"
+  },
+  "theme": {
+    "toggle": "Change theme",
+    "toLight": "Summon Light Mode",
+    "toDark": "Embrace the Shadows"
+  }
+}

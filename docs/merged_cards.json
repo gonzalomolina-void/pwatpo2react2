@@ -1,0 +1,1702 @@
+[
+  {
+    "id": "1",
+    "cost": 5,
+    "atk": 8,
+    "def": 10,
+    "media": {
+      "image": "SirKaelen.webp"
+    },
+    "nameEs": "Sir Kaelen",
+    "nameEn": "Sir Kaelen",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "El último guardián del Sol Blanco. Su espada no conoce el miedo.",
+    "descriptionEn": "The last guardian of the White Sun. His sword knows no fear."
+  },
+  {
+    "id": "2",
+    "cost": 3,
+    "atk": 4,
+    "def": 3,
+    "media": {
+      "image": "Grak.webp"
+    },
+    "nameEs": "Grak",
+    "nameEn": "Grak",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "No es muy listo, pero su maza es muy pesada.",
+    "descriptionEn": "He's not very smart, but his mace is very heavy."
+  },
+  {
+    "id": "3",
+    "cost": 4,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "Lyra.webp"
+    },
+    "nameEs": "Lyra",
+    "nameEn": "Lyra",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Invoca una lluvia de flechas astrales que atraviesan el tiempo.",
+    "descriptionEn": "Invokes a rain of astral arrows that pierce through time."
+  },
+  {
+    "id": "4",
+    "cost": 7,
+    "atk": 12,
+    "def": 8,
+    "media": {
+      "image": "Tenebris.webp"
+    },
+    "nameEs": "Tenebris",
+    "nameEn": "Tenebris",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Nacido de las sombras del abismo. Donde camina, la luz muere.",
+    "descriptionEn": "Born from the shadows of the abyss. Where he walks, light dies."
+  },
+  {
+    "id": "5",
+    "cost": 9,
+    "atk": 15,
+    "def": 15,
+    "media": {
+      "image": "XalThunTheDevourer.webp"
+    },
+    "nameEs": "Xal'Thun el Devorador",
+    "nameEn": "Xal'Thun the Devourer",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Una entidad cósmica que consume realidades enteras.",
+    "descriptionEn": "A cosmic entity that consumes entire realities."
+  },
+  {
+    "id": "6",
+    "cost": 2,
+    "atk": 2,
+    "def": 0,
+    "media": {
+      "image": "EtherSword.webp"
+    },
+    "nameEs": "Espada de Éter",
+    "nameEn": "Ether Sword",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Ignora la defensa física del enemigo.",
+    "descriptionEn": "Ignores the enemy's physical defense."
+  },
+  {
+    "id": "7",
+    "cost": 1,
+    "atk": 1,
+    "def": 1,
+    "media": {
+      "image": "ScaredVillager.webp"
+    },
+    "nameEs": "Aldeano Asustado",
+    "nameEn": "Scared Villager",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Solo quería ir por pan.",
+    "descriptionEn": "He just wanted to get some bread."
+  },
+  {
+    "id": "8",
+    "cost": 8,
+    "atk": 10,
+    "def": 12,
+    "media": {
+      "image": "ObsidianDragon.webp"
+    },
+    "nameEs": "Dragón de Obsidiana",
+    "nameEn": "Obsidian Dragon",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Su aliento es lava líquida que calcina el alma.",
+    "descriptionEn": "His breath is liquid lava that scorches the soul."
+  },
+  {
+    "id": "9",
+    "cost": 2,
+    "atk": 0,
+    "def": 4,
+    "media": {
+      "image": "AncestralHealing.webp"
+    },
+    "nameEs": "Curación Ancestral",
+    "nameEn": "Ancestral Healing",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Restaura la vitalidad perdida en combate.",
+    "descriptionEn": "Restores lost vitality in combat."
+  },
+  {
+    "id": "10",
+    "cost": 6,
+    "atk": 6,
+    "def": 10,
+    "media": {
+      "image": "SteamGolem.webp"
+    },
+    "nameEs": "Gólem de Vapor",
+    "nameEn": "Steam Golem",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Una maravilla mecánica que nunca se cansa.",
+    "descriptionEn": "A mechanical marvel that never tires."
+  },
+  {
+    "id": "11",
+    "cost": 5,
+    "atk": 8,
+    "def": 0,
+    "media": {
+      "image": "ManaBlast.webp"
+    },
+    "nameEs": "Explosión de Maná",
+    "nameEn": "Mana Blast",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Libera energía pura que daña a todos los enemigos.",
+    "descriptionEn": "Releases pure energy that damages all enemies."
+  },
+  {
+    "id": "12",
+    "cost": 3,
+    "atk": 3,
+    "def": 2,
+    "media": {
+      "image": "WanderingMage.webp"
+    },
+    "nameEs": "Mago Errante",
+    "nameEn": "Wandering Mage",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Sabe un par de trucos, pero prefiere no usarlos.",
+    "descriptionEn": "Knows a few tricks, but prefers not to use them."
+  },
+  {
+    "id": "13",
+    "cost": 4,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "ChaliceOfLife.webp"
+    },
+    "nameEs": "Cáliz de la Vida",
+    "nameEn": "Chalice of Life",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Otorga inmortalidad a cambio de un sacrificio.",
+    "descriptionEn": "Grants immortality in exchange for a sacrifice."
+  },
+  {
+    "id": "14",
+    "cost": 4,
+    "atk": 5,
+    "def": 4,
+    "media": {
+      "image": "WolfOfFenrir.webp"
+    },
+    "nameEs": "Lobo de Fenrir",
+    "nameEn": "Wolf of Fenrir",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Caza en manada y nunca deja rastro.",
+    "descriptionEn": "Hunts in packs and never leaves a trace."
+  },
+  {
+    "id": "15",
+    "cost": 1,
+    "atk": 0,
+    "def": 1,
+    "media": {
+      "image": "BrokenShield.webp"
+    },
+    "nameEs": "Escudo Quebrado",
+    "nameEn": "Broken Shield",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Apenas sirve para cubrirse del viento.",
+    "descriptionEn": "Barely serves to cover from the wind."
+  },
+  {
+    "id": "16",
+    "cost": 5,
+    "atk": 4,
+    "def": 6,
+    "media": {
+      "image": "DreamInvoker.webp"
+    },
+    "nameEs": "Invocadora de Sueños",
+    "nameEn": "Dream Invoker",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Materializa tus pesadillas más profundas.",
+    "descriptionEn": "Materializes your deepest nightmares."
+  },
+  {
+    "id": "17",
+    "cost": 3,
+    "atk": 2,
+    "def": 0,
+    "media": {
+      "image": "Sandstorm.webp"
+    },
+    "nameEs": "Tormenta de Arena",
+    "nameEn": "Sandstorm",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Ciega a los oponentes durante un turno.",
+    "descriptionEn": "Blinds opponents for one turn."
+  },
+  {
+    "id": "18",
+    "cost": 2,
+    "atk": 1,
+    "def": 3,
+    "media": {
+      "image": "TheArchivist.webp"
+    },
+    "nameEs": "El Archivero",
+    "nameEn": "The Archivist",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Posee el conocimiento de todas las eras.",
+    "descriptionEn": "Possesses the knowledge of all eras."
+  },
+  {
+    "id": "19",
+    "cost": 6,
+    "atk": 0,
+    "def": 5,
+    "media": {
+      "image": "AnvilOfDestiny.webp"
+    },
+    "nameEs": "Yunque del Destino",
+    "nameEn": "Anvil of Destiny",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Forja armas legendarias en medio de la batalla.",
+    "descriptionEn": "Forges legendary weapons in the heat of battle."
+  },
+  {
+    "id": "20",
+    "cost": 1,
+    "atk": 1,
+    "def": 1,
+    "media": {
+      "image": "SewerRat.webp"
+    },
+    "nameEs": "Rata de Alcantarilla",
+    "nameEn": "Sewer Rat",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Es pequeña, pero su mordida infecta.",
+    "descriptionEn": "Small, but its bite infects."
+  },
+  {
+    "id": "21",
+    "cost": 7,
+    "atk": 9,
+    "def": 7,
+    "media": {
+      "image": "LordOfSpecters.webp"
+    },
+    "nameEs": "Señor de los Espectros",
+    "nameEn": "Lord of Specters",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Comanda un ejército de almas en pena.",
+    "descriptionEn": "Commands an army of grieving souls."
+  },
+  {
+    "id": "22",
+    "cost": 2,
+    "atk": 3,
+    "def": 0,
+    "media": {
+      "image": "IceArrow.webp"
+    },
+    "nameEs": "Flecha de Hielo",
+    "nameEn": "Ice Arrow",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Congela al objetivo instantáneamente.",
+    "descriptionEn": "Freezes the target instantaneously."
+  },
+  {
+    "id": "23",
+    "cost": 4,
+    "atk": 4,
+    "def": 5,
+    "media": {
+      "image": "GuardianCentaur.webp"
+    },
+    "nameEs": "Centauro Guardián",
+    "nameEn": "Guardian Centaur",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Protege los bosques prohibidos con su vida.",
+    "descriptionEn": "Protects the forbidden forests with his life."
+  },
+  {
+    "id": "24",
+    "cost": 3,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "Spellbook.webp"
+    },
+    "nameEs": "Libro de Hechizos",
+    "nameEn": "Spellbook",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Reduce el costo de todos los hechizos en 1.",
+    "descriptionEn": "Reduces the cost of all spells by 1."
+  },
+  {
+    "id": "25",
+    "cost": 5,
+    "atk": 7,
+    "def": 0,
+    "media": {
+      "image": "CallOfThunder.webp"
+    },
+    "nameEs": "Llamada del Trueno",
+    "nameEn": "Call of Thunder",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Golpea con la fuerza de mil rayos.",
+    "descriptionEn": "Strikes with the force of a thousand lightning bolts."
+  },
+  {
+    "id": "26",
+    "cost": 2,
+    "atk": 2,
+    "def": 2,
+    "media": {
+      "image": "CourtSpy.webp"
+    },
+    "nameEs": "Espía de la Corte",
+    "nameEn": "Court Spy",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Revela la mano del oponente.",
+    "descriptionEn": "Reveals the opponent's hand."
+  },
+  {
+    "id": "27",
+    "cost": 1,
+    "atk": 0,
+    "def": 2,
+    "media": {
+      "image": "NaturesSprout.webp"
+    },
+    "nameEs": "Brote de Naturaleza",
+    "nameEn": "Nature's Sprout",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Hace crecer raíces que atrapan al enemigo.",
+    "descriptionEn": "Grows roots that trap the enemy."
+  },
+  {
+    "id": "28",
+    "cost": 1,
+    "atk": 1,
+    "def": 0,
+    "media": {
+      "image": "RustyKnife.webp"
+    },
+    "nameEs": "Cuchillo Oxidado",
+    "nameEn": "Rusty Knife",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Causa tétanos si tienes suerte.",
+    "descriptionEn": "Causes tetanus if you're lucky."
+  },
+  {
+    "id": "29",
+    "cost": 6,
+    "atk": 8,
+    "def": 8,
+    "media": {
+      "image": "ValkyrieOfValhalla.webp"
+    },
+    "nameEs": "Valkiria de Valhalla",
+    "nameEn": "Valkyrie of Valhalla",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Elige quién vive y quién muere en el campo.",
+    "descriptionEn": "Chooses who lives and who dies in the field."
+  },
+  {
+    "id": "30",
+    "cost": 2,
+    "atk": 3,
+    "def": -1,
+    "media": {
+      "image": "FuryPotion.webp"
+    },
+    "nameEs": "Poción de Furia",
+    "nameEn": "Fury Potion",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Aumenta el ataque pero reduce la defensa.",
+    "descriptionEn": "Increases attack but reduces defense."
+  },
+  {
+    "id": "31",
+    "cost": 2,
+    "atk": 2,
+    "def": 1,
+    "media": {
+      "image": "SkeletonWarrior.webp"
+    },
+    "nameEs": "Esqueleto Guerrero",
+    "nameEn": "Skeleton Warrior",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "No tiene piel, pero tiene actitud.",
+    "descriptionEn": "Has no skin, but has attitude."
+  },
+  {
+    "id": "32",
+    "cost": 5,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "SoulMirror.webp"
+    },
+    "nameEs": "Espejo de Almas",
+    "nameEn": "Soul Mirror",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Copia la última carta jugada por el oponente.",
+    "descriptionEn": "Copies the last card played by the opponent."
+  },
+  {
+    "id": "33",
+    "cost": 3,
+    "atk": 2,
+    "def": 2,
+    "media": {
+      "image": "WarCry.webp"
+    },
+    "nameEs": "Grito de Guerra",
+    "nameEn": "War Cry",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Motiva a todas tus criaturas aliadas.",
+    "descriptionEn": "Motivates all your allied creatures."
+  },
+  {
+    "id": "34",
+    "cost": 5,
+    "atk": 6,
+    "def": 7,
+    "media": {
+      "image": "SwampBeast.webp"
+    },
+    "nameEs": "Bestia del Pantano",
+    "nameEn": "Swamp Beast",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Se oculta entre el lodo esperando su prey.",
+    "descriptionEn": "Hides in the mud waiting for its prey."
+  },
+  {
+    "id": "35",
+    "cost": 1,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "LuckyAmulet.webp"
+    },
+    "nameEs": "Amuleto de Suerte",
+    "nameEn": "Lucky Amulet",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Aumenta la probabilidad de críticos.",
+    "descriptionEn": "Increases critical hit probability."
+  },
+  {
+    "id": "36",
+    "cost": 4,
+    "atk": 2,
+    "def": 8,
+    "media": {
+      "image": "PriestessOfTheMoon.webp"
+    },
+    "nameEs": "Sacerdotisa de la Luna",
+    "nameEn": "Priestess of the Moon",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Sus rezos calman hasta a las bestias más fieras.",
+    "descriptionEn": "Her prayers calm even the fiercest beasts."
+  },
+  {
+    "id": "37",
+    "cost": 6,
+    "atk": 10,
+    "def": 0,
+    "media": {
+      "image": "RainOfFire.webp"
+    },
+    "nameEs": "Lluvia de Fuego",
+    "nameEn": "Rain of Fire",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "No deja piedra sobre piedra.",
+    "descriptionEn": "Leaves no stone unturned."
+  },
+  {
+    "id": "38",
+    "cost": 3,
+    "atk": 4,
+    "def": 1,
+    "media": {
+      "image": "ShadowThief.webp"
+    },
+    "nameEs": "Ladrón de Sombras",
+    "nameEn": "Shadow Thief",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Roba una carta de la mano del oponente.",
+    "descriptionEn": "Steals a card from the opponent's hand."
+  },
+  {
+    "id": "39",
+    "cost": 10,
+    "atk": 5,
+    "def": 5,
+    "media": {
+      "image": "RingOfPower.webp"
+    },
+    "nameEs": "Anillo del Poder",
+    "nameEn": "Ring of Power",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Un anillo para gobernarlos a todos.",
+    "descriptionEn": "One ring to rule them all."
+  },
+  {
+    "id": "40",
+    "cost": 2,
+    "atk": 3,
+    "def": 1,
+    "media": {
+      "image": "HungryZombie.webp"
+    },
+    "nameEs": "Zombi Hambriento",
+    "nameEn": "Hungry Zombie",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Solo quiere un cerebro fresco.",
+    "descriptionEn": "Just wants a fresh brain."
+  },
+  {
+    "id": "41",
+    "cost": 9,
+    "atk": 12,
+    "def": 15,
+    "media": {
+      "image": "EarthTitan.webp"
+    },
+    "nameEs": "Titán de Tierra",
+    "nameEn": "Earth Titan",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Una montaña que decidió caminar.",
+    "descriptionEn": "A mountain that decided to walk."
+  },
+  {
+    "id": "42",
+    "cost": 2,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "Teleport.webp"
+    },
+    "nameEs": "Teletransporte",
+    "nameEn": "Teleport",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Mueve una criatura a la reserva.",
+    "descriptionEn": "Moves a creature to the reserve."
+  },
+  {
+    "id": "43",
+    "cost": 3,
+    "atk": 2,
+    "def": 0,
+    "media": {
+      "image": "ElvenBow.webp"
+    },
+    "nameEs": "Arco Élfico",
+    "nameEn": "Elven Bow",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Permite atacar a distancia.",
+    "descriptionEn": "Allows attacking from a distance."
+  },
+  {
+    "id": "44",
+    "cost": 3,
+    "atk": 2,
+    "def": 4,
+    "media": {
+      "image": "RiverNaiad.webp"
+    },
+    "nameEs": "Náyade del Río",
+    "nameEn": "River Naiad",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Su canto atrae a los marineros a su fin.",
+    "descriptionEn": "Her song lures sailors to their doom."
+  },
+  {
+    "id": "45",
+    "cost": 4,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "DarkSacrifice.webp"
+    },
+    "nameEs": "Sacrificio Oscuro",
+    "nameEn": "Dark Sacrifice",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Destruye un aliado para invocar un demonio.",
+    "descriptionEn": "Destroys an ally to summon a demon."
+  },
+  {
+    "id": "46",
+    "cost": 2,
+    "atk": 2,
+    "def": 2,
+    "media": {
+      "image": "WorgPup.webp"
+    },
+    "nameEs": "Cachorro de Worg",
+    "nameEn": "Worg Pup",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Parece tierno, hasta que muerde.",
+    "descriptionEn": "Looks cute, until it bites."
+  },
+  {
+    "id": "47",
+    "cost": 3,
+    "atk": 0,
+    "def": 5,
+    "media": {
+      "image": "TowerShield.webp"
+    },
+    "nameEs": "Escudo de Torre",
+    "nameEn": "Tower Shield",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Una defensa sólida como una roca.",
+    "descriptionEn": "A solid rock defense."
+  },
+  {
+    "id": "48",
+    "cost": 6,
+    "atk": 7,
+    "def": 5,
+    "media": {
+      "image": "PhoenixReborn.webp"
+    },
+    "nameEs": "Fénix Renacido",
+    "nameEn": "Phoenix Reborn",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Vuelve al juego después de ser destruido.",
+    "descriptionEn": "Returns to play after being destroyed."
+  },
+  {
+    "id": "49",
+    "cost": 1,
+    "atk": 2,
+    "def": 0,
+    "media": {
+      "image": "BearTrap.webp"
+    },
+    "nameEs": "Trampa de Osos",
+    "nameEn": "Bear Trap",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Un dolor de cabeza para los exploradores.",
+    "descriptionEn": "A headache for explorers."
+  },
+  {
+    "id": "50",
+    "cost": 4,
+    "atk": 8,
+    "def": 2,
+    "media": {
+      "image": "CrazedBerserker.webp"
+    },
+    "nameEs": "Berserker Enloquecido",
+    "nameEn": "Crazed Berserker",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Ataca a cualquiera, amigo o enemigo.",
+    "descriptionEn": "Attacks anyone, friend or foe."
+  },
+  {
+    "id": "51",
+    "cost": 5,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "CurseOfOblivion.webp"
+    },
+    "nameEs": "Maldición del Olvido",
+    "nameEn": "Curse of Oblivion",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "El oponente olvida sus últimos dos movimientos.",
+    "descriptionEn": "The opponent forgets their last two moves."
+  },
+  {
+    "id": "52",
+    "cost": 2,
+    "atk": 1,
+    "def": 2,
+    "media": {
+      "image": "TravelingBard.webp"
+    },
+    "nameEs": "Bardo Viajero",
+    "nameEn": "Traveling Bard",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Mejora la moral de las tropas con su laúd.",
+    "descriptionEn": "Improves troop morale with his lute."
+  },
+  {
+    "id": "53",
+    "cost": 3,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "InvisibilityCloak.webp"
+    },
+    "nameEs": "Capa de Invisibilidad",
+    "nameEn": "Invisibility Cloak",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "La criatura no puede ser atacada el próximo turno.",
+    "descriptionEn": "The creature cannot be attacked next turn."
+  },
+  {
+    "id": "54",
+    "cost": 8,
+    "atk": 6,
+    "def": 12,
+    "media": {
+      "image": "LerneanHydra.webp"
+    },
+    "nameEs": "Hidra de Lerna",
+    "nameEn": "Lernean Hydra",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Corta una cabeza y nacerán dos más.",
+    "descriptionEn": "Cut off one head and two more will grow."
+  },
+  {
+    "id": "55",
+    "cost": 4,
+    "atk": 5,
+    "def": 0,
+    "media": {
+      "image": "SolarFlare.webp"
+    },
+    "nameEs": "Explosión Solar",
+    "nameEn": "Solar Flare",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Quema la retina de los no-muertos.",
+    "descriptionEn": "Burns the retinas of the undead."
+  },
+  {
+    "id": "56",
+    "cost": 2,
+    "atk": 3,
+    "def": 2,
+    "media": {
+      "image": "OrcRecruit.webp"
+    },
+    "nameEs": "Orco Recluta",
+    "nameEn": "Orc Recruit",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Carne de cañón para la horda.",
+    "descriptionEn": "Cannon fodder for the horde."
+  },
+  {
+    "id": "57",
+    "cost": 4,
+    "atk": 1,
+    "def": 2,
+    "media": {
+      "image": "StaffOfWisdom.webp"
+    },
+    "nameEs": "Bastón de Sabiduría",
+    "nameEn": "Staff of Wisdom",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Aumenta el daño de todos los hechizos.",
+    "descriptionEn": "Increases damage of all spells."
+  },
+  {
+    "id": "58",
+    "cost": 5,
+    "atk": 4,
+    "def": 4,
+    "media": {
+      "image": "SeductiveSuccubus.webp"
+    },
+    "nameEs": "Súcubo Seductora",
+    "nameEn": "Seductive Succubus",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Toma el control de una criatura enemiga.",
+    "descriptionEn": "Takes control of an enemy creature."
+  },
+  {
+    "id": "59",
+    "cost": 2,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "Mirage.webp"
+    },
+    "nameEs": "Espejismo",
+    "nameEn": "Mirage",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Crea una copia falsa de un aliado.",
+    "descriptionEn": "Creates a fake copy of an ally."
+  },
+  {
+    "id": "60",
+    "cost": 2,
+    "atk": 3,
+    "def": 0,
+    "media": {
+      "image": "BattleAxe.webp"
+    },
+    "nameEs": "Hacha de Batalla",
+    "nameEn": "Battle Axe",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Un arma clásica para un guerrero clásico.",
+    "descriptionEn": "A classic weapon for a classic warrior."
+  },
+  {
+    "id": "61",
+    "cost": 9,
+    "atk": 11,
+    "def": 11,
+    "media": {
+      "image": "LichKing.webp"
+    },
+    "nameEs": "Rey Exánime",
+    "nameEn": "Lich King",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "La muerte es solo el comienzo de su reinado.",
+    "descriptionEn": "Death is only the beginning of his reign."
+  },
+  {
+    "id": "62",
+    "cost": 3,
+    "atk": 0,
+    "def": 6,
+    "media": {
+      "image": "StoneWall.webp"
+    },
+    "nameEs": "Muro de Piedra",
+    "nameEn": "Stone Wall",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Bloquea el camino del oponente temporalmente.",
+    "descriptionEn": "Temporarily blocks the opponent's path."
+  },
+  {
+    "id": "63",
+    "cost": 1,
+    "atk": 1,
+    "def": 1,
+    "media": {
+      "image": "MischievousSprite.webp"
+    },
+    "nameEs": "Duende Travieso",
+    "nameEn": "Mischievous Sprite",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Le gusta robar monedas y calcetines.",
+    "descriptionEn": "Likes stealing coins and socks."
+  },
+  {
+    "id": "64",
+    "cost": 7,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "EternalHourglass.webp"
+    },
+    "nameEs": "Reloj de Arena Eterno",
+    "nameEn": "Eternal Hourglass",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Detiene el tiempo por un turno completo.",
+    "descriptionEn": "Stops time for a full turn."
+  },
+  {
+    "id": "65",
+    "cost": 8,
+    "atk": 10,
+    "def": 10,
+    "media": {
+      "image": "DragonSummoning.webp"
+    },
+    "nameEs": "Invocación de Dragón",
+    "nameEn": "Dragon Summoning",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Trae a un dragón del plano astral.",
+    "descriptionEn": "Brings a dragon from the astral plane."
+  },
+  {
+    "id": "66",
+    "cost": 3,
+    "atk": 3,
+    "def": 3,
+    "media": {
+      "image": "TribalShaman.webp"
+    },
+    "nameEs": "Chamán de la Tribu",
+    "nameEn": "Tribal Shaman",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Habla con los espíritus de sus ancestros.",
+    "descriptionEn": "Speaks with the spirits of his ancestors."
+  },
+  {
+    "id": "67",
+    "cost": 2,
+    "atk": 1,
+    "def": 0,
+    "media": {
+      "image": "CobraVenom.webp"
+    },
+    "nameEs": "Veneno de Cobra",
+    "nameEn": "Cobra Venom",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Inflige daño continuo durante tres turnos.",
+    "descriptionEn": "Inflicts continuous damage for three turns."
+  },
+  {
+    "id": "68",
+    "cost": 1,
+    "atk": 0,
+    "def": 2,
+    "media": {
+      "image": "RustyArmor.webp"
+    },
+    "nameEs": "Armadura Oxidada",
+    "nameEn": "Rusty Armor",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Huele mal, pero protege un poco.",
+    "descriptionEn": "Smells bad, but protects a little."
+  },
+  {
+    "id": "69",
+    "cost": 6,
+    "atk": 5,
+    "def": 8,
+    "media": {
+      "image": "PetrifyingMedusa.webp"
+    },
+    "nameEs": "Medusa Petrificante",
+    "nameEn": "Petrifying Medusa",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Una mirada basta para convertirte en piedra.",
+    "descriptionEn": "A single glance is enough to turn you into stone."
+  },
+  {
+    "id": "70",
+    "cost": 3,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "ShadowVeil.webp"
+    },
+    "nameEs": "Velo de Sombras",
+    "nameEn": "Shadow Veil",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Oculta a todo tu equipo por un turno.",
+    "descriptionEn": "Hides your entire team for one turn."
+  },
+  {
+    "id": "71",
+    "cost": 5,
+    "atk": 6,
+    "def": 6,
+    "media": {
+      "image": "RoyalGriffin.webp"
+    },
+    "nameEs": "Grifo Real",
+    "nameEn": "Royal Griffin",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "La montura preferida de los reyes.",
+    "descriptionEn": "The preferred mount of kings."
+  },
+  {
+    "id": "72",
+    "cost": 4,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "GoldenStatue.webp"
+    },
+    "nameEs": "Estatua de Oro",
+    "nameEn": "Golden Statue",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Genera oro extra cada turno.",
+    "descriptionEn": "Generates extra gold each turn."
+  },
+  {
+    "id": "73",
+    "cost": 6,
+    "atk": 9,
+    "def": 5,
+    "media": {
+      "image": "WildManticore.webp"
+    },
+    "nameEs": "Manticora Salvaje",
+    "nameEn": "Wild Manticore",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Una mezcla letal de león, águila y escorpión.",
+    "descriptionEn": "A lethal mix of lion, eagle, and scorpion."
+  },
+  {
+    "id": "74",
+    "cost": 5,
+    "atk": 4,
+    "def": 0,
+    "media": {
+      "image": "ArcticBlizzard.webp"
+    },
+    "nameEs": "Ventisca Ártica",
+    "nameEn": "Arctic Blizzard",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Daña y congela a todos los enemigos.",
+    "descriptionEn": "Damages and freezes all enemies."
+  },
+  {
+    "id": "75",
+    "cost": 2,
+    "atk": 1,
+    "def": 2,
+    "media": {
+      "image": "GnomeInventor.webp"
+    },
+    "nameEs": "Gnomo Inventor",
+    "nameEn": "Gnome Inventor",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Sus inventos explotan el 50% de las veces.",
+    "descriptionEn": "His inventions explode 50% of the time."
+  },
+  {
+    "id": "76",
+    "cost": 3,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "CrystalBall.webp"
+    },
+    "nameEs": "Esfera de Cristal",
+    "nameEn": "Crystal Ball",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Permite ver las próximas tres cartas del mazo.",
+    "descriptionEn": "Allows seeing the next three cards of the deck."
+  },
+  {
+    "id": "77",
+    "cost": 10,
+    "atk": 14,
+    "def": 12,
+    "media": {
+      "image": "DeepSeaKraken.webp"
+    },
+    "nameEs": "Kraken de las Profundidades",
+    "nameEn": "Deep Sea Kraken",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Hunde barcos enteros con un solo tentáculo.",
+    "descriptionEn": "Sinks entire ships with a single tentacle."
+  },
+  {
+    "id": "78",
+    "cost": 6,
+    "atk": 8,
+    "def": 0,
+    "media": {
+      "image": "Earthquake.webp"
+    },
+    "nameEs": "Terremoto",
+    "nameEn": "Earthquake",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Destruye todos los artefactos en juego.",
+    "descriptionEn": "Destroys all artifacts in play."
+  },
+  {
+    "id": "79",
+    "cost": 3,
+    "atk": 5,
+    "def": 1,
+    "media": {
+      "image": "StalkingShadow.webp"
+    },
+    "nameEs": "Sombra Acechante",
+    "nameEn": "Stalking Shadow",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Ataca directamente al oponente.",
+    "descriptionEn": "Attacks the opponent directly."
+  },
+  {
+    "id": "80",
+    "cost": 2,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "WatchersEye.webp"
+    },
+    "nameEs": "Ojo de Vigilante",
+    "nameEn": "Watcher's Eye",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Evita que el oponente use invisibilidad.",
+    "descriptionEn": "Prevents the opponent from using invisibility."
+  },
+  {
+    "id": "81",
+    "cost": 3,
+    "atk": 4,
+    "def": 0,
+    "media": {
+      "image": "OrcFury.webp"
+    },
+    "nameEs": "Furia Orca",
+    "nameEn": "Orc Fury",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Aumenta el ataque de un orco por un turno.",
+    "descriptionEn": "Increases an orc's attack for one turn."
+  },
+  {
+    "id": "82",
+    "cost": 7,
+    "atk": 5,
+    "def": 12,
+    "media": {
+      "image": "OldForestEnt.webp"
+    },
+    "nameEs": "Ent del Bosque Viejo",
+    "nameEn": "Old Forest Ent",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "No te apresures, el bosque tiene su tiempo.",
+    "descriptionEn": "Don't rush, the forest has its time."
+  },
+  {
+    "id": "83",
+    "cost": 2,
+    "atk": 2,
+    "def": 0,
+    "media": {
+      "image": "PoisonDagger.webp"
+    },
+    "nameEs": "Daga de Veneno",
+    "nameEn": "Poison Dagger",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Aplica veneno al atacar.",
+    "descriptionEn": "Applies poison when attacking."
+  },
+  {
+    "id": "84",
+    "cost": 1,
+    "atk": 1,
+    "def": 1,
+    "media": {
+      "image": "DewFairy.webp"
+    },
+    "nameEs": "Hada del Rocío",
+    "nameEn": "Dew Fairy",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Pobre",
+    "rarityEn": "Poor",
+    "descriptionEs": "Sus polvos mágicos te hacen estornudar.",
+    "descriptionEn": "Her magic dust makes you sneeze."
+  },
+  {
+    "id": "85",
+    "cost": 5,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "DimensionalPortal.webp"
+    },
+    "nameEs": "Portal Dimensional",
+    "nameEn": "Dimensional Portal",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Cambia una criatura por otra de mayor costo.",
+    "descriptionEn": "Exchanges a creature for another of higher cost."
+  },
+  {
+    "id": "86",
+    "cost": 4,
+    "atk": 4,
+    "def": 6,
+    "media": {
+      "image": "IronKnight.webp"
+    },
+    "nameEs": "Caballero de Hierro",
+    "nameEn": "Iron Knight",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Fiel, fuerte y un poco oxidado.",
+    "descriptionEn": "Faithful, strong, and a little rusty."
+  },
+  {
+    "id": "87",
+    "cost": 2,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "PanFlute.webp"
+    },
+    "nameEs": "Flauta de Pan",
+    "nameEn": "Pan Flute",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Duerme a una criatura enemiga.",
+    "descriptionEn": "Puts an enemy creature to sleep."
+  },
+  {
+    "id": "88",
+    "cost": 8,
+    "atk": 12,
+    "def": 8,
+    "media": {
+      "image": "LordOfFlames.webp"
+    },
+    "nameEs": "Señor de las Llamas",
+    "nameEn": "Lord of Flames",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "El fuego es su siervo y su corona.",
+    "descriptionEn": "Fire is his servant and his crown."
+  },
+  {
+    "id": "89",
+    "cost": 4,
+    "atk": 0,
+    "def": 4,
+    "media": {
+      "image": "MirrorShield.webp"
+    },
+    "nameEs": "Escudo Espejo",
+    "nameEn": "Mirror Shield",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Refleja el daño de hechizos al oponente.",
+    "descriptionEn": "Reflects spell damage to the opponent."
+  },
+  {
+    "id": "90",
+    "cost": 3,
+    "atk": 3,
+    "def": 5,
+    "media": {
+      "image": "RisenMummy.webp"
+    },
+    "nameEs": "Momia Resucitada",
+    "nameEn": "Risen Mummy",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "Estuvo durmiendo por mil años.",
+    "descriptionEn": "Has been sleeping for a thousand years."
+  },
+  {
+    "id": "91",
+    "cost": 4,
+    "atk": 6,
+    "def": 0,
+    "media": {
+      "image": "PurifyingRay.webp"
+    },
+    "nameEs": "Rayo Purificador",
+    "nameEn": "Purifying Ray",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Elimina todas las maldiciones de un aliado.",
+    "descriptionEn": "Removes all curses from an ally."
+  },
+  {
+    "id": "92",
+    "cost": 5,
+    "atk": 4,
+    "def": 8,
+    "media": {
+      "image": "LivingStatue.webp"
+    },
+    "nameEs": "Estatua Viviente",
+    "nameEn": "Living Statue",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Se activa solo cuando alguien la toca.",
+    "descriptionEn": "Activates only when someone touches it."
+  },
+  {
+    "id": "93",
+    "cost": 6,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "PandorasBox.webp"
+    },
+    "nameEs": "Caja de Pandora",
+    "nameEn": "Pandora's Box",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "Efecto aleatorio: puede salvarte o destruirte.",
+    "descriptionEn": "Random effect: can save you or destroy you."
+  },
+  {
+    "id": "94",
+    "cost": 3,
+    "atk": 2,
+    "def": 3,
+    "media": {
+      "image": "SingingMermaid.webp"
+    },
+    "nameEs": "Sirena Cantora",
+    "nameEn": "Singing Mermaid",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Poco Común",
+    "rarityEn": "Uncommon",
+    "descriptionEs": "No escuches su voz o estarás perdido.",
+    "descriptionEn": "Don't listen to her voice or you'll be lost."
+  },
+  {
+    "id": "95",
+    "cost": 7,
+    "atk": 9,
+    "def": 0,
+    "media": {
+      "image": "Tsunami.webp"
+    },
+    "nameEs": "Tsunami",
+    "nameEn": "Tsunami",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Limpia todo el campo de batalla.",
+    "descriptionEn": "Clears the entire battlefield."
+  },
+  {
+    "id": "96",
+    "cost": 4,
+    "atk": 3,
+    "def": 7,
+    "media": {
+      "image": "WatcherGargoyle.webp"
+    },
+    "nameEs": "Gárgola de Vigilancia",
+    "nameEn": "Watcher Gargoyle",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Común",
+    "rarityEn": "Common",
+    "descriptionEs": "Piedra de día, cazadora de noche.",
+    "descriptionEn": "Stone by day, hunter by night."
+  },
+  {
+    "id": "97",
+    "cost": 2,
+    "atk": 4,
+    "def": 0,
+    "media": {
+      "image": "ShadowDagger.webp"
+    },
+    "nameEs": "Daga de las Sombras",
+    "nameEn": "Shadow Dagger",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Un golpe certero en la oscuridad.",
+    "descriptionEn": "A precise strike in the dark."
+  },
+  {
+    "id": "98",
+    "cost": 6,
+    "atk": 5,
+    "def": 5,
+    "media": {
+      "image": "TimeMage.webp"
+    },
+    "nameEs": "Mago del Tiempo",
+    "nameEn": "Time Mage",
+    "typeEs": "Criatura",
+    "typeEn": "Creature",
+    "rarityEs": "Épico",
+    "rarityEn": "Epic",
+    "descriptionEs": "Manipula el pasado para cambiar el futuro.",
+    "descriptionEn": "Manipulates the past to change the future."
+  },
+  {
+    "id": "99",
+    "cost": 5,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "TotalEclipse.webp"
+    },
+    "nameEs": "Eclipse Total",
+    "nameEn": "Total Eclipse",
+    "typeEs": "Hechizo",
+    "typeEn": "Spell",
+    "rarityEs": "Raro",
+    "rarityEn": "Rare",
+    "descriptionEs": "Reduce la visibilidad y el ataque de todos.",
+    "descriptionEn": "Reduces visibility and attack for everyone."
+  },
+  {
+    "id": "100",
+    "cost": 10,
+    "atk": 0,
+    "def": 0,
+    "media": {
+      "image": "TheNexus.webp"
+    },
+    "nameEs": "El Nexo",
+    "nameEn": "The Nexus",
+    "typeEs": "Artefacto",
+    "typeEn": "Artifact",
+    "rarityEs": "Legendario",
+    "rarityEn": "Legendary",
+    "descriptionEs": "El origen de todo. Te permite ganar el juego si sobrevives tres turnos.",
+    "descriptionEn": "The origin of everything. Allows you to win the game if you survive three turns."
+  }
+]
