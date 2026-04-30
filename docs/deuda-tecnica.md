@@ -10,6 +10,10 @@
 *   **Acción:** Se extrajo la lógica de `Home.jsx` al hook personalizado `useInfiniteCards.js`.
 *   **Resultado:** Separación clara de incumbencias (Separation of Concerns) y componente Home puramente representativo.
 
+### ✅ Aislamiento de Infraestructura (Completado)
+*   **Acción:** Creación de `preferencesService.js` para centralizar el acceso a `localStorage` y `sessionStorage`.
+*   **Resultado:** Se oculta la implementación del almacenamiento (Infrastructure) al resto de la aplicación (Domain/UI).
+
 ### ⏳ Constantes de Dominio
 *   **Archivo:** `src/pages/Home.jsx`
 *   **Problema:** `TYPE_OPTIONS` y `RARITY_OPTIONS` siguen definidos localmente.
