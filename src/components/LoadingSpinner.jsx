@@ -30,7 +30,7 @@ export default function LoadingSpinner({ message = "Invocando criaturas..." }) {
         <p className="animate-pulse bg-linear-to-r from-blue-400 to-cyan-300 bg-clip-text text-xl font-bold tracking-widest text-transparent uppercase">
           {message}
         </p>
-        <div className="mx-auto h-1 w-32 overflow-hidden rounded-full bg-slate-800">
+        <div className="mx-auto h-1 w-32 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
           <div className="h-full animate-[loading-bar_2s_infinite] bg-linear-to-r from-blue-500 to-cyan-400"></div>
         </div>
       </div>

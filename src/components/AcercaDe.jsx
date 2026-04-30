@@ -68,7 +68,7 @@ const AcercaDe = () => {
                 </div>
                 <div className="space-y-1 text-center">
                   <strong className="block text-xs leading-tight text-slate-800 dark:text-slate-100">{i.nombre}</strong>
-                  <span className="block text-[10px] tracking-tighter text-slate-500 uppercase dark:text-slate-500">{t('about.studentId')}: {i.legajo}</span>
+                  <span className="block text-[10px] tracking-tighter text-slate-500 dark:text-slate-400 uppercase">{t('about.studentId')}: {i.legajo}</span>
                   <span className="mt-2 inline-block rounded-full border border-blue-500/30 bg-blue-500/20 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase dark:text-blue-400">
                     {i.rol}
                   </span>
@@ -78,7 +78,7 @@ const AcercaDe = () => {
           </div>
 
           <div className="border-t border-slate-200 pt-4 dark:border-slate-700/50">
-            <p className="text-xs font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
+            <p className="text-xs font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase">
               PWA TPO2 - React 2026
             </p>
           </div>

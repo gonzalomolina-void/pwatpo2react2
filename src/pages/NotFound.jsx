@@ -29,7 +29,7 @@ export default function NotFound() {
       <h2 className="mb-3 bg-linear-to-r from-purple-300 to-blue-400 bg-clip-text text-2xl font-bold text-transparent">
         {t('notFound.heading')}
       </h2>
-      <p className="mb-10 max-w-md text-lg leading-relaxed text-slate-400">
+      <p className="mb-10 max-w-md text-lg leading-relaxed text-slate-600 dark:text-slate-400">
         {t('notFound.description')}
       </p>
 

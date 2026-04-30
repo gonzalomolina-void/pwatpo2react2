@@ -73,7 +73,7 @@
     "atk": 15,
     "def": 15,
     "media": {
-      "image": "Xal'ThunTheDevourer.webp"
+      "image": "XalThunTheDevourer.webp"
     },
     "nameEs": "Xal'Thun el Devorador",
     "nameEn": "Xal'Thun the Devourer",
@@ -447,7 +447,7 @@
     "atk": 0,
     "def": 2,
     "media": {
-      "image": "Nature'sSprout.webp"
+      "image": "NaturesSprout.webp"
     },
     "nameEs": "Brote de Naturaleza",
     "nameEn": "Nature's Sprout",
@@ -1348,7 +1348,7 @@
     "atk": 0,
     "def": 0,
     "media": {
-      "image": "Watcher'sEye.webp"
+      "image": "WatchersEye.webp"
     },
     "nameEs": "Ojo de Vigilante",
     "nameEn": "Watcher's Eye",
@@ -1569,7 +1569,7 @@
     "atk": 0,
     "def": 0,
     "media": {
-      "image": "Pandora'sBox.webp"
+      "image": "PandorasBox.webp"
     },
     "nameEs": "Caja de Pandora",
     "nameEn": "Pandora's Box",
