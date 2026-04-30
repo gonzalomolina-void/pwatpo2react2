@@ -23,7 +23,7 @@ export default function Header() {
             onClick={closeMenu}
             aria-label={t('nav.home')}
           >
-            TCG Nexus
+            HEXA
           </Link>
         </div>
 

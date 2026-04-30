@@ -1,4 +1,4 @@
-# 🛠️ Registro de Deuda Técnica - TCG Nexus
+# 🛠️ Registro de Deuda Técnica - HEXA
 
 ## 1. Arquitectura y DX (Developer Experience)
 

@@ -1,6 +1,6 @@
 import storageService from './storageService';
 
-const FAVORITES_KEY = 'tcgnexus_favorites';
+const FAVORITES_KEY = 'hexa_favorites';
 
 /**
  * Servicio para gestionar la persistencia de las cartas favoritas del usuario.

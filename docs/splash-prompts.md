@@ -1,4 +1,4 @@
-# 🎭 Galería de Prompts para Splash Screens (TCG Nexus)
+# 🎭 Galería de Prompts para Splash Screens (HEXA)
 
 Para una experiencia profesional, generamos dos versiones de cada imagen: una **Horizontal (16:9)** para Desktop y una **Vertical (9:16)** para Mobile.
 

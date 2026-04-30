@@ -1,4 +1,4 @@
-# TCG Nexus: Enciclopedia Multilingüe de Cartas
+# HEXA: Enciclopedia Multilingüe de Cartas
 
 ## Descripción del Dominio
 La aplicación será un catálogo interactivo de cartas de un TCG (real o inventado). El objetivo es que los jugadores puedan explorar la base de datos completa, ver las estadísticas de cada carta y gestionar su propia lista de "Deseos" o "Favoritos" para armar mazos a futuro.

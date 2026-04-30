@@ -1,4 +1,4 @@
-# 🎨 Galería Maestra de Prompts (TCG Nexus)
+# 🎨 Galería Maestra de Prompts (HEXA)
 
 Este documento contiene los 100 prompts optimizados para la colección completa. 
 **Instrucción Pro:** Para todas las imágenes, pedile a Gemini que use "Vertical orientation" y "Digital illustration style".
@@ -111,4 +111,5 @@ Este documento contiene los 100 prompts optimizados para la colección completa.
 97. **Shadow Dagger:** A knife made of solid darkness, wisps of black smoke, floating in a void, sharp and lethal.
 98. **Time Mage:** A man in blue robes holding an hourglass, sand floating around him in circles, background of multiple timelines.
 99. **Total Eclipse:** The moon covering the sun, creating a ring of fire, the world in darkness, stars visible during the day.
+100. **The Nexus:** A giant floating crystal floating above a city of light, energy lines connecting to everything, divine and ultimate power.
 100. **The Nexus:** A giant floating crystal floating above a city of light, energy lines connecting to everything, divine and ultimate power.

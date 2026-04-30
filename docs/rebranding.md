@@ -15,14 +15,14 @@ Este documento contiene el texto para el issue de GitHub y los pasos necesarios 
 Actualmente el proyecto se llama "TCG Nexus", pero nos enteramos de que otro grupo de la materia ya está utilizando el nombre "Nexus". Para evitar confusiones y darle una identidad propia y más sólida a nuestro TCG, vamos a realizar un rebranding completo de la aplicación, pasando a llamarnos **HEXA**.
 
 ### Tareas a realizar
-- [ ] Actualizar el nombre en el archivo `README.md`.
-- [ ] Actualizar el `<title>` y las meta etiquetas en `index.html`.
-- [ ] Cambiar el `name` y `short_name` en `public/manifest.json`.
-- [ ] Modificar cualquier texto visible en la UI (Header, Splash Screen, AcercaDe, etc.) que mencione "Nexus" por "HEXA".
-- [ ] Actualizar los archivos de traducción en `src/i18n/locales/` (`es.json` y `en.json`).
-- [ ] Renombrar el `name` en el `package.json`.
-- [ ] Cambiar el dominio de Vercel de `tcg-nexus` a `hexa-tcg` (o similar).
-- [ ] Renombrar el archivo `docs/nexus.md` a `docs/hexa.md` (opcional, pero recomendado para mantener consistencia) y actualizar su contenido.
+- [x] Actualizar el nombre en el archivo `README.md`.
+- [x] Actualizar el `<title>` y las meta etiquetas en `index.html`.
+- [x] Cambiar el `name` y `short_name` en `public/manifest.json`.
+- [x] Modificar cualquier texto visible en la UI (Header, Splash Screen, AcercaDe, etc.) que mencione "Nexus" por "HEXA".
+- [x] Actualizar los archivos de traducción en `src/i18n/locales/` (`es.json` y `en.json`).
+- [x] Renombrar el `name` en el `package.json`.
+- [x] Cambiar el dominio de Vercel de `tcg-nexus` a `hexa-tcg` (o similar).
+- [x] Renombrar el archivo `docs/nexus.md` a `docs/hexa.md` (opcional, pero recomendado para mantener consistencia) y actualizar su contenido.
 
 ---
 

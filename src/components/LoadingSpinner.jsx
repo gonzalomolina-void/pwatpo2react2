@@ -1,5 +1,5 @@
 /**
- * LoadingSpinner - Componente de carga épico para TCG Nexus.
+ * LoadingSpinner - Componente de carga épico para HEXA.
  * Simula un orbe de energía mística con anillos orbitales.
  */
 export default function LoadingSpinner({ message = "Invocando criaturas..." }) {

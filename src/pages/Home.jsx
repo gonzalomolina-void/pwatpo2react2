@@ -58,7 +58,7 @@ export default function Home() {
         <h1 className="mb-4 inline-block bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text pb-2 text-4xl font-extrabold text-transparent dark:from-blue-400 dark:to-purple-500">
           {t('home.title')}
         </h1>
-        <p className="mb-8 max-w-2xl text-slate-600 dark:text-slate-400">
+        <p className="mb-8 max-w-3xl text-slate-600 dark:text-slate-400">
           {t('home.description')}
         </p>
 
@@ -98,7 +98,7 @@ export default function Home() {
           {/* Mensaje de final del catálogo */}
           {!hasMore && cards.length > 0 && (
             <div className="mt-12 border-t border-slate-200 py-12 text-center text-slate-500 italic dark:border-slate-800">
-              Has llegado al final del Nexo.
+              {t('home.endOfCatalog')}
             </div>
           )}
         </>

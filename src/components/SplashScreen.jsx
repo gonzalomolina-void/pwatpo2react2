@@ -81,7 +81,7 @@ export default function SplashScreen({ onComplete }) {
 
         {/* Título y Lemas */}
         <h1 className="mb-2 bg-linear-to-b from-white to-slate-400 bg-clip-text text-5xl font-black tracking-tighter text-transparent uppercase italic drop-shadow-lg md:text-6xl">
-          TCG NEXUS
+          HEXA
         </h1>
         <p className="animate-pulse text-sm font-bold tracking-[0.3em] text-blue-400 uppercase md:text-base">
           {conceptAlt}...

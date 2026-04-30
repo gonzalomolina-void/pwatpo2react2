@@ -1,8 +1,8 @@
-# 🌌 TCG Nexus: La Enciclopedia del Nexo
+# 🌌 HEXA: La Enciclopedia de Cartas
 
-![TCG Nexus Banner](./docs/ArteConceptual/Portada.png)
+![HEXA Banner](./docs/ArteConceptual/Portada.png)
 
-Bienvenido a **TCG Nexus**, una enciclopedia interactiva y multilingüe diseñada para los maestros de las cartas. Explora un universo de criaturas legendarias, hechizos ancestrales y artefactos poderosos en esta plataforma de vanguardia.
+Bienvenido a **HEXA**, una enciclopedia interactiva y multilingüe diseñada para los maestros de las cartas. Explora un universo de criaturas legendarias, hechizos ancestrales y artefactos poderosos en esta plataforma de vanguardia.
 
 Este proyecto ha sido desarrollado para la cátedra de **Programación Web Avanzada (PWA)** de la **UNCOMA** (Trabajo Práctico React Parte II - 2026).
 
@@ -21,7 +21,7 @@ Este proyecto ha sido desarrollado para la cátedra de **Programación Web Avanz
 
 ## 🎨 Arte Conceptual del Universo
 
-El Nexo cobra vida a través de sus protagonistas. Aquí te presentamos algunas de las entidades que habitan nuestro mundo:
+El universo de HEXA cobra vida a través de sus protagonistas. Aquí te presentamos algunas de las entidades que habitan nuestro mundo:
 
 | ![Lyra](./docs/ArteConceptual/Lyra.png) | ![Grak](./docs/ArteConceptual/Grak.png) | ![Sir Kaelen](./docs/ArteConceptual/SirKaelen.png) | 
 |:---:|:---:|:---:|
@@ -43,12 +43,12 @@ El Nexo cobra vida a través de sus protagonistas. Aquí te presentamos algunas 
 
 ## 🚀 Instalación y Uso
 
-Si quieres probar el Nexo en tu propia terminal:
+Si quieres probar HEXA en tu propia terminal:
 
 1. **Clona el repositorio:**
    ```bash
-   git clone https://github.com/tu-usuario/tcg-nexus.git
-   cd tcg-nexus
+   git clone https://github.com/tu-usuario/hexa-tcg.git
+   cd hexa-tcg
    ```
 
 2. **Instala las dependencias:**
@@ -66,7 +66,7 @@ Si quieres probar el Nexo en tu propia terminal:
 
 ---
 
-## 👥 El Equipo (The Nexus Council)
+## 👥 El Equipo (The Council of HEXA)
 
 - **Lautaro (PM / Scrum Master):** Coordinación, Arquitectura e Internacionalización.
 - **Juan (Developer):** Servicios API, Home y Detalle de Cartas.
@@ -76,7 +76,7 @@ Si quieres probar el Nexo en tu propia terminal:
 
 ## 📄 Licencia
 
-Este proyecto es para fines educativos bajo los requerimientos de la UNCOMA. El arte conceptual pertenece a sus respectivos creadores dentro del universo de TCG Nexus.
+Este proyecto es para fines educativos bajo los requerimientos de la UNCOMA. El arte conceptual pertenece a sus respectivos creadores dentro del universo de HEXA.
 
 ---
 *Desarrollado con ❤️ para PWA - Universidad Nacional del Comahue*

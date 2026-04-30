@@ -1,7 +1,7 @@
 {
-  "name": "TCG Nexus",
-  "short_name": "TCGNexus",
-  "description": "Explora el universo de cartas de TCG Nexus",
+  "name": "HEXA",
+  "short_name": "HEXA",
+  "description": "Explora el universo de cartas de HEXA",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

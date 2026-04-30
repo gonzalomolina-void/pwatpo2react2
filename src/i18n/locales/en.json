@@ -4,20 +4,21 @@
     "favorites": "Favorites"
   },
   "app": {
-    "title": "TCG Nexus - Card Encyclopedia"
+    "title": "HEXA - Card Encyclopedia"
   },
   "footer": {
-    "copyright": "TCG Nexus - Uncoma PWA",
+    "copyright": "HEXA - Uncoma PWA",
     "description": "Explore the universe of cards"
   },
   "home": {
     "title": "Card Catalog",
-    "description": "Explore the complete TCG Nexus card collection. Creatures, spells, and artifacts await for your deck.",
-    "loading": "Summoning creatures from the Nexus...",
+    "description": "Explore the complete HEXA card collection. Creatures, spells, and artifacts await for your deck.",
+    "loading": "Summoning creatures from HEXA...",
     "searching": "Searching...",
     "noResults": "No results found",
     "error": "Could not load the card catalog. Please try again later.",
     "retry": "Retry",
+    "endOfCatalog": "You have reached the end of HEXA.",
     "filters": {
       "types": {
         "creature": "Creature",
@@ -35,17 +36,17 @@
     }
   },
   "detail": {
-    "loading": "Summoning card from the Nexus...",
+    "loading": "Summoning card from HEXA...",
     "backToCatalog": "Back to catalog",
     "loreTitle": "Lore",
-    "edition": "Edition: TCG Nexus — First Edition",
+    "edition": "Edition: HEXA — First Edition",
     "atk": "ATK",
     "def": "DEF"
   },
   "notFound": {
     "title": "404",
     "heading": "Card not found",
-    "description": "This card has been lost in the dimensional Nexus. Perhaps it was devoured by Xal'Thun, or it simply never existed.",
+    "description": "This card has been lost in the HEXA universe. Perhaps it was devoured by Xal'Thun, or it simply never existed.",
     "backToCatalog": "Back to catalog"
   },
   "backButton": {

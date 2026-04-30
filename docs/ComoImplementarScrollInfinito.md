@@ -1,6 +1,6 @@
-# 🔄 Cómo Implementar Scroll Infinito (TCG Nexus)
+# 🔄 Cómo Implementar Scroll Infinito (HEXA)
 
-El scroll infinito es un patrón de diseño que carga contenido automáticamente a medida que el usuario se desplaza hacia abajo, eliminando la necesidad de una paginación manual por botones. En **TCG Nexus**, implementaremos este patrón de forma eficiente y profesional.
+El scroll infinito es un patrón de diseño que carga contenido automáticamente a medida que el usuario se desplaza hacia abajo, eliminando la necesidad de una paginación manual por botones. En **HEXA**, implementaremos este patrón de forma eficiente y profesional.
 
 ---
 
@@ -49,4 +49,4 @@ En lugar de usar el evento `window.onscroll` (que consume muchísima CPU), usare
 -   **Ahorro de Datos:** Solo descargamos lo que el usuario realmente va a ver.
 
 ---
-*Documentación técnica para el Issue #5 del proyecto TCG Nexus - PWA UNCOMA.*
+*Documentación técnica para el Issue #5 del proyecto HEXA - PWA UNCOMA.*
