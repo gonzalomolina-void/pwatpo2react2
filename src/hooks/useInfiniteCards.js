@@ -84,9 +84,11 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
 
   // Filtrado local adicional (tipos y rarezas)
   const filteredCards = cards.filter(card => {
-    const cardData = card[lang] || card['es'];
-    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.includes(cardData.type);
-    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.includes(cardData.rarity);
+    const langKey = lang === 'es' ? 'Es' : 'En';
+    const type = card[`type${langKey}`];
+    const rarity = card[`rarity${langKey}`];
+    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.includes(type);
+    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.includes(rarity);
     return matchType && matchRarity;
   });
 

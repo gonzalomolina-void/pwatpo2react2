@@ -1,20 +1,19 @@
 /**
- * @typedef {Object} CardTranslation
- * @property {string} name - Nombre de la carta.
- * @property {string} type - Tipo de carta.
- * @property {string} rarity - Rareza de la carta.
- * @property {string} lore - Historia de la carta.
- */
-
-/**
  * @typedef {Object} Card
  * @property {string} id - ID único de la carta.
  * @property {number} cost - Costo de maná/energía.
- * @property {string} image - Path de la imagen.
+ * @property {Object} media - Assets multimedia.
+ * @property {string} media.image - Path de la imagen.
  * @property {number} atk - Puntos de ataque.
  * @property {number} def - Puntos de defensa.
- * @property {CardTranslation} es - Traducción al español.
- * @property {CardTranslation} en - Traducción al inglés.
+ * @property {string} nameEs - Nombre en español.
+ * @property {string} nameEn - Nombre en inglés.
+ * @property {string} typeEs - Tipo en español.
+ * @property {string} typeEn - Tipo en inglés.
+ * @property {string} rarityEs - Rareza en español.
+ * @property {string} rarityEn - Rareza en inglés.
+ * @property {string} descriptionEs - Descripción en español.
+ * @property {string} descriptionEn - Descripción en inglés.
  */
 
 const API_URL = import.meta.env.VITE_API_URL;

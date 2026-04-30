@@ -23,8 +23,12 @@ const Card = forwardRef(({ card }, ref) => {
     setIsFav(!isFav);
   };
 
-  const { id, cost, image, atk, def } = card;
-  const { name, type, rarity } = card[lang] || card['es'];
+  const { id, cost, media, atk, def } = card;
+  const langKey = lang === 'es' ? 'Es' : 'En';
+  const name = card[`name${langKey}`];
+  const type = card[`type${langKey}`];
+  const rarity = card[`rarity${langKey}`];
+  const image = media.image;
   const imageUrl = `${CARDS_URL}${image}`;
   const currentConfig = getRarityConfig(rarity);
   const fallbackImage = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`;
