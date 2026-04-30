@@ -10,7 +10,6 @@ export default function BackButton({ to = '/', label }) {
       to={to}
       className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-slate-600 transition-all duration-300 hover:border-blue-500/30 hover:bg-slate-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-blue-500/50 dark:hover:bg-slate-700 dark:hover:text-blue-400"
     >
-
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
