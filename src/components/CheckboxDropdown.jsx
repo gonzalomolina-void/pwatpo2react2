@@ -16,18 +16,26 @@ function CheckboxDropdown({ label, options, selected, onChange }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const toggleOption = (option) => {
-    const next = selected.includes(option)
-      ? selected.filter((o) => o !== option)
-      : [...selected, option];
+  const toggleOption = (optionValue) => {
+    const next = selected.includes(optionValue)
+      ? selected.filter((v) => v !== optionValue)
+      : [...selected, optionValue];
     onChange(next);
   };
+
+  const getSelectedLabels = () => {
+    return options
+      .filter((opt) => selected.includes(opt.value))
+      .map((opt) => opt.label);
+  };
+
+  const selectedLabels = getSelectedLabels();
 
   const displayText =
     selected.length === 0
       ? label
       : selected.length <= 2
-        ? selected.join(', ')
+        ? selectedLabels.join(', ')
         : `${selected.length} ${t('search.selected')}`;
 
   return (
@@ -60,16 +68,16 @@ function CheckboxDropdown({ label, options, selected, onChange }) {
 
           {options.map((option) => (
             <label
-              key={option}
+              key={option.value}
               className="flex cursor-pointer items-center gap-3 px-4 py-2.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-700/50"
             >
               <input
                 type="checkbox"
-                checked={selected.includes(option)}
-                onChange={() => toggleOption(option)}
+                checked={selected.includes(option.value)}
+                onChange={() => toggleOption(option.value)}
                 className="h-4 w-4 cursor-pointer rounded border-slate-300 bg-white text-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:border-slate-600 dark:bg-slate-900"
               />
-              <span className="text-sm text-slate-700 dark:text-slate-200">{option}</span>
+              <span className="text-sm text-slate-700 dark:text-slate-200">{option.label}</span>
             </label>
           ))}
         </div>

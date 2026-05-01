@@ -70,6 +70,8 @@
     "description": "Project developed for the Advanced Web Programming course.",
     "quote": "Ask yourself at every moment: Is this necessary?",
     "quoteAuthor": "Marcus Aurelius",
+    "easterEggQuote": "People are not disturbed by things, but by the views they take of them.",
+    "easterEggAuthor": "Epictetus",
     "roles": {
       "developer": "Developer",
       "pm": "PM"

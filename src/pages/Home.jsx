@@ -9,9 +9,16 @@ export default function Home() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
-  // Mapeamos las constantes a sus traducciones
-  const typeOptionsTranslated = TYPE_OPTIONS.map(type => t(`home.filters.types.${type}`));
-  const rarityOptionsTranslated = RARITY_OPTIONS.map(rarity => t(`home.filters.rarities.${rarity}`));
+  // Mapeamos las constantes a sus objetos de opción { value, label }
+  const typeOptions = TYPE_OPTIONS.map(key => ({
+    value: key,
+    label: t(`home.filters.types.${key}`)
+  }));
+
+  const rarityOptions = RARITY_OPTIONS.map(key => ({
+    value: key,
+    label: t(`home.filters.rarities.${key}`)
+  }));
 
   const {
     cards,
@@ -55,8 +62,8 @@ export default function Home() {
 
         <SearchBar
           onSearch={handleSearch}
-          typeOptions={typeOptionsTranslated}
-          rarityOptions={rarityOptionsTranslated}
+          typeOptions={typeOptions}
+          rarityOptions={rarityOptions}
         />
       </header>
 
