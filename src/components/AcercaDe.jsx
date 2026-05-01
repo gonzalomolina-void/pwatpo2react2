@@ -19,6 +19,24 @@ const AcercaDe = () => {
     }
   };
 
+  // Soporte para móviles: Long Press (mantener presionado)
+  const [pressTimer, setPressTimer] = useState(null);
+
+  const startPress = () => {
+    const timer = setTimeout(() => {
+      setShowEpictetus(prev => !prev);
+      if (window.navigator.vibrate) window.navigator.vibrate(50);
+    }, 800);
+    setPressTimer(timer);
+  };
+
+  const cancelPress = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+  };
+
   const integrantes = [
     {
       nombre: 'Lautaro Mellado',
@@ -71,6 +89,9 @@ const AcercaDe = () => {
             <cite 
               className="block text-right text-sm font-bold text-slate-500 dark:text-slate-400 cursor-help select-none"
               onDoubleClick={handleEasterEgg}
+              onTouchStart={startPress}
+              onTouchEnd={cancelPress}
+              onTouchMove={cancelPress}
             >
               — {showEpictetus ? t('about.easterEggAuthor') : t('about.quoteAuthor')}
             </cite>
