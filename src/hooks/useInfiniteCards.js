@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 
 /**
@@ -18,6 +19,7 @@ import cardService from '../services/cardService';
  * @returns {Object}
  */
 export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
+  const { t } = useTranslation();
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -85,10 +87,18 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   // Filtrado local adicional (tipos y rarezas)
   const filteredCards = cards.filter(card => {
     const langKey = lang === 'es' ? 'Es' : 'En';
-    const type = card[`type${langKey}`];
-    const rarity = card[`rarity${langKey}`];
-    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.includes(type);
-    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.includes(rarity);
+    
+    // Mapeamos las keys seleccionadas a sus etiquetas traducidas para comparar con la data de la carta
+    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.some(key => {
+      const translatedLabel = t(`home.filters.types.${key}`, { lng: lang });
+      return card[`type${langKey}`] === translatedLabel;
+    });
+
+    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.some(key => {
+      const translatedLabel = t(`home.filters.rarities.${key}`, { lng: lang });
+      return card[`rarity${langKey}`] === translatedLabel;
+    });
+
     return matchType && matchRarity;
   });
 

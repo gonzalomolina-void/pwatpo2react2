@@ -70,6 +70,8 @@
     "description": "Proyecto desarrollado para la cátedra de Programación Web Avanzada.",
     "quote": "Preguntate en todo momento: ¿Es esto necesario?",
     "quoteAuthor": "Marco Aurelio",
+    "easterEggQuote": "Los hechos no son el problema sino tu opinión acerca de ellos.",
+    "easterEggAuthor": "Epicteto",
     "roles": {
       "developer": "Developer",
       "pm": "PM"
