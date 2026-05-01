@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useEffect, useCallback } from 'react';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -26,13 +27,54 @@ export default function Home() {
     error,
     hasMore,
     page,
-    handleSearch,
+    handleSearch: triggerSearch,
     lastCardElementRef
   } = useInfiniteCards({
     limit: 12,
     initialFilters: { searchTerm: '', selectedTypes: [], selectedRarities: [] },
     lang
   });
+
+  const handleSearch = useCallback((newFilters) => {
+    // Al buscar, reseteamos la posición guardada para que empiece desde arriba
+    sessionStorage.removeItem('home_scroll_pos');
+    window.scrollTo(0, 0);
+    triggerSearch(newFilters);
+  }, [triggerSearch]);
+
+  // Persistencia de Scroll
+  useEffect(() => {
+    // Desactivar la restauración automática del navegador
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Restaurar scroll si hay un valor guardado y tenemos cartas
+    const savedScroll = sessionStorage.getItem('home_scroll_pos');
+    if (savedScroll && cards.length > 0) {
+      // Usamos requestAnimationFrame para esperar al siguiente frame de pintura
+      const timer = setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(savedScroll, 10),
+          behavior: 'instant'
+        });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [cards.length]);
+
+  // Guardar scroll periódicamente mientras el usuario navega
+  useEffect(() => {
+    const handleScroll = () => {
+      // Solo guardamos si no estamos en el tope (para evitar falsos resets)
+      if (window.scrollY > 0) {
+        sessionStorage.setItem('home_scroll_pos', window.scrollY.toString());
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (error) {
     return (

@@ -6,7 +6,7 @@ export default function ThemeToggle() {
   const { t } = useTranslation();
   const [theme, setTheme] = useState(() => preferencesService.getTheme());
 
-  // Aplicar el tema al cargar y cuando cambie el estado
+  // Aplicar el tema al cambiar el estado
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === 'dark') {
