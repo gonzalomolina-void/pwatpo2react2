@@ -8,3 +8,4 @@ dist/
 *.md
 LICENSE
 optimize-images.js
+**/.gitkeep
