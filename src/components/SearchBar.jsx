@@ -37,6 +37,14 @@ export default function SearchBar({
     }, debounceMs);
   };
 
+  const handleClear = () => {
+    setSearchTerm('');
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    emitSearch({ searchTerm: '' });
+  };
+
   useEffect(() => {
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
@@ -69,8 +77,29 @@ export default function SearchBar({
           placeholder={t('search.placeholder')}
           value={searchTerm}
           onChange={handleTextChange}
-          className="w-full rounded-lg border border-slate-200 bg-white py-2 pr-4 pl-10 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2 pr-10 pl-10 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
         />
+        {searchTerm && (
+          <button
+            onClick={handleClear}
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-500 transition-colors hover:text-slate-800 focus:outline-none dark:text-slate-400 dark:hover:text-slate-200"
+            aria-label={t('search.clear')}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
       </div>
 
       {typeOptions.length > 0 && (

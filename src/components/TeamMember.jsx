@@ -10,7 +10,7 @@ const TeamMember = ({ nombre, legajo, rol, avatar }) => {
       </div>
       <div className="space-y-1 text-center">
         <strong className="block text-xs leading-tight text-slate-800 dark:text-slate-100">{nombre}</strong>
-        <span className="block text-[10px] tracking-tighter text-slate-500 dark:text-slate-400 uppercase">
+        <span className="block text-[10px] tracking-tighter text-slate-500 uppercase dark:text-slate-400">
           {t('about.studentId')}: {legajo}
         </span>
         <span className="mt-2 inline-block rounded-full border border-blue-500/30 bg-blue-500/20 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase dark:text-blue-400">

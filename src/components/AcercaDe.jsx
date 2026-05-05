@@ -87,7 +87,7 @@ const AcercaDe = () => {
               "{showEpictetus ? t('about.easterEggQuote') : t('about.quote')}"
             </p>
             <cite 
-              className="block text-right text-sm font-bold text-slate-500 dark:text-slate-400 cursor-help select-none"
+              className="block cursor-help text-right text-sm font-bold text-slate-500 select-none dark:text-slate-400"
               onDoubleClick={handleEasterEgg}
               onTouchStart={startPress}
               onTouchEnd={cancelPress}
@@ -104,8 +104,11 @@ const AcercaDe = () => {
           </div>
 
           <div className="border-t border-slate-200 pt-4 dark:border-slate-700/50">
-            <p className="text-xs font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase">
-              PWA TPO2 - React 2026
+            <p className="text-xs font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
+              HEXA TCG (PWA TPO2) - React 2026
+            </p>
+            <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">
+              v{import.meta.env.PACKAGE_VERSION}
             </p>
           </div>
         </div>
