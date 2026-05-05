@@ -1,1 +1,10 @@
 public/cards/
+public/splash/
+ToOptimize/
+ToOptimizeSplash/
+node_modules/
+dist/
+.env*
+*.md
+LICENSE
+optimize-images.js
