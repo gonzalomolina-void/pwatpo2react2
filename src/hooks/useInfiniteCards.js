@@ -91,6 +91,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   useEffect(() => {
     // Solo disparamos el fetch inicial si no estamos restaurando o si la página es > 1
     if (!shouldRestore || page > 1) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchCards(page, activeFilters);
     }
   }, [page, activeFilters, fetchCards, shouldRestore]);

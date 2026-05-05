@@ -19,11 +19,41 @@ export default function Header() {
           <AcercaDe />
           <Link 
             to="/" 
-            className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent sm:text-2xl dark:from-blue-400 dark:to-purple-500" 
+            className="flex items-center transition-transform hover:scale-105 active:scale-95" 
             onClick={closeMenu}
             aria-label={t('nav.home')}
           >
-            HEXA
+            <svg
+              viewBox="0 0 120 40"
+              className="h-8 w-auto sm:h-10"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="logo-grad-light" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#2563eb" />
+                  <stop offset="100%" stopColor="#9333ea" />
+                </linearGradient>
+                <linearGradient id="logo-grad-dark" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#60a5fa" />
+                  <stop offset="100%" stopColor="#a855f7" />
+                </linearGradient>
+              </defs>
+              
+              {/* Grupo de letras con degradado dinámico */}
+              <g className="fill-[url(#logo-grad-light)] dark:fill-[url(#logo-grad-dark)]">
+                {/* H - Hagalaz Rune Style */}
+                <path d="M10 5 V35 M25 5 V35 M10 12 L25 28" strokeWidth="4" strokeLinecap="round" className="stroke-[url(#logo-grad-light)] dark:stroke-[url(#logo-grad-dark)]" />
+                
+                {/* E */}
+                <path d="M40 5 H55 M40 20 H52 M40 35 H55 M40 5 V35" strokeWidth="4" strokeLinecap="round" fill="none" className="stroke-[url(#logo-grad-light)] dark:stroke-[url(#logo-grad-dark)]" />
+                
+                {/* X */}
+                <path d="M65 5 L80 35 M80 5 L65 35" strokeWidth="4" strokeLinecap="round" className="stroke-[url(#logo-grad-light)] dark:stroke-[url(#logo-grad-dark)]" />
+                
+                {/* A */}
+                <path d="M90 35 L100 5 L110 35 M94 22 H106" strokeWidth="4" strokeLinecap="round" fill="none" className="stroke-[url(#logo-grad-light)] dark:stroke-[url(#logo-grad-dark)]" />
+              </g>
+            </svg>
           </Link>
         </div>
 

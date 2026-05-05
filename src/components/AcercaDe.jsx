@@ -105,7 +105,7 @@ const AcercaDe = () => {
 
           <div className="border-t border-slate-200 pt-4 dark:border-slate-700/50">
             <p className="text-xs font-bold tracking-widest text-slate-400 uppercase dark:text-slate-500">
-              PWA TPO2 - React 2026
+              HEXA TCG (PWA TPO2) - React 2026
             </p>
             <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">
               v{import.meta.env.PACKAGE_VERSION}
