@@ -4,7 +4,7 @@ import Modal from './Modal';
 import TeamMember from './TeamMember';
 
 // Importar avatars de los integrantes
-import avatarLautaro from '../assets/Bart.jpg';
+import avatarLautaro from '../assets/Bart.webp';
 import avatarJuan from '../assets/Vegeta.webp';
 import avatarGonzalo from '../assets/Grommash.webp';
 
