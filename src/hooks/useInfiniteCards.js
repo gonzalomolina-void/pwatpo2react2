@@ -40,6 +40,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   const [hasMore, setHasMore] = useState(shouldRestore ? homeCache.hasMore : true);
   
   const observer = useRef();
+  const fetchingPageRef = useRef(0);
 
   // Actualizar la caché cada vez que cambie el estado relevante
   useEffect(() => {
@@ -54,13 +55,19 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
 
   const fetchCards = useCallback(async (currentPage, filters, isNewSearch = false) => {
     // Si estamos restaurando y ya tenemos cartas, no hacemos el primer fetch
-    if (shouldRestore && currentPage === 1 && !isNewSearch && cards.length > 0) {
+    if (!isNewSearch && shouldRestore && currentPage === 1 && cards.length > 0) {
+      return;
+    }
+
+    // Evitar peticiones duplicadas para la misma página o si ya estamos cargando
+    if (fetchingPageRef.current === currentPage && !isNewSearch) {
       return;
     }
 
     try {
       setIsLoading(true);
       setError(null);
+      fetchingPageRef.current = currentPage;
 
       const params = {
         page: currentPage,
@@ -75,6 +82,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
 
       setCards(prevCards => {
         if (isNewSearch) return data;
+        // Evitar duplicados por ID (segunda capa de seguridad)
         const newCards = data.filter(newCard => !prevCards.some(pc => pc.id === newCard.id));
         return [...prevCards, ...newCards];
       });
@@ -82,6 +90,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       setHasMore(data.length === limit);
     } catch (err) {
       setError(true);
+      fetchingPageRef.current = 0; // Resetear en caso de error para permitir reintentos
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -90,25 +99,31 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
 
   useEffect(() => {
     // Solo disparamos el fetch inicial si no estamos restaurando o si la página es > 1
-    if (!shouldRestore || page > 1) {
+    if (!isLoading && (!shouldRestore || page > 1)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchCards(page, activeFilters);
     }
-  }, [page, activeFilters, fetchCards, shouldRestore]);
+  }, [page, activeFilters, fetchCards, shouldRestore, isLoading]);
 
   const handleSearch = useCallback((newFilters) => {
     setActiveFilters(newFilters);
     setPage(1);
     setHasMore(true);
+    fetchingPageRef.current = 0; // Resetear para la nueva búsqueda
     fetchCards(1, newFilters, true);
   }, [fetchCards]);
 
   const lastCardElementRef = useCallback(node => {
-    if (isLoading) return;
-    if (observer.current) observer.current.disconnect();
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    
+    if (isLoading || !hasMore) {
+      return;
+    }
     
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries[0].isIntersecting && hasMore && !isLoading) {
         setPage(prevPage => prevPage + 1);
       }
     });
