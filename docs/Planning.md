@@ -3,8 +3,8 @@
 Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**, siguiendo los lineamientos del TP React Parte II 2026.
 
 ## 👥 Equipo y Roles
-*   **Lautaro (PM / Scrum Master):** Coordinación, gestión del tablero Kanban, configuración de arquitectura base e internacionalización.
-*   **Juan (Developer):** Implementación de servicios de API, Página de Inicio y Detalle de Cartas.
+*   **Lautaro (PM / Scrum Master - Fase Inicial):** Coordinación, gestión del tablero Kanban, configuración de arquitectura base e internacionalización.
+*   **Juan (PM / Lead Developer - Fase Testing):** Coordinación de la estrategia de pruebas unitarias y configuración del entorno de testeo.
 *   **Gonzalo (Developer):** Implementación de scroll infinito, gestión de favoritos y persistencia.
 
 ---
