@@ -66,6 +66,34 @@ Si quieres probar HEXA en tu propia terminal:
 
 ---
 
+## 🧪 Testing Automático
+
+El proyecto incluye tests automatizados. Las librerías instaladas para el entorno de testing son:
+- **Vitest**: Motor y *runner* de tests.
+- **jsdom**: Entorno que simula el DOM del navegador.
+- **React Testing Library** (`@testing-library/react`): Herramientas para renderizar y testear componentes.
+- **jest-dom** (`@testing-library/jest-dom`): Matchers personalizados (ej. `toBeInTheDocument`).
+- **user-event** (`@testing-library/user-event`): Simulador de eventos reales de usuario.
+
+Para ejecutar las pruebas localmente:
+
+1. **Ejecutar tests en modo watch (desarrollo):**
+   ```bash
+   npm run test
+   ```
+
+2. **Ejecutar los tests una sola vez (ideal para CI):**
+   ```bash
+   npm run test:run
+   ```
+
+3. **Ejecutar tests y ver reporte de cobertura (coverage):**
+   ```bash
+   npm run test:coverage
+   ```
+
+---
+
 ## 👥 El Equipo (The Council of HEXA)
 
 - **Lautaro (PM / Scrum Master):** Coordinación, Arquitectura e Internacionalización.
