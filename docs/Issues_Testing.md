@@ -37,10 +37,10 @@ Establecer las bases del entorno de pruebas utilizando Vitest y React Testing Li
 Validar la capa de infraestructura y servicios de dominio. Es fundamental mockear las llamadas a la API y el almacenamiento local.
 
 **Tareas:**
-- [ ] **storageService.js**: Probar métodos get/set/remove/clear mockeando `localStorage`.
-- [ ] **cardService.js**: Mockear `fetch` para validar obtención de cartas (getCards, getCardById) y manejo de errores (404, 500).
-- [ ] **preferencesService.js**: Validar persistencia de idioma y tema (interacción con storageService y sessionStorage).
-- [ ] **favoritesService.js**: Probar lógica de agregar/quitar/listar favoritos y persistencia.
+- [x] **storageService.js**: Probar métodos get/set/remove/clear mockeando `localStorage`.
+- [x] **cardService.js**: Mockear `fetch` para validar obtención de cartas (getCards, getCardById) y manejo de errores (404, 500).
+- [x] **preferencesService.js**: Validar persistencia de idioma y tema (interacción con storageService y sessionStorage).
+- [x] **favoritesService.js**: Probar lógica de agregar/quitar/listar favoritos y persistencia.
 
 ---
 
