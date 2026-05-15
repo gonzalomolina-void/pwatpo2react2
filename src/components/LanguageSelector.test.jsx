@@ -3,30 +3,27 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import LanguageSelector from './LanguageSelector';
 
+const mockChangeLanguage = vi.fn();
+const mockI18n = {
+  language: 'es',
+  changeLanguage: mockChangeLanguage,
+};
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    i18n: mockI18n,
+  }),
+}));
+
 describe('LanguageSelector Component', () => {
-  let mockChangeLanguage;
-  let mockI18n;
-
   beforeEach(() => {
-    mockChangeLanguage = vi.fn();
-    mockI18n = {
-      language: 'es',
-      changeLanguage: mockChangeLanguage,
-    };
-
-    vi.clearAllMocks();
+    mockChangeLanguage.mockClear();
+    mockI18n.language = 'es';
   });
 
   // ✅ CAMBIAR IDIOMA TESTS
   describe('Language Change', () => {
     it('calls changeLanguage when English button is clicked', () => {
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
-      // Re-render con el mock actualizado
       render(<LanguageSelector />);
 
       const enButton = screen.getByRole('button', { name: /Change to English/i });
@@ -36,12 +33,6 @@ describe('LanguageSelector Component', () => {
     });
 
     it('calls changeLanguage when Spanish button is clicked', () => {
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       render(<LanguageSelector />);
 
       const esButton = screen.getByRole('button', { name: /Cambiar a Español/i });
@@ -52,12 +43,6 @@ describe('LanguageSelector Component', () => {
 
     it('handles language variants (e.g., es-AR -> es)', () => {
       mockI18n.language = 'es-AR';
-
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
 
       render(<LanguageSelector />);
 
@@ -72,12 +57,6 @@ describe('LanguageSelector Component', () => {
     it('marks Spanish button as active when language is es', () => {
       mockI18n.language = 'es';
 
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       const { container } = render(<LanguageSelector />);
       const esButton = screen.getByRole('button', { name: /Cambiar a Español/i });
 
@@ -90,12 +69,6 @@ describe('LanguageSelector Component', () => {
     it('marks English button as active when language is en', () => {
       mockI18n.language = 'en';
 
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       render(<LanguageSelector />);
       const enButton = screen.getByRole('button', { name: /Change to English/i });
 
@@ -105,12 +78,6 @@ describe('LanguageSelector Component', () => {
 
     it('marks non-active button as inactive', () => {
       mockI18n.language = 'es';
-
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
 
       render(<LanguageSelector />);
       const enButton = screen.getByRole('button', { name: /Change to English/i });
@@ -127,12 +94,6 @@ describe('LanguageSelector Component', () => {
     it('renders both language buttons', () => {
       mockI18n.language = 'es';
 
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       render(<LanguageSelector />);
 
       expect(screen.getByRole('button', { name: /Cambiar a Español/i })).toBeInTheDocument();
@@ -141,12 +102,6 @@ describe('LanguageSelector Component', () => {
 
     it('renders in a flex container with border', () => {
       mockI18n.language = 'es';
-
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
 
       const { container } = render(<LanguageSelector />);
       const wrapper = container.firstChild;
@@ -160,12 +115,6 @@ describe('LanguageSelector Component', () => {
     it('renders with correct button labels', () => {
       mockI18n.language = 'es';
 
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       render(<LanguageSelector />);
 
       expect(screen.getByText('ES')).toBeInTheDocument();
@@ -178,12 +127,6 @@ describe('LanguageSelector Component', () => {
     it('buttons have appropriate aria-labels', () => {
       mockI18n.language = 'es';
 
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
-
       render(<LanguageSelector />);
 
       expect(screen.getByLabelText('Cambiar a Español')).toBeInTheDocument();
@@ -193,12 +136,6 @@ describe('LanguageSelector Component', () => {
     it('buttons are clickable with keyboard', async () => {
       const user = userEvent.setup();
       mockI18n.language = 'es';
-
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
 
       render(<LanguageSelector />);
 
@@ -213,12 +150,6 @@ describe('LanguageSelector Component', () => {
   describe('Integration', () => {
     it('multiple clicks trigger multiple language changes', () => {
       mockI18n.language = 'es';
-
-      vi.mocked = vi.mock('react-i18next', () => ({
-        useTranslation: () => ({
-          i18n: mockI18n,
-        }),
-      }));
 
       render(<LanguageSelector />);
 

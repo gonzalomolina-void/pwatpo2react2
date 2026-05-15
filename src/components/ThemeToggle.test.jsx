@@ -99,6 +99,7 @@ describe('ThemeToggle Component', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
       render(<ThemeToggle />);
+      preferencesService.setTheme.mockClear();
       const button = screen.getByRole('button');
 
       // Light -> Dark
@@ -134,6 +135,7 @@ describe('ThemeToggle Component', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
       render(<ThemeToggle />);
+      preferencesService.setTheme.mockClear();
       const button = screen.getByRole('button');
 
       fireEvent.click(button);
@@ -292,6 +294,7 @@ describe('ThemeToggle Component', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
       render(<ThemeToggle />);
+      preferencesService.setTheme.mockClear();
       const button = screen.getByRole('button');
 
       // Clicks rápidos
