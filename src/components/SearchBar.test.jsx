@@ -1,6 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import SearchBar from './SearchBar';
 
 // Mock de react-i18next
@@ -38,12 +37,11 @@ describe('SearchBar Component', () => {
       expect(screen.getByPlaceholderText('search.placeholder')).toBeInTheDocument();
     });
 
-    it('updates input value when user types', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('updates input value when user types', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
 
       expect(input.value).toBe('Dragon');
     });
@@ -55,12 +53,11 @@ describe('SearchBar Component', () => {
       expect(input.value).toBe('');
     });
 
-    it('accepts numeric and special characters', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('accepts numeric and special characters', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Test-123!');
+      fireEvent.change(input, { target: { value: 'Test-123!' } });
 
       expect(input.value).toBe('Test-123!');
     });
@@ -68,23 +65,21 @@ describe('SearchBar Component', () => {
 
   // ✅ DEBOUNCE TESTS
   describe('Debounce Behavior', () => {
-    it('does NOT call onSearch immediately when typing', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('does NOT call onSearch immediately when typing', () => {
       render(<SearchBar onSearch={mockOnSearch} debounceMs={300} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'D');
+      fireEvent.change(input, { target: { value: 'D' } });
 
       // No debe llamarse inmediatamente
       expect(mockOnSearch).not.toHaveBeenCalled();
     });
 
-    it('calls onSearch after debounce time when typing stops', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('calls onSearch after debounce time when typing stops', () => {
       render(<SearchBar onSearch={mockOnSearch} debounceMs={300} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
 
       expect(mockOnSearch).not.toHaveBeenCalled();
 
@@ -100,16 +95,15 @@ describe('SearchBar Component', () => {
       );
     });
 
-    it('restarts debounce timer when user continues typing', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('restarts debounce timer when user continues typing', () => {
       render(<SearchBar onSearch={mockOnSearch} debounceMs={300} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'D');
+      fireEvent.change(input, { target: { value: 'D' } });
       vi.advanceTimersByTime(200); // Esperar menos que debounceMs
       expect(mockOnSearch).not.toHaveBeenCalled();
 
-      await user.type(input, 'r');
+      fireEvent.change(input, { target: { value: 'Dr' } });
       vi.advanceTimersByTime(200); // Esperar otros 200ms
       expect(mockOnSearch).not.toHaveBeenCalled();
 
@@ -117,12 +111,11 @@ describe('SearchBar Component', () => {
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
 
-    it('respects custom debounceMs prop', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('respects custom debounceMs prop', () => {
       render(<SearchBar onSearch={mockOnSearch} debounceMs={500} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Test');
+      fireEvent.change(input, { target: { value: 'Test' } });
 
       vi.advanceTimersByTime(300); // Menos que 500ms
       expect(mockOnSearch).not.toHaveBeenCalled();
@@ -131,8 +124,7 @@ describe('SearchBar Component', () => {
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
 
-    it('sends complete state with debounced search', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('sends complete state with debounced search', () => {
       render(
         <SearchBar
           onSearch={mockOnSearch}
@@ -143,7 +135,7 @@ describe('SearchBar Component', () => {
       );
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Fire');
+      fireEvent.change(input, { target: { value: 'Fire' } });
 
       vi.advanceTimersByTime(300);
 
@@ -157,72 +149,67 @@ describe('SearchBar Component', () => {
 
   // ✅ LIMPIAR BÚSQUEDA TESTS
   describe('Clear Search Functionality', () => {
-    it('shows clear button only when input has text', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('shows clear button only when input has text', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
 
       // No debe existir botón clear sin texto
       expect(screen.queryByLabelText('search.clear')).not.toBeInTheDocument();
 
       const input = screen.getByPlaceholderText('search.placeholder');
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
 
       // Debe existir botón clear con texto
       expect(screen.getByLabelText('search.clear')).toBeInTheDocument();
     });
 
-    it('hides clear button after clearing', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('hides clear button after clearing', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
       expect(screen.getByLabelText('search.clear')).toBeInTheDocument();
 
       const clearButton = screen.getByLabelText('search.clear');
-      await user.click(clearButton);
+      fireEvent.click(clearButton);
 
       expect(screen.queryByLabelText('search.clear')).not.toBeInTheDocument();
     });
 
-    it('clears search term when clear button is clicked', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('clears search term when clear button is clicked', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
       const clearButton = screen.getByLabelText('search.clear');
-      await user.click(clearButton);
+      fireEvent.click(clearButton);
 
       expect(input.value).toBe('');
     });
 
-    it('calls onSearch with empty term when clear button is clicked', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('calls onSearch with empty term when clear button is clicked', () => {
       render(<SearchBar onSearch={mockOnSearch} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
       vi.advanceTimersByTime(300);
       mockOnSearch.mockClear();
 
       const clearButton = screen.getByLabelText('search.clear');
-      await user.click(clearButton);
+      fireEvent.click(clearButton);
 
       expect(mockOnSearch).toHaveBeenCalledWith(
         expect.objectContaining({ searchTerm: '' })
       );
     });
 
-    it('cancels pending debounce when clear is clicked', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('cancels pending debounce when clear is clicked', () => {
       render(<SearchBar onSearch={mockOnSearch} debounceMs={300} />);
       const input = screen.getByPlaceholderText('search.placeholder');
 
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
       // No esperar el debounce, clickear clear inmediatamente
       const clearButton = screen.getByLabelText('search.clear');
-      await user.click(clearButton);
+      fireEvent.click(clearButton);
 
       // Avanzar el tiempo que habría esperado el debounce
       vi.advanceTimersByTime(300);
@@ -293,14 +280,13 @@ describe('SearchBar Component', () => {
       clearTimeoutSpy.mockRestore();
     });
 
-    it('does not call onSearch after unmount', async () => {
-      const user = userEvent.setup({ delay: null });
+    it('does not call onSearch after unmount', () => {
       const { unmount } = render(
         <SearchBar onSearch={mockOnSearch} debounceMs={300} />
       );
 
       const input = screen.getByPlaceholderText('search.placeholder');
-      await user.type(input, 'Dragon');
+      fireEvent.change(input, { target: { value: 'Dragon' } });
 
       unmount();
       mockOnSearch.mockClear();

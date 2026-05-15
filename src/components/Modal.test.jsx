@@ -86,14 +86,14 @@ describe('Modal Component', () => {
     });
 
     it('does not render title section when not provided', () => {
-      const { container } = render(
+      render(
         <Modal isOpen={true} onClose={mockOnClose}>
           <p>Content</p>
         </Modal>
       );
 
       // Buscar el h3 que contiene el título
-      const titleElement = container.querySelector('h3');
+      const titleElement = document.querySelector('h3');
       expect(titleElement).not.toBeInTheDocument();
     });
 
@@ -254,26 +254,28 @@ describe('Modal Component', () => {
   // ✅ ESTRUCTURA TESTS
   describe('Structure & Classes', () => {
     it('has backdrop with correct styling classes', () => {
-      const { container } = render(
+      render(
         <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
           <p>Content</p>
         </Modal>
       );
 
-      const backdrop = container.querySelector('.fixed');
+      const backdrop = document.querySelector('.fixed.inset-0');
+      expect(backdrop).toBeInTheDocument();
       expect(backdrop).toHaveClass('inset-0');
       expect(backdrop).toHaveClass('bg-slate-950/70');
       expect(backdrop).toHaveClass('backdrop-blur-sm');
     });
 
     it('has modal section with correct styling', () => {
-      const { container } = render(
+      render(
         <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
           <p>Content</p>
         </Modal>
       );
 
-      const modal = container.querySelector('section');
+      const modal = document.querySelector('section.rounded-2xl');
+      expect(modal).toBeInTheDocument();
       expect(modal).toHaveClass('rounded-2xl');
       expect(modal).toHaveClass('border');
       expect(modal).toHaveClass('bg-white');
@@ -293,25 +295,25 @@ describe('Modal Component', () => {
     });
 
     it('renders title in header section', () => {
-      const { container } = render(
+      render(
         <Modal isOpen={true} onClose={mockOnClose} title="My Modal Title">
           <p>Content</p>
         </Modal>
       );
 
-      const header = container.querySelector('div.border-b');
+      const header = document.querySelector('div.border-b');
       expect(header).toBeInTheDocument();
       expect(header).toHaveTextContent('My Modal Title');
     });
 
     it('renders content in scrollable body', () => {
-      const { container } = render(
+      render(
         <Modal isOpen={true} onClose={mockOnClose} title="Test">
           <p>Scrollable content</p>
         </Modal>
       );
 
-      const body = container.querySelector('.overflow-y-auto');
+      const body = document.querySelector('.overflow-y-auto');
       expect(body).toBeInTheDocument();
       expect(body).toHaveTextContent('Scrollable content');
     });

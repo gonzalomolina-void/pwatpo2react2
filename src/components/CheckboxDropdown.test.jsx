@@ -63,7 +63,7 @@ describe('CheckboxDropdown Component', () => {
           onChange={mockOnChange}
         />
       );
-      const button = screen.getByRole('button');
+      const button = screen.getAllByRole('button')[0];
 
       fireEvent.click(button);
       expect(screen.getByText('Warrior')).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe('CheckboxDropdown Component', () => {
 
     it('selects multiple options', async () => {
       const user = userEvent.setup();
-      render(
+      const { rerender } = render(
         <CheckboxDropdown
           label="Select Type"
           options={options}
@@ -154,6 +154,18 @@ describe('CheckboxDropdown Component', () => {
       const mageCheckbox = screen.getByRole('checkbox', { name: /Mage/i });
 
       await user.click(warriorCheckbox);
+
+      expect(mockOnChange).toHaveBeenLastCalledWith(['warrior']);
+
+      rerender(
+        <CheckboxDropdown
+          label="Select Type"
+          options={options}
+          selected={['warrior']}
+          onChange={mockOnChange}
+        />
+      );
+
       await user.click(mageCheckbox);
 
       expect(mockOnChange).toHaveBeenLastCalledWith(['warrior', 'mage']);
@@ -192,13 +204,12 @@ describe('CheckboxDropdown Component', () => {
         />
       );
 
-      let button = screen.getByRole('button');
+      const button = screen.getAllByRole('button')[0];
       await user.click(button);
 
       const rogueCheckbox = screen.getByRole('checkbox', { name: /Rogue/i });
       await user.click(rogueCheckbox);
 
-      // Simular que el prop selected cambió
       rerender(
         <CheckboxDropdown
           label="Select Type"
@@ -207,9 +218,6 @@ describe('CheckboxDropdown Component', () => {
           onChange={mockOnChange}
         />
       );
-
-      button = screen.getByRole('button');
-      await user.click(button);
 
       const updatedRogueCheckbox = screen.getByRole('checkbox', { name: /Rogue/i });
       expect(updatedRogueCheckbox).toBeChecked();
@@ -342,7 +350,7 @@ describe('CheckboxDropdown Component', () => {
         />
       );
 
-      const button = screen.getByRole('button');
+      const button = screen.getAllByRole('button')[0];
       await user.click(button);
 
       const mageCheckbox = screen.getByRole('checkbox', { name: /Mage/i });
@@ -360,7 +368,8 @@ describe('CheckboxDropdown Component', () => {
         />
       );
 
-      expect(screen.getByText('Mage')).toBeInTheDocument();
+      // Use getByRole para checkbox en lugar de getByText para evitar ambigüedad
+      expect(screen.getByRole('checkbox', { name: /Mage/i })).toBeChecked();
     });
 
     it('updates selected state when parent updates prop', () => {
@@ -373,9 +382,9 @@ describe('CheckboxDropdown Component', () => {
         />
       );
 
-      let button = screen.getByRole('button');
+      const button = screen.getAllByRole('button')[0];
       fireEvent.click(button);
-      let warriorCheckbox = screen.getByRole('checkbox', { name: /Warrior/i });
+      const warriorCheckbox = screen.getByRole('checkbox', { name: /Warrior/i });
       expect(warriorCheckbox).not.toBeChecked();
 
       rerender(
@@ -387,9 +396,6 @@ describe('CheckboxDropdown Component', () => {
         />
       );
 
-      button = screen.getByRole('button');
-      fireEvent.click(button);
-      warriorCheckbox = screen.getByRole('checkbox', { name: /Warrior/i });
       expect(warriorCheckbox).toBeChecked();
     });
   });
