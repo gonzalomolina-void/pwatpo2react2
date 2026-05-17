@@ -45,6 +45,26 @@ describe('cardService', () => {
 
       await expect(cardService.getCards()).rejects.toThrow('Error fetching cards: Internal Server Error');
     });
+
+    it('ignora parametros null o undefined', async () => {
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => []
+      });
+
+      await cardService.getCards({ page: 1, limit: null, search: undefined });
+      
+      const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1`);
+      expect(global.fetch).toHaveBeenCalledWith(expectedUrl);
+    });
+
+    it('loguea error si fetch falla', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+
+      await expect(cardService.getCards()).rejects.toThrow('Network error');
+      expect(consoleSpy).toHaveBeenCalled();
+    });
   });
 
   describe('getCardById', () => {
@@ -78,6 +98,14 @@ describe('cardService', () => {
       });
 
       await expect(cardService.getCardById('card-1')).rejects.toThrow('Error fetching card card-1: Server Error');
+    });
+
+    it('loguea error si fetch falla', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+
+      await expect(cardService.getCardById('1')).rejects.toThrow('Network error');
+      expect(consoleSpy).toHaveBeenCalled();
     });
   });
 });

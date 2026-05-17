@@ -130,8 +130,118 @@ describe('useInfiniteCards Hook', () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    // Solo debería quedar la carta de tipo 'unit'
-    // Nota: El mock de 't' devuelve la key, y el hook compara contra esa traducción
+    expect(result.current.cards).toHaveLength(1);
+    expect(result.current.cards[0].id).toBe('1');
+  });
+
+  it('should increment page when intersection observer triggers', async () => {
+    let intersectionCallback;
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    
+    window.IntersectionObserver = class {
+      constructor(callback) {
+        intersectionCallback = callback;
+      }
+      observe = observe;
+      disconnect = disconnect;
+      unobserve = vi.fn();
+    };
+
+    const manyCards = Array.from({ length: 10 }, (_, i) => ({ 
+      id: `${i}`, 
+      name: `Card ${i}`, 
+      typeEn: 'home.filters.types.unit', 
+      rarityEn: 'home.filters.rarities.common' 
+    }));
+    cardService.getCards.mockResolvedValue(manyCards);
+
+    const { result } = renderHook(() => 
+      useInfiniteCards({ limit: 10, initialFilters, lang: 'en' })
+    );
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.hasMore).toBe(true);
+
+    // Obtener la referencia para el observador
+    const mockNode = document.createElement('div');
+    act(() => {
+      result.current.lastCardElementRef(mockNode);
+    });
+
+    expect(intersectionCallback).toBeDefined();
+
+    // Simular intersección
+    act(() => {
+      intersectionCallback([{ isIntersecting: true }]);
+    });
+
+    expect(result.current.page).toBe(2);
+    expect(cardService.getCards).toHaveBeenCalledTimes(2);
+  });
+
+  it('disconnects previous observer when ref changes', async () => {
+    const disconnect = vi.fn();
+    window.IntersectionObserver = class {
+      constructor() {}
+      observe = vi.fn();
+      disconnect = disconnect;
+      unobserve = vi.fn();
+    };
+
+    cardService.getCards.mockResolvedValue(mockCards);
+    const { result } = renderHook(() => 
+      useInfiniteCards({ limit: 2, initialFilters, lang: 'en' })
+    );
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.hasMore).toBe(true);
+
+    act(() => {
+      result.current.lastCardElementRef(document.createElement('div'));
+    });
+    
+    act(() => {
+      result.current.lastCardElementRef(document.createElement('div'));
+    });
+
+    expect(disconnect).toHaveBeenCalled();
+  });
+
+  it('returns early in lastCardElementRef if isLoading is true', async () => {
+    window.IntersectionObserver = vi.fn();
+    
+    cardService.getCards.mockReturnValue(new Promise(() => {})); // Never resolves
+    const { result } = renderHook(() => 
+      useInfiniteCards({ limit: 10, initialFilters, lang: 'en' })
+    );
+
+    // isLoading will be true
+    act(() => {
+      result.current.lastCardElementRef(document.createElement('div'));
+    });
+
+    expect(window.IntersectionObserver).not.toHaveBeenCalled();
+  });
+
+  it('should filter cards locally by rarity', async () => {
+    const mixedCards = [
+      { id: '1', name: 'Legendary Card', typeEn: 'home.filters.types.unit', rarityEn: 'home.filters.rarities.legendary' },
+      { id: '2', name: 'Rare Card', typeEn: 'home.filters.types.unit', rarityEn: 'home.filters.rarities.rare' },
+    ];
+    cardService.getCards.mockResolvedValue(mixedCards);
+
+    const filtersWithRarity = {
+      ...initialFilters,
+      selectedRarities: ['legendary']
+    };
+
+    const { result } = renderHook(() => 
+      useInfiniteCards({ limit: 10, initialFilters: filtersWithRarity, lang: 'en' })
+    );
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
     expect(result.current.cards).toHaveLength(1);
     expect(result.current.cards[0].id).toBe('1');
   });

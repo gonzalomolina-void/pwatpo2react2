@@ -127,4 +127,19 @@ describe('Detail Page', () => {
 
     expect(favoritesService.toggleFavorite).toHaveBeenCalledWith('card-1');
   });
+
+  it('muestra imagen de fallback si la imagen principal falla', async () => {
+    cardService.getCardById.mockResolvedValue(mockCard);
+    
+    renderDetail();
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Mago de Fuego')).toBeInTheDocument();
+    });
+    
+    const img = screen.getByAltText('Mago de Fuego');
+    fireEvent.error(img);
+
+    expect(img.src).toContain('FallbackImageEs.webp');
+  });
 });

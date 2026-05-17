@@ -10,6 +10,10 @@ import { getRarityConfig } from '../utils/rarityConfig';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
