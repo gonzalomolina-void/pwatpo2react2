@@ -191,7 +191,7 @@ describe('ThemeToggle Component', () => {
     it('updates emoji when theme changes', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
-      const { rerender } = render(<ThemeToggle />);
+      render(<ThemeToggle />);
       expect(screen.getByText('☀️')).toBeInTheDocument();
 
       // Simular cambio de tema
@@ -254,7 +254,6 @@ describe('ThemeToggle Component', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
       render(<ThemeToggle />);
-      const button = screen.getByRole('button');
 
       // Tab to button and press Enter
       await user.tab();
@@ -262,6 +261,7 @@ describe('ThemeToggle Component', () => {
 
       expect(document.documentElement.classList.contains('dark')).toBe(true);
     });
+
 
     it('updates title when theme changes', () => {
       preferencesService.getTheme.mockReturnValue('light');
@@ -289,19 +289,17 @@ describe('ThemeToggle Component', () => {
       // Debería funcionar sin errores
       expect(screen.getByRole('button')).toBeInTheDocument();
     });
-
     it('handles rapid clicks', () => {
       preferencesService.getTheme.mockReturnValue('light');
 
       render(<ThemeToggle />);
       preferencesService.setTheme.mockClear();
-      const button = screen.getByRole('button');
 
       // Clicks rápidos
-      fireEvent.click(button);
-      fireEvent.click(button);
-      fireEvent.click(button);
-      fireEvent.click(button);
+      fireEvent.click(screen.getByRole('button'));
+      fireEvent.click(screen.getByRole('button'));
+      fireEvent.click(screen.getByRole('button'));
+      fireEvent.click(screen.getByRole('button'));
 
       // Debería estar en light (4 toggles de light -> dark -> light -> dark -> light)
       expect(preferencesService.setTheme).toHaveBeenCalledTimes(4);
@@ -326,3 +324,4 @@ describe('ThemeToggle Component', () => {
     });
   });
 });
+

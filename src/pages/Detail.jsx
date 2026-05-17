@@ -7,12 +7,9 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import StatBadge from '../components/StatBadge';
 import BackButton from '../components/BackButton';
 import { getRarityConfig } from '../utils/rarityConfig';
+import { capitalize } from '../utils/stringUtils';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
-
-String.prototype.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
 
 export default function Detail() {
   const { id } = useParams();
@@ -24,10 +21,12 @@ export default function Detail() {
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchCard = async () => {
       try {
         setLoading(true);
-        const data = await cardService.getCardById(id);
+        const data = await cardService.getCardById(id, { signal: controller.signal });
 
         if (!data) {
           navigate('/404', { replace: true });
@@ -36,19 +35,25 @@ export default function Detail() {
 
         setCard(data);
         setIsFav(favoritesService.isFavorite(id));
-      } catch {
-        navigate('/404', { replace: true });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          navigate('/404', { replace: true });
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchCard();
+
+    return () => controller.abort();
   }, [id, navigate]);
 
   const handleFavorite = () => {
-    favoritesService.toggleFavorite(id);
-    setIsFav(!isFav);
+    if (card) {
+      favoritesService.toggleFavorite(card);
+      setIsFav(!isFav);
+    }
   };
 
   if (loading) {
@@ -82,7 +87,7 @@ export default function Detail() {
             src={imageUrl}
             alt={name}
             className="h-auto w-full object-cover"
-            onError={(e) => { e.target.src = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`; }}
+            onError={(e) => { e.target.src = `${CARDS_URL}FallbackImage${capitalize(lang)}.webp`; }}
           />
           <button
             onClick={handleFavorite}
@@ -129,3 +134,4 @@ export default function Detail() {
     </div>
   );
 }
+
