@@ -103,6 +103,19 @@ En HEXA ya dejamos todo configurado en el `package.json`. No hace falta que inst
   ```bash
   npm run test:e2e:report
   ```
+- **Modo Demo / Grabación de Video:** Ideal para hacer videos de presentación. Ralentiza las acciones y graba automáticamente un video `.webm` en la carpeta `test-results/`.
+  ```bash
+  npm run test:e2e:demo
+  ```
+
+---
+
+## 8. ¿Cómo grabar una demo perfecta? 🎥
+
+Si necesitás mostrarle la app a un cliente o profesor, usá el comando `npm run test:e2e:demo`. 
+- **SlowMo:** Hemos configurado una pausa de 800ms entre cada click y tipeo para que el ojo humano pueda seguir el proceso.
+- **Auto-Video:** Playwright generará un archivo de video por cada test ejecutado.
+- **Ubicación:** Buscá tus videos en `test-results/`.
 
 ---
 

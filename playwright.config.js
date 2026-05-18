@@ -25,6 +25,12 @@ export default defineConfig({
     
     /* Capturar screenshot en caso de falla */
     screenshot: 'only-on-failure',
+
+    /* Grabar video y ralentizar si estamos en modo DEMO */
+    video: process.env.DEMO ? 'on' : 'off',
+    launchOptions: {
+      slowMo: process.env.DEMO ? 800 : 0,
+    },
   },
 
   /* Configurar proyectos para los navegadores principales */
