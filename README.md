@@ -43,7 +43,13 @@ El universo de HEXA cobra vida a través de sus protagonistas. Aquí te presenta
 
 ## 🚀 Instalación y Uso
 
-Si quieres probar HEXA en tu propia terminal:
+Este proyecto utiliza **pnpm** como gestor de paquetes. Si no lo tienes instalado globalmente, puedes hacerlo ejecutando:
+
+```bash
+npm install -g pnpm
+```
+
+### Configuración inicial del proyecto:
 
 1. **Clona el repositorio:**
    ```bash
@@ -51,17 +57,24 @@ Si quieres probar HEXA en tu propia terminal:
    cd pwatpo2react2
    ```
 
-2. **Instala las dependencias:**
+2. **Migración de ambiente (si ya tenías el proyecto clonado con npm):**
+   Si estás en Windows, ejecuta el script de migración en PowerShell para limpiar los archivos redundantes de npm e instalar con pnpm:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\migrate-to-pnpm.ps1
+   ```
+   *En otros sistemas operativos, simplemente elimina `node_modules` y `package-lock.json` manualmente y ejecuta `pnpm install`.*
+
+3. **Instala las dependencias (instalación limpia):**
    ```bash
-   npm install
+   pnpm install
    ```
 
-3. **Inicia el servidor de desarrollo:**
+4. **Inicia el servidor de desarrollo:**
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
-4. **Accede a la app:**
+5. **Accede a la app:**
    Abre [http://localhost:5173](http://localhost:5173) en tu navegador.
 
 ---
@@ -79,17 +92,17 @@ Para ejecutar las pruebas localmente:
 
 1. **Ejecutar tests en modo watch (desarrollo):**
    ```bash
-   npm run test
+   pnpm test
    ```
 
 2. **Ejecutar los tests una sola vez (ideal para CI):**
    ```bash
-   npm run test:run
+   pnpm test:run
    ```
 
 3. **Ejecutar tests y ver reporte de cobertura (coverage):**
    ```bash
-   npm run test:coverage
+   pnpm test:coverage
    ```
 
 ---

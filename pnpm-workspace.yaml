@@ -1,0 +1,5 @@
+# pnpm-workspace.yaml
+# Configuración del proyecto para pnpm v10+
+
+allowBuilds:
+  sharp: true
