@@ -103,19 +103,25 @@ En HEXA ya dejamos todo configurado en el `package.json`. No hace falta que inst
   ```bash
   npm run test:e2e:report
   ```
-- **Modo Demo / Grabación de Video:** Ideal para hacer videos de presentación. Ralentiza las acciones y graba automáticamente un video `.webm` en la carpeta `test-results/`.
+- **Modo Demo Interactivo (UI):** Abre la interfaz interactiva ralentizando la ejecución para demos en vivo:
   ```bash
-  npm run test:e2e:demo
+  pnpm test:e2e:ui:demo
+  ```
+- **Modo Demo Headless / Grabación de Video:** Ideal para generar videos de presentación. Ralentiza las acciones y graba automáticamente un video `.webm` en la carpeta `test-results/`:
+  ```bash
+  pnpm test:e2e:demo
   ```
 
 ---
 
-## 8. ¿Cómo grabar una demo perfecta? 🎥
+## 8. ¿Cómo realizar o grabar una demo perfecta? 🎥
 
-Si necesitás mostrarle la app a un cliente o profesor, usá el comando `npm run test:e2e:demo`. 
-- **SlowMo:** Hemos configurado una pausa de 800ms entre cada click y tipeo para que el ojo humano pueda seguir el proceso.
-- **Auto-Video:** Playwright generará un archivo de video por cada test ejecutado.
-- **Ubicación:** Buscá tus videos en `test-results/`.
+Si necesitás mostrarle la app a un cliente o profesor, usá los comandos demo (`pnpm test:e2e:demo` o `pnpm test:e2e:ui:demo`).
+- **SlowMo por defecto:** Hemos configurado una pausa automática de **1500ms** (1.5 segundos) entre cada acción (click, fill, etc.) en modo demo, para que el ojo humano pueda seguir el flujo sin problemas.
+- **Personalización de velocidad (SLOWMO):** Podés definir tu propia demora en milisegundos usando la variable de entorno `SLOWMO`. Por ejemplo:
+  - En PowerShell: `$env:SLOWMO=2000; pnpm test:e2e:ui` (ejecuta a 2 segundos por acción en la UI).
+  - En Linux/macOS o Bash: `SLOWMO=1000 pnpm test:e2e:ui`
+- **Auto-Video:** En modo demo, Playwright grabará un video de cada test y lo guardará en `test-results/`.
 
 ---
 
