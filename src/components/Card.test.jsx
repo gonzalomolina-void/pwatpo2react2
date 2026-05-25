@@ -93,4 +93,18 @@ describe('Card Component', () => {
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/detalles/1');
   });
+
+  it('shows fallback image on error', () => {
+    favoritesService.isFavorite.mockReturnValue(false);
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} />
+      </MemoryRouter>
+    );
+
+    const img = screen.getByAltText('Dragon Warrior');
+    fireEvent.error(img);
+
+    expect(img.src).toContain('FallbackImageEn.webp');
+  });
 });

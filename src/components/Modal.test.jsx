@@ -153,12 +153,9 @@ describe('Modal Component', () => {
         </Modal>
       );
 
-      // Presionar Escape no cierra automáticamente (Modal no tiene listener)
-      // pero el test verifica que el botón X funciona
-      const closeButton = screen.getByLabelText('Cerrar');
-      await user.click(closeButton);
+      await user.keyboard('{Escape}');
 
-      expect(mockOnClose).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
     it('calls onClose when backdrop (outside area) is clicked', () => {

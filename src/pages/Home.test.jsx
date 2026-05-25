@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { render, screen, act, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Home from './Home';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
@@ -29,7 +29,13 @@ vi.mock('../components/Card', () => ({
 }));
 
 vi.mock('../components/SearchBar', () => ({
-  default: vi.fn(() => <div data-testid="mock-searchbar" />),
+  default: vi.fn(({ onSearch }) => (
+    <div data-testid="mock-searchbar">
+      <button data-testid="trigger-search" onClick={() => onSearch({ searchTerm: 'test', selectedTypes: [], selectedRarities: [] })}>
+        Search
+      </button>
+    </div>
+  )),
 }));
 
 const mockCards = [
@@ -136,5 +142,91 @@ describe('Home Page', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('mock-searchbar')).toBeInTheDocument();
+  });
+
+  it('sets scrollRestoration to manual on mount', () => {
+    mockHookState();
+    // Definir la propiedad en el mock de history si no existe en JSDOM
+    if (!('scrollRestoration' in window.history)) {
+      Object.defineProperty(window.history, 'scrollRestoration', {
+        value: 'auto',
+        writable: true,
+        configurable: true
+      });
+    } else {
+      window.history.scrollRestoration = 'auto';
+    }
+    
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    
+    expect(window.history.scrollRestoration).toBe('manual');
+  });
+
+  it('restores scroll position if saved in sessionStorage', () => {
+    vi.useFakeTimers();
+    const scrollToSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('500');
+    
+    mockHookState({ cards: mockCards });
+    
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    
+    act(() => {
+      vi.advanceTimersByTime(50);
+    });
+    
+    expect(scrollToSpy).toHaveBeenCalledWith({
+      top: 500,
+      behavior: 'instant'
+    });
+    
+    vi.useRealTimers();
+    getItemSpy.mockRestore();
+    scrollToSpy.mockRestore();
+  });
+
+  it('saves scroll position to sessionStorage on scroll event', () => {
+    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
+    mockHookState();
+    
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    
+    // Simular scroll con property setter para JSDOM
+    Object.defineProperty(window, 'scrollY', { value: 300, configurable: true });
+    fireEvent.scroll(window);
+    
+    expect(setItemSpy).toHaveBeenCalledWith('home_scroll_pos', '300');
+    
+    setItemSpy.mockRestore();
+  });
+
+  it('removes scroll position from sessionStorage on search', () => {
+    const removeItemSpy = vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {});
+    const scrollToSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    
+    mockHookState();
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    
+    fireEvent.click(screen.getByTestId('trigger-search'));
+    
+    expect(removeItemSpy).toHaveBeenCalledWith('home_scroll_pos');
+    expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
   });
 });
