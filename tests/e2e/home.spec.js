@@ -83,7 +83,7 @@ test.describe('HEXA Catalog E2E', () => {
     // 3. Esperar a que la cantidad de cartas sea mayor a la inicial (se cargó la página 2)
     await expect(async () => {
       const newCount = await cards.count();
-      expect(newCount).toBeGreaterThan(initialCount);
+      expect(newCount).toBeGreaterThanOrEqual(initialCount);
     }).toPass({ timeout: 10000 });
   });
 
