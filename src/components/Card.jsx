@@ -7,7 +7,7 @@ import { capitalize } from '../utils/stringUtils';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
-const Card = memo(forwardRef(({ card }, ref) => {
+const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [isFav, setIsFav] = useState(() => favoritesService.isFavorite(card.id));
@@ -16,8 +16,13 @@ const Card = memo(forwardRef(({ card }, ref) => {
     e.preventDefault();
     e.stopPropagation();
     favoritesService.toggleFavorite(card);
-    setIsFav(!isFav);
+    const newIsFav = !isFav;
+    setIsFav(newIsFav);
+    if (onFavoriteToggle) {
+      onFavoriteToggle(card, newIsFav);
+    }
   };
+
 
   const { id, cost, media, atk, def } = card;
   const langKey = lang === 'es' ? 'Es' : 'En';

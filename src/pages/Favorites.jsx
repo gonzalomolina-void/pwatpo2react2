@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import favoritesService from '../services/favoritesService';
 import Card from '../components/Card';
@@ -9,8 +9,15 @@ export default function Favorites() {
   const { t } = useTranslation();
 
   // Los favoritos ya vienen como objetos completos desde el servicio (LocalStorage)
-  // Cargamos directamente en el estado inicial para evitar re-renders innecesarios
-  const [favorites] = useState(() => favoritesService.getFavorites());
+  // Cargamos directamente en el estado inicial
+  const [favorites, setFavorites] = useState(() => favoritesService.getFavorites());
+
+  // Callback para remover la carta de la vista cuando se desmarca
+  const handleFavoriteToggle = useCallback((card, isFav) => {
+    if (!isFav) {
+      setFavorites(prevFavorites => prevFavorites.filter(c => c.id !== card.id));
+    }
+  }, []);
 
   return (
     <div className="py-12">
@@ -43,7 +50,7 @@ export default function Favorites() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {favorites.map(card => (
-            <Card key={card.id} card={card} />
+            <Card key={card.id} card={card} onFavoriteToggle={handleFavoriteToggle} />
           ))}
         </div>
       )}
