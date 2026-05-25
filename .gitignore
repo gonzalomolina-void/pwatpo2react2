@@ -30,3 +30,8 @@ ToOptimizeSplash/*.png
 /public/splash/*.webp
 .vercel
 coverage
+
+# Playwright
+playwright-report/
+test-results/
+
