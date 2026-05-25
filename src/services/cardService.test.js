@@ -7,13 +7,13 @@ describe('cardService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    global.fetch = vi.fn();
+    globalThis.fetch = vi.fn();
   });
 
   describe('getCards', () => {
     it('retorna un array de cartas si la respuesta HTTP es exitosa', async () => {
       const mockCards = [{ id: '1', nameEs: 'Carta de Prueba' }];
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockCards
       });
@@ -22,12 +22,13 @@ describe('cardService', () => {
 
 
       const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1&limit=10`);
-      expect(global.fetch).toHaveBeenCalledWith(expectedUrl);
+      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ signal: undefined }));
+
       expect(result).toEqual(mockCards);
     });
 
     it('retorna un array vacio si el servidor responde con 404 (Not Found)', async () => {
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: false,
         status: 404
       });
@@ -37,7 +38,7 @@ describe('cardService', () => {
     });
 
     it('lanza un error si la respuesta no es exitosa y no es 404', async () => {
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         statusText: 'Internal Server Error'
@@ -47,7 +48,7 @@ describe('cardService', () => {
     });
 
     it('ignora parametros null o undefined', async () => {
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => []
       });
@@ -55,12 +56,12 @@ describe('cardService', () => {
       await cardService.getCards({ page: 1, limit: null, search: undefined });
       
       const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1`);
-      expect(global.fetch).toHaveBeenCalledWith(expectedUrl);
+      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ signal: undefined }));
     });
 
     it('loguea error si fetch falla', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch.mockRejectedValueOnce(new Error('Network error'));
 
       await expect(cardService.getCards()).rejects.toThrow('Network error');
       expect(consoleSpy).toHaveBeenCalled();
@@ -70,18 +71,20 @@ describe('cardService', () => {
   describe('getCardById', () => {
     it('retorna la carta correspondiente al id buscado', async () => {
       const mockCard = { id: 'card-1', nameEs: 'Mago' };
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockCard
       });
 
       const result = await cardService.getCardById('card-1');
-      expect(global.fetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_URL}/cards/card-1`);
+      expect(globalThis.fetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_URL}/cards/card-1`, expect.objectContaining({ signal: undefined }));
+
       expect(result).toEqual(mockCard);
+
     });
 
     it('retorna null si la carta no existe (HTTP 404)', async () => {
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: false,
         status: 404
       });
@@ -91,7 +94,7 @@ describe('cardService', () => {
     });
 
     it('lanza un error si el servidor falla (HTTP 500)', async () => {
-      global.fetch.mockResolvedValueOnce({
+      globalThis.fetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         statusText: 'Server Error'
@@ -102,10 +105,11 @@ describe('cardService', () => {
 
     it('loguea error si fetch falla', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch.mockRejectedValueOnce(new Error('Network error'));
 
       await expect(cardService.getCardById('1')).rejects.toThrow('Network error');
       expect(consoleSpy).toHaveBeenCalled();
     });
   });
 });
+

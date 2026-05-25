@@ -57,7 +57,8 @@ describe('LanguageSelector Component', () => {
     it('marks Spanish button as active when language is es', () => {
       mockI18n.language = 'es';
 
-      const { container } = render(<LanguageSelector />);
+      render(
+<LanguageSelector />);
       const esButton = screen.getByRole('button', { name: /Cambiar a Español/i });
 
       // Botón activo debe tener estas clases
@@ -105,6 +106,7 @@ describe('LanguageSelector Component', () => {
 
       const { container } = render(<LanguageSelector />);
       const wrapper = container.firstChild;
+
 
       expect(wrapper).toHaveClass('flex');
       expect(wrapper).toHaveClass('items-center');

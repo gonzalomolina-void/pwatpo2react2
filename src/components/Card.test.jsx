@@ -66,7 +66,8 @@ describe('Card Component', () => {
     const favButton = screen.getByRole('button', { name: /card.addFavorite/i });
     fireEvent.click(favButton);
 
-    expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard.id);
+    expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard);
+
   });
 
   it('shows "remove favorite" aria-label when card is already favorite', () => {

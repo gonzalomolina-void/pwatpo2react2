@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import SearchBar from './SearchBar';
 
 // Mock de react-i18next
@@ -265,7 +266,7 @@ describe('SearchBar Component', () => {
   // ✅ CLEANUP TESTS
   describe('Cleanup & Unmount', () => {
     it('cleans up debounce timer on unmount', () => {
-      const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
+      const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
 
       const { unmount } = render(
         <SearchBar onSearch={mockOnSearch} debounceMs={300} />
@@ -279,6 +280,7 @@ describe('SearchBar Component', () => {
       expect(clearTimeoutSpy).toHaveBeenCalled();
       clearTimeoutSpy.mockRestore();
     });
+
 
     it('does not call onSearch after unmount', () => {
       const { unmount } = render(

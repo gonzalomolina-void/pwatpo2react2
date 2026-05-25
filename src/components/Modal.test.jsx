@@ -25,6 +25,7 @@ describe('Modal Component', () => {
       expect(container.firstChild).toBeNull();
     });
 
+
     it('renders when isOpen is true', () => {
       render(
         <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
@@ -166,8 +167,8 @@ describe('Modal Component', () => {
       );
 
       // Buscar el backdrop (el div exterior con onClick={onClose})
-      const backdrops = screen.getAllByText(/Test Modal|Content/);
       const modal = screen.getByText('Test Modal').closest('section');
+
       const backdrop = modal.parentElement; // El div que contiene el backdrop
 
       fireEvent.click(backdrop);
@@ -221,7 +222,8 @@ describe('Modal Component', () => {
   // ✅ PORTAL TESTS
   describe('Portal Rendering', () => {
     it('renders modal in document.body using portal', () => {
-      const { container } = render(
+      render(
+
         <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
           <p>Content</p>
         </Modal>

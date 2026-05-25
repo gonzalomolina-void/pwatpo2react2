@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next';
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import cardService from '../services/cardService';
 import favoritesService from '../services/favoritesService';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -10,55 +8,13 @@ import LoadingSpinner from '../components/LoadingSpinner';
 export default function Favorites() {
   const { t } = useTranslation();
 
-  const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        setLoading(true);
-        const favoriteIds = favoritesService.getFavorites();
-        
-        if (favoriteIds.length === 0) {
-          setFavorites([]);
-          setLoading(false);
-          return;
-        }
-
-        const cards = await Promise.all(
-          favoriteIds.map(id => cardService.getCardById(id))
-        );
-        
-        setFavorites(cards.filter(Boolean));
-      } catch {
-        setError(t('favorites.error'));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFavorites();
-  }, [t]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center py-12">
-        <LoadingSpinner message={t('favorites.loading')} />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="py-12 text-center">
-        <p className="text-red-400">{error}</p>
-      </div>
-    );
-  }
+  // Los favoritos ya vienen como objetos completos desde el servicio (LocalStorage)
+  // Cargamos directamente en el estado inicial para evitar re-renders innecesarios
+  const [favorites] = useState(() => favoritesService.getFavorites());
 
   return (
     <div className="py-12">
+
       <header className="mb-12">
         <h1 className="mb-4 text-4xl font-extrabold text-slate-900 dark:text-slate-100">
           {t('favorites.title')}

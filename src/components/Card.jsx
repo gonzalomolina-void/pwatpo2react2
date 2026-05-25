@@ -1,17 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState, forwardRef } from 'react';
+import { useState, forwardRef, memo } from 'react';
 import favoritesService from '../services/favoritesService';
 import { getRarityConfig } from '../utils/rarityConfig';
+import { capitalize } from '../utils/stringUtils';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
-String.prototype.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-
-const Card = forwardRef(({ card }, ref) => {
+const Card = memo(forwardRef(({ card }, ref) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [isFav, setIsFav] = useState(() => favoritesService.isFavorite(card.id));
@@ -19,7 +15,7 @@ const Card = forwardRef(({ card }, ref) => {
   const handleFavorite = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    favoritesService.toggleFavorite(card.id);
+    favoritesService.toggleFavorite(card);
     setIsFav(!isFav);
   };
 
@@ -31,7 +27,7 @@ const Card = forwardRef(({ card }, ref) => {
   const image = media.image;
   const imageUrl = `${CARDS_URL}${image}`;
   const currentConfig = getRarityConfig(rarity);
-  const fallbackImage = `${CARDS_URL}FallbackImage${lang.capitalize()}.webp`;
+  const fallbackImage = `${CARDS_URL}FallbackImage${capitalize(lang)}.webp`;
 
   return (
     <Link 
@@ -87,7 +83,7 @@ const Card = forwardRef(({ card }, ref) => {
       </div>
     </Link>
   );
-});
+}));
 
 Card.displayName = 'Card';
 

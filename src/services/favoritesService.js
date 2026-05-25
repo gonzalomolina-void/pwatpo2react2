@@ -4,11 +4,12 @@ const FAVORITES_KEY = 'hexa_favorites';
 
 /**
  * Servicio para gestionar la persistencia de las cartas favoritas del usuario.
+ * Ahora guarda el objeto completo de la carta para evitar N+1 requests.
  */
 const favoritesService = {
   /**
-   * Obtiene el listado de IDs de cartas favoritas.
-   * @returns {string[]}
+   * Obtiene el listado de objetos de cartas favoritas.
+   * @returns {Object[]}
    */
   getFavorites: () => {
     return storageService.get(FAVORITES_KEY) || [];
@@ -16,13 +17,13 @@ const favoritesService = {
 
   /**
    * Agrega una carta a favoritos.
-   * @param {string} cardId 
-   * @returns {string[]} - Lista actualizada de favoritos.
+   * @param {Object} card - Objeto completo de la carta.
+   * @returns {Object[]} - Lista actualizada de favoritos.
    */
-  addFavorite: (cardId) => {
+  addFavorite: (card) => {
     const favorites = favoritesService.getFavorites();
-    if (!favorites.includes(cardId)) {
-      favorites.push(cardId);
+    if (!favorites.some(f => f.id === card.id)) {
+      favorites.push(card);
       storageService.set(FAVORITES_KEY, favorites);
     }
     return favorites;
@@ -31,37 +32,37 @@ const favoritesService = {
   /**
    * Elimina una carta de favoritos.
    * @param {string} cardId 
-   * @returns {string[]} - Lista actualizada de favoritos.
+   * @returns {Object[]} - Lista actualizada de favoritos.
    */
   removeFavorite: (cardId) => {
     const favorites = favoritesService.getFavorites();
-    const filtered = favorites.filter(id => id !== cardId);
+    const filtered = favorites.filter(f => f.id !== cardId);
     storageService.set(FAVORITES_KEY, filtered);
     return filtered;
   },
 
   /**
    * Alterna el estado de favorito de una carta.
-   * @param {string} cardId 
-   * @returns {string[]} - Lista actualizada de favoritos.
+   * @param {Object} card - Objeto completo de la carta.
+   * @returns {Object[]} - Lista actualizada de favoritos.
    */
-  toggleFavorite: (cardId) => {
+  toggleFavorite: (card) => {
     const favorites = favoritesService.getFavorites();
-    if (favorites.includes(cardId)) {
-      return favoritesService.removeFavorite(cardId);
+    if (favorites.some(f => f.id === card.id)) {
+      return favoritesService.removeFavorite(card.id);
     } else {
-      return favoritesService.addFavorite(cardId);
+      return favoritesService.addFavorite(card);
     }
   },
 
   /**
-   * Verifica si una carta es favorita.
+   * Verifica si una carta es favorita por su ID.
    * @param {string} cardId 
    * @returns {boolean}
    */
   isFavorite: (cardId) => {
     const favorites = favoritesService.getFavorites();
-    return favorites.includes(cardId);
+    return favorites.some(f => f.id === cardId);
   },
 
   /**
