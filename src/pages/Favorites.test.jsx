@@ -2,7 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Favorites from './Favorites';
-import cardService from '../services/cardService';
 import favoritesService from '../services/favoritesService';
 
 const mockT = vi.hoisted(() => (str) => str);
@@ -19,12 +18,6 @@ vi.mock('react-i18next', () => ({
     type: '3rdParty',
     init: () => {},
   }
-}));
-
-vi.mock('../services/cardService', () => ({
-  default: {
-    getCardById: vi.fn(),
-  },
 }));
 
 vi.mock('../services/favoritesService', () => ({
@@ -71,8 +64,8 @@ describe('Favorites Page', () => {
   });
 
   it('renderiza las cartas favoritas en un grid', async () => {
-    favoritesService.getFavorites.mockReturnValue(['card-1']);
-    cardService.getCardById.mockResolvedValue(mockCard);
+    // Ahora el servicio devuelve objetos completos
+    favoritesService.getFavorites.mockReturnValue([mockCard]);
 
     render(
       <MemoryRouter>
@@ -82,21 +75,6 @@ describe('Favorites Page', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Mago')).toBeInTheDocument();
-    });
-  });
-
-  it('muestra mensaje de error cuando falla la carga', async () => {
-    favoritesService.getFavorites.mockReturnValue(['card-1']);
-    cardService.getCardById.mockRejectedValue(new Error('fail'));
-
-    render(
-      <MemoryRouter>
-        <Favorites />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('favorites.error')).toBeInTheDocument();
     });
   });
 });

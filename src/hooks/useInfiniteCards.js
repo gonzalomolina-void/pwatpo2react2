@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
 
@@ -10,8 +11,7 @@ import cardService from '../services/cardService';
  */
 
 /**
- * Caché en memoria para persistir el estado del catálogo entre navegaciones
- * sin necesidad de recurrir a estados globales complejos.
+ * Caché en memoria para persistir el estado del catálogo entre navegaciones.
  */
 let homeCache = {
   cards: [],
@@ -21,56 +21,59 @@ let homeCache = {
   lang: null
 };
 
-/**
- * Hook personalizado para manejar la lógica de scroll infinito y filtrado de cartas.
- */
 export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   const { t } = useTranslation();
+  const tRef = useRef(t);
+  
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
 
-  // Inicializamos desde la caché si los filtros y el idioma coinciden
-  const shouldRestore = homeCache.filters && 
-                       JSON.stringify(homeCache.filters) === JSON.stringify(initialFilters) &&
-                       homeCache.lang === lang;
+  // Decidimos si restauramos en el primer render para que sea estable
+  // Usamos useMemo para que el valor sea persistente durante la vida del componente
+  const isRestoring = useMemo(() => {
+    return !!(homeCache.filters && 
+      homeCache.cards.length > 0 &&
+      JSON.stringify(homeCache.filters) === JSON.stringify(initialFilters) &&
+      homeCache.lang === lang);
+  }, [initialFilters, lang]);
 
-  const [cards, setCards] = useState(shouldRestore ? homeCache.cards : []);
+  const [cards, setCards] = useState(isRestoring ? homeCache.cards : []);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeFilters, setActiveFilters] = useState(shouldRestore ? homeCache.filters : initialFilters);
-  const [page, setPage] = useState(shouldRestore ? homeCache.page : 1);
-  const [hasMore, setHasMore] = useState(shouldRestore ? homeCache.hasMore : true);
+  const [activeFilters, setActiveFilters] = useState(isRestoring ? homeCache.filters : initialFilters);
+  const [page, setPage] = useState(isRestoring ? homeCache.page : 1);
+  const [hasMore, setHasMore] = useState(isRestoring ? homeCache.hasMore : true);
   
-  const observer = useRef();
-  const fetchingPageRef = useRef(0);
+  const abortControllerRef = useRef(null);
+  const isFirstLoad = useRef(true);
 
   // Actualizar la caché cada vez que cambie el estado relevante
   useEffect(() => {
-    homeCache = {
-      cards,
-      page,
-      hasMore,
-      filters: activeFilters,
-      lang
-    };
+    if (cards.length > 0) {
+      homeCache = {
+        cards,
+        page,
+        hasMore,
+        filters: activeFilters,
+        lang
+      };
+    }
   }, [cards, page, hasMore, activeFilters, lang]);
 
-  const fetchCards = useCallback(async (currentPage, filters, isNewSearch = false) => {
-    // Si estamos restaurando y ya tenemos cartas, no hacemos el primer fetch
-    if (!isNewSearch && shouldRestore && currentPage === 1 && cards.length > 0) {
-      return;
+  const fetchCards = useCallback(async (targetPage, filters) => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
-
-    // Evitar peticiones duplicadas para la misma página o si ya estamos cargando
-    if (fetchingPageRef.current === currentPage && !isNewSearch) {
-      return;
-    }
+    abortControllerRef.current = new AbortController();
 
     try {
       setIsLoading(true);
       setError(null);
-      fetchingPageRef.current = currentPage;
 
+      const langKey = lang === 'es' ? 'Es' : 'En';
       const params = {
-        page: currentPage,
+        page: targetPage,
         limit: limit,
       };
 
@@ -78,79 +81,77 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
         params.search = filters.searchTerm;
       }
 
-      const data = await cardService.getCards(params);
+      if (filters.selectedTypes.length > 0) {
+        const typeKey = filters.selectedTypes[0];
+        params[`type${langKey}`] = tRef.current(`home.filters.types.${typeKey}`, { lng: lang });
+      }
+
+      if (filters.selectedRarities.length > 0) {
+        const rarityKey = filters.selectedRarities[0];
+        params[`rarity${langKey}`] = tRef.current(`home.filters.rarities.${rarityKey}`, { lng: lang });
+      }
+
+      const data = await cardService.getCards(params, { signal: abortControllerRef.current.signal });
 
       setCards(prevCards => {
-        if (isNewSearch) return data;
-        // Evitar duplicados por ID (segunda capa de seguridad)
+        if (targetPage === 1) return data;
         const newCards = data.filter(newCard => !prevCards.some(pc => pc.id === newCard.id));
         return [...prevCards, ...newCards];
       });
 
       setHasMore(data.length === limit);
     } catch (err) {
+      if (err.name === 'AbortError') return;
       setError(true);
-      fetchingPageRef.current = 0; // Resetear en caso de error para permitir reintentos
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  }, [limit, shouldRestore, cards.length]);
+  }, [limit, lang]);
 
   useEffect(() => {
-    // Solo disparamos el fetch inicial si no estamos restaurando o si la página es > 1
-    if (!isLoading && (!shouldRestore || page > 1)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      fetchCards(page, activeFilters);
+    // Si estamos restaurando de caché, el primer render NO dispara fetch
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      if (isRestoring) return;
     }
-  }, [page, activeFilters, fetchCards, shouldRestore, isLoading]);
+
+    fetchCards(page, activeFilters);
+  }, [page, activeFilters, fetchCards, isRestoring]);
+
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const handleSearch = useCallback((newFilters) => {
     setActiveFilters(newFilters);
     setPage(1);
     setHasMore(true);
-    fetchingPageRef.current = 0; // Resetear para la nueva búsqueda
-    fetchCards(1, newFilters, true);
-  }, [fetchCards]);
+  }, []);
 
+
+
+  const observer = useRef();
   const lastCardElementRef = useCallback(node => {
-    if (observer.current) {
-      observer.current.disconnect();
-    }
+    if (isLoading) return;
     
-    if (isLoading || !hasMore) {
-      return;
-    }
-    
+    if (observer.current) observer.current.disconnect();
+
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore && !isLoading) {
+      if (entries[0].isIntersecting && hasMore) {
         setPage(prevPage => prevPage + 1);
       }
     });
-    
+
     if (node) observer.current.observe(node);
   }, [isLoading, hasMore]);
 
-  // Filtrado local adicional (tipos y rarezas)
-  const filteredCards = cards.filter(card => {
-    const langKey = lang === 'es' ? 'Es' : 'En';
-    
-    // Mapeamos las keys seleccionadas a sus etiquetas traducidas para comparar con la data de la carta
-    const matchType = activeFilters.selectedTypes.length === 0 || activeFilters.selectedTypes.some(key => {
-      const translatedLabel = t(`home.filters.types.${key}`, { lng: lang });
-      return card[`type${langKey}`] === translatedLabel;
-    });
-
-    const matchRarity = activeFilters.selectedRarities.length === 0 || activeFilters.selectedRarities.some(key => {
-      const translatedLabel = t(`home.filters.rarities.${key}`, { lng: lang });
-      return card[`rarity${langKey}`] === translatedLabel;
-    });
-
-    return matchType && matchRarity;
-  });
-
   return {
-    cards: filteredCards,
+    cards,
     isLoading,
     error,
     hasMore,
@@ -159,3 +160,4 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     lastCardElementRef
   };
 };
+

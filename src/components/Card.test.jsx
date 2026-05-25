@@ -66,7 +66,8 @@ describe('Card Component', () => {
     const favButton = screen.getByRole('button', { name: /card.addFavorite/i });
     fireEvent.click(favButton);
 
-    expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard.id);
+    expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard);
+
   });
 
   it('shows "remove favorite" aria-label when card is already favorite', () => {
@@ -92,5 +93,19 @@ describe('Card Component', () => {
 
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/detalles/1');
+  });
+
+  it('shows fallback image on error', () => {
+    favoritesService.isFavorite.mockReturnValue(false);
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} />
+      </MemoryRouter>
+    );
+
+    const img = screen.getByAltText('Dragon Warrior');
+    fireEvent.error(img);
+
+    expect(img.src).toContain('FallbackImageEn.webp');
   });
 });
