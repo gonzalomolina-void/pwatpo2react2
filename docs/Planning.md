@@ -52,12 +52,12 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Manejo de error 404 si el ID no existe.
     *   Diseño detallado de la vista.
 
-### US7: Gestión de Favoritos
-**Como** coleccionista, **quiero** marcar cartas como favoritas, **para** tenerlas guardadas en mi lista personal.
+### US7: Gestión de Favoritos Relacionados con el Usuario
+**Como** jugador autenticado, **quiero** marcar cartas como favoritas, **para** tenerlas guardadas en la base de datos de mi cuenta.
 *   **Criterios de Aceptación:**
     *   Botón de favorito en las cards y/o detalle.
-    *   Persistencia en `localStorage`.
-    *   Vista de `/favoritos` que consuma los datos guardados.
+    *   Consumo de los endpoints del backend (`POST /api/favorites`, `DELETE /api/favorites/:id`) enviando el token JWT.
+    *   Vista de `/favoritos` que cargue los favoritos directamente de la base de datos a través de la API (`GET /api/favorites`).
 
 ### US8: Creación de Cartas con IA (Gemini / Nano Banana)
 **Como** creador de contenido, **quiero** generar nuevas cartas automáticamente usando IA, **para** expandir el universo del juego sin esfuerzo manual.
@@ -74,6 +74,21 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Implementación de GitHub Action disparada por `release published`.
     *   Desactivación de builds automáticos en Vercel.
 
+### US10: Pantalla de Login / Registro y Gestión de Sesión (JWT)
+**Como** usuario, **quiero** registrarme e iniciar sesión en la aplicación, **para** acceder a mis favoritos de manera personalizada.
+*   **Criterios de Aceptación:**
+    *   Formulario visual de Login y Registro con validaciones en los inputs.
+    *   Guardar el token JWT devuelto por el backend en `localStorage` o cookies al iniciar sesión.
+    *   Enviar el JWT en la cabecera `Authorization: Bearer <token>` para todas las llamadas protegidas (ej. favoritos).
+    *   Header con botón de "Cerrar Sesión" e información del usuario autenticado.
+
+### US11: Adaptación de i18n y Aplanamiento en llamadas a la API
+**Como** desarrollador, **quiero** adaptar el cliente y los componentes para que envíen el idioma al backend y usen propiedades planas, **para** reducir el procesamiento en el cliente y simplificar la lógica de traducción.
+*   **Criterios de Aceptación:**
+    *   Configurar `cardService.js` para enviar el idioma actual de la aplicación (`react-i18next`) a través de la cabecera `Accept-Language` o parámetro `lang`.
+    *   Adaptar [Card.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/components/Card.jsx) y [Detail.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/pages/Detail.jsx) para leer propiedades directas (`name`, `description`, `type`, `rarity`) y quitar claves dinámicas como `nameEs` / `nameEn`.
+    *   Actualizar los mocks y aserciones de la suite de tests unitarios que se vean afectados por el cambio de estructura plana.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -83,14 +98,16 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 0 | Gestión de Kanban y Seguimiento | **Lautaro** | Media (Constante) |
 | 1 | Setup inicial, Router y Layout (US1) | **Lautaro** | Media |
 | 2 | Configuración i18n y LocalStorage (US2) | **Lautaro** | Baja |
-| 3 | Servicios de API (MockAPI) y Home (US3) | **Juan** | Alta |
+| 3 | Servicios de API y Home (US3) | **Juan** | Alta |
 | 4 | Buscador con filtrado de API (US4) | **Juan** | Media |
 | 5 | Lógica de Scroll Infinito (US5) | **Gonzalo** | Alta |
 | 6 | Página de Detalle y manejo de 404 (US6) | **Juan** | Media |
-| 7 | Sistema de Favoritos y Persistencia (US7) | **Gonzalo** | Alta |
+| 7 | Favoritos vinculados al Backend con JWT (US7) | **Gonzalo** | Alta |
 | 8 | Integración de IA para creación de cartas (US8) | **Juan** | Muy Alta |
 | 9 | Pipeline de Deployment vía GitHub Releases (US9) | **Lautaro** | Media |
-| 10 | Documentación Final (README) | **Lautaro** | Baja |
+| 10 | Pantalla de Login/Registro y Autenticación JWT (US10) | **Gonzalo** | Alta |
+| 11 | Adaptación de i18n y Aplanamiento de API (US11) | **Lautaro** | Media |
+| 12 | Documentación Final (README) | **Lautaro** | Baja |
 
 ---
 
@@ -100,4 +117,4 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 *   **Estado:** `useState`, `useEffect`.
 *   **Navegación:** `react-router-dom`.
 *   **Traducción:** `react-i18next`.
-*   **Backend:** MockAPI.io.
+*   **Backend:** Node.js, Express, Prisma, PostgreSQL (reemplazando MockAPI.io).
