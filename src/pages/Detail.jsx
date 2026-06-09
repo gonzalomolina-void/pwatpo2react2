@@ -66,13 +66,8 @@ export default function Detail() {
 
   if (!card) return null;
 
-  const langKey = lang === 'es' ? 'Es' : 'En';
-  const name = card[`name${langKey}`];
-  const type = card[`type${langKey}`];
-  const rarity = card[`rarity${langKey}`];
-  const description = card[`description${langKey}`];
-  const { cost, atk, def, media } = card;
-  const imageUrl = `${CARDS_URL}${media.image}`;
+  const { cost, atk, def, name, type, rarity, description, image } = card;
+  const imageUrl = `${CARDS_URL}${image}`;
   const rarityStyle = getRarityConfig(rarity);
 
   return (

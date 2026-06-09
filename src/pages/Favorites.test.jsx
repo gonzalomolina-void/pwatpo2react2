@@ -29,16 +29,13 @@ vi.mock('../services/favoritesService', () => ({
 
 const mockCard = {
   id: 'card-1',
-  nameEs: 'Mago',
-  nameEn: 'Mage',
-  typeEs: 'Unidad',
-  typeEn: 'Unit',
-  rarityEs: 'Común',
-  rarityEn: 'Common',
+  name: 'Mago',
+  type: 'Unidad',
+  rarity: 'Común',
   cost: 3,
   atk: 5,
   def: 3,
-  media: { image: 'mago.webp' },
+  image: 'mago.webp',
 };
 
 describe('Favorites Page', () => {

@@ -23,14 +23,13 @@ vi.mock('react-i18next', () => ({
 describe('Card Component', () => {
   const mockCard = {
     id: '1',
-    nameEn: 'Dragon Warrior',
-    nameEs: 'Guerrero Dragón',
-    typeEn: 'Unit',
-    rarityEn: 'Legendary',
+    name: 'Dragon Warrior',
+    type: 'Unit',
+    rarity: 'Legendary',
     cost: 5,
     atk: 10,
     def: 8,
-    media: { image: 'dragon.png' }
+    image: 'dragon.png'
   };
 
   beforeEach(() => {

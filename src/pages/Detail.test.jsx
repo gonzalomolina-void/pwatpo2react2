@@ -40,18 +40,14 @@ vi.mock('../services/favoritesService', () => ({
 
 const mockCard = {
   id: 'card-1',
-  nameEs: 'Mago de Fuego',
-  nameEn: 'Fire Mage',
-  typeEs: 'Unidad',
-  typeEn: 'Unit',
-  rarityEs: 'Legendario',
-  rarityEn: 'Legendary',
+  name: 'Mago de Fuego',
+  type: 'Unidad',
+  rarity: 'Legendario',
   cost: 5,
   atk: 8,
   def: 6,
-  media: { image: 'fire-mage.webp' },
-  descriptionEs: 'Un poderoso mago del fuego.',
-  descriptionEn: 'A powerful fire mage.',
+  image: 'fire-mage.webp',
+  description: 'Un poderoso mago del fuego.',
 };
 
 function renderDetail() {
