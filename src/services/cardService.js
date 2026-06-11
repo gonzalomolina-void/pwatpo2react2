@@ -16,6 +16,8 @@
  * @property {string} descriptionEn - Descripción en inglés.
  */
 
+import i18n from '../i18n';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const cardService = {
@@ -44,7 +46,12 @@ const cardService = {
       });
       url.search = searchParams.toString();
 
-      const response = await fetch(url, { signal });
+      const response = await fetch(url, { 
+        signal,
+        headers: {
+          'Accept-Language': i18n.language || 'es'
+        }
+      });
       
       if (!response.ok) {
         if (response.status === 404) return [];
@@ -69,7 +76,12 @@ const cardService = {
    */
   getCardById: async (id, { signal } = {}) => {
     try {
-      const response = await fetch(`${API_URL}/cards/${id}`, { signal });
+      const response = await fetch(`${API_URL}/cards/${id}`, { 
+        signal,
+        headers: {
+          'Accept-Language': i18n.language || 'es'
+        }
+      });
       
       if (!response.ok) {
         if (response.status === 404) return null;

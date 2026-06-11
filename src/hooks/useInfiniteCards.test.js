@@ -107,7 +107,7 @@ describe('useInfiniteCards Hook', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(cardService.getCards).toHaveBeenCalledWith(
-      expect.objectContaining({ typeEn: 'home.filters.types.unit' }),
+      expect.objectContaining({ type: 'unit' }),
       expect.objectContaining({ signal: expect.anything() })
     );
     expect(result.current.cards).toHaveLength(1);
@@ -129,7 +129,7 @@ describe('useInfiniteCards Hook', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(cardService.getCards).toHaveBeenCalledWith(
-      expect.objectContaining({ rarityEn: 'home.filters.rarities.legendary' }),
+      expect.objectContaining({ rarity: 'legendary' }),
       expect.objectContaining({ signal: expect.anything() })
     );
   });

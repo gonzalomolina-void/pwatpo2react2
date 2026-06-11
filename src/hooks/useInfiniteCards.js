@@ -82,13 +82,11 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       }
 
       if (filters.selectedTypes.length > 0) {
-        const typeKey = filters.selectedTypes[0];
-        params[`type${langKey}`] = tRef.current(`home.filters.types.${typeKey}`, { lng: lang });
+        params.type = filters.selectedTypes[0];
       }
 
       if (filters.selectedRarities.length > 0) {
-        const rarityKey = filters.selectedRarities[0];
-        params[`rarity${langKey}`] = tRef.current(`home.filters.rarities.${rarityKey}`, { lng: lang });
+        params.rarity = filters.selectedRarities[0];
       }
 
       const data = await cardService.getCards(params, { signal: abortControllerRef.current.signal });

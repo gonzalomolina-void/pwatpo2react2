@@ -24,12 +24,7 @@ const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
   };
 
 
-  const { id, cost, media, atk, def } = card;
-  const langKey = lang === 'es' ? 'Es' : 'En';
-  const name = card[`name${langKey}`];
-  const type = card[`type${langKey}`];
-  const rarity = card[`rarity${langKey}`];
-  const image = media.image;
+  const { id, cost, atk, def, name, type, rarity, image } = card;
   const imageUrl = `${CARDS_URL}${image}`;
   const currentConfig = getRarityConfig(rarity);
   const fallbackImage = `${CARDS_URL}FallbackImage${capitalize(lang)}.webp`;
