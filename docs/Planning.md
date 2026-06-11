@@ -89,6 +89,22 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Adaptar [Card.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/components/Card.jsx) y [Detail.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/pages/Detail.jsx) para leer propiedades directas (`name`, `description`, `type`, `rarity`) y quitar claves dinámicas como `nameEs` / `nameEn`.
     *   Actualizar los mocks y aserciones de la suite de tests unitarios que se vean afectados por el cambio de estructura plana.
 
+### US12: Control de Acceso basado en Roles en el Cliente (Frontend)
+**Como** usuario autenticado, **quiero** que la aplicación oculte o deshabilite las opciones administrativas si no tengo el rol de `admin`, **para** evitar errores de permisos al interactuar con la interfaz.
+*   **Criterios de Aceptación:**
+    *   Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
+    *   Ocultar o deshabilitar elementos del frontend para crear cartas (como la Forja o botones de edición) si el usuario no tiene rol `admin`.
+    *   Implementar un componente de ruta protegida (`ProtectedRoute`) en React Router que limite el acceso a vistas administrativas únicamente a usuarios con rol `admin`.
+    *   Redirigir a los usuarios comunes a una ruta no autorizada o al Home si intentan ingresar directamente por URL a una sección de administrador.
+
+### US13: Renovación de Sesión con Refresh Token en el Frontend
+**Como** usuario, **quiero** que mi sesión se mantenga activa y funcional sin interrupciones molestas mientras la app esté abierta, **para** mejorar mi experiencia de navegación.
+*   **Criterios de Aceptación:**
+    *   Almacenar el Refresh Token de forma segura en el cliente (o usar el manejo automático del navegador si el backend lo setea vía cookie `httpOnly`).
+    *   Configurar un interceptor en el cliente HTTP (como Axios) para capturar errores de tipo `401 Unauthorized`.
+    *   Cuando ocurra un `401` por token expirado, el interceptor debe realizar una solicitud a `POST /api/auth/refresh` en segundo plano para obtener un nuevo Access Token y reintentar la petición original.
+    *   Si el refresco falla, se debe desloguear al usuario automáticamente, limpiando el almacenamiento y redirigiéndolo al Login con un mensaje informativo de sesión expirada.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -107,7 +123,9 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 9 | Pipeline de Deployment vía GitHub Releases (US9) | **Lautaro** | Media |
 | 10 | Pantalla de Login/Registro y Autenticación JWT (US10) | **Gonzalo** | Alta |
 | 11 | Adaptación de i18n y Aplanamiento de API (US11) | **Lautaro** | Media |
-| 12 | Documentación Final (README) | **Lautaro** | Baja |
+| 12 | Control de Acceso por Roles (US12) | **Gonzalo** | Media |
+| 13 | Interceptor HTTP y Renovación de Token (US13) | **Gonzalo** | Alta |
+| 14 | Documentación Final (README) | **Lautaro** | Baja |
 
 ---
 
