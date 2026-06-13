@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AcercaDe from './AcercaDe';
 import ThemeToggle from './ThemeToggle';
@@ -10,9 +10,21 @@ export default function Header() {
   const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
+  const handleMobileLogout = async () => {
+    await logout();
+    closeMenu();
+    navigate('/login');
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900/80">
@@ -75,7 +87,7 @@ export default function Header() {
                   {user.email}
                 </span>
                 <button 
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="text-sm font-semibold tracking-wider text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 uppercase transition-colors cursor-pointer"
                 >
                   {t('nav.logout')}
@@ -149,10 +161,7 @@ export default function Header() {
                   </span>
                 </div>
                 <button
-                  onClick={() => {
-                    logout();
-                    closeMenu();
-                  }}
+                  onClick={handleMobileLogout}
                   className="flex items-center py-3.5 text-base font-semibold text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 w-full text-left cursor-pointer"
                 >
                   <span className="mr-3">🚪</span>
@@ -175,4 +184,5 @@ export default function Header() {
     </header>
   );
 }
+
 

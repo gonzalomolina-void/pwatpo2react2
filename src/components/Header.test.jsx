@@ -1,8 +1,18 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
 import { useAuth } from '../context/AuthContext';
+
+// Mock de useNavigate para validar redirecciones
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate
+  };
+});
 
 // Mock de react-i18next
 vi.mock('react-i18next', () => ({
@@ -103,7 +113,7 @@ describe('Header Component', () => {
     expect(logoutBtn).toBeInTheDocument();
   });
 
-  it('debe llamar a la funcion logout al hacer clic en Cerrar Sesion', () => {
+  it('debe llamar a la funcion logout y redirigir a /login al hacer clic en Cerrar Sesion', async () => {
     useAuth.mockReturnValue({
       user: { email: 'user@test.com', role: 'usuario' },
       isAuthenticated: true,
@@ -120,5 +130,8 @@ describe('Header Component', () => {
     fireEvent.click(logoutBtn);
 
     expect(mockLogout).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/login');
+    });
   });
 });

@@ -1,0 +1,7 @@
+current_phase: apply
+completed_phases:
+  - explore
+  - propose
+  - spec
+  - design
+  - tasks
