@@ -115,6 +115,13 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   **Backend:**
         *   Las rutas GET `/api/cards` y GET `/api/cards/:id` deben ser securizadas con el middleware `requireAuth`, rechazando peticiones sin token JWT válido con un error `401 Unauthorized`.
 
+### US16: Recarga de Detalles de Carta al cambiar de Idioma (i18n)
+**Como** coleccionista, **quiero** que el detalle de la carta se actualice automáticamente al cambiar el idioma en el selector de la aplicación, **para** leer su lore y estadísticas en mi idioma de preferencia sin necesidad de recargar la página manualmente.
+*   **Criterios de Aceptación:**
+    *   Al cambiar de idioma en el header (evento de cambio de idioma de `react-i18next`), la vista de detalle de la carta debe reaccionar y volver a realizar la petición a la API (`getCardById`) enviando la cabecera `Accept-Language` con el nuevo idioma.
+    *   Durante el tiempo en que se realiza la recarga de datos, debe mostrarse el spinner de carga temático para evitar inconsistencias visuales y mantener una buena UX.
+    *   Asegurar mediante pruebas unitarias en `Detail.test.jsx` que el cambio de lenguaje gatille el refresco del fetch.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -137,6 +144,7 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 13 | Interceptor HTTP y Renovación de Token (US13) | **Gonzalo** | Alta |
 | 14 | Documentación Final (README) | **Lautaro** | Baja |
 | 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
+| 16 | Recarga de Detalle de Carta por Idioma (US16) | **Gonzalo & Juan** | Baja |
 
 ---
 
