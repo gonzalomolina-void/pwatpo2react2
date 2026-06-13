@@ -46,11 +46,17 @@ const cardService = {
       });
       url.search = searchParams.toString();
 
+      const token = localStorage.getItem('hexa_token');
+      const headers = {
+        'Accept-Language': i18n.language || 'es'
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, { 
         signal,
-        headers: {
-          'Accept-Language': i18n.language || 'es'
-        }
+        headers
       });
       
       if (!response.ok) {
@@ -76,11 +82,17 @@ const cardService = {
    */
   getCardById: async (id, { signal } = {}) => {
     try {
+      const token = localStorage.getItem('hexa_token');
+      const headers = {
+        'Accept-Language': i18n.language || 'es'
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${API_URL}/cards/${id}`, { 
         signal,
-        headers: {
-          'Accept-Language': i18n.language || 'es'
-        }
+        headers
       });
       
       if (!response.ok) {

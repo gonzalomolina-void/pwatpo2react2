@@ -21,6 +21,7 @@ Este documento detalla el desglose de tareas ordenadas cronológicamente para im
 - [x] **Task 3.1**: Modificar `src/components/Header.jsx` para inyectar `useNavigate` y redirigir al Login (`/login`) tras invocar la función `logout()`.
 - [x] **Task 3.2**: Actualizar la suite de pruebas unitarias en `src/components/Header.test.jsx` y `src/App.test.jsx` para asegurar que el botón de logout redirige correctamente y corregir posibles colisiones causadas por las rutas protegidas.
 - [x] **Task 3.3**: Ocultar los enlaces de navegación (`Home`, `Favoritos` e `Iniciar Sesión`) en el `Header` en la ruta de `/login` usando TDD.
+- [x] **Task 3.4**: Enviar el token JWT en la cabecera Authorization en las llamadas de cardService.js usando TDD.
 
 ## Phase 4: Verification & Manual Testing
 - [x] **Task 4.1**: Ejecutar la suite completa de pruebas (`pnpm.cmd test:run`) y asegurar que todos los tests (heredados y nuevos) finalicen en verde.
