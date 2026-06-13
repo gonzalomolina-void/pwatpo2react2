@@ -71,7 +71,7 @@ export default function Header() {
             
             {isAuthenticated ? (
               <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 max-w-[150px] truncate" title={user.email}>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 max-w-37.5 truncate" title={user.email}>
                   {user.email}
                 </span>
                 <button 
