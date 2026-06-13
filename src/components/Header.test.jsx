@@ -4,13 +4,15 @@ import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
 import { useAuth } from '../context/AuthContext';
 
-// Mock de useNavigate para validar redirecciones
+// Mock de useNavigate y useLocation para validar redirecciones y rutas
 const mockNavigate = vi.fn();
+let mockPathname = '/';
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
-    useNavigate: () => mockNavigate
+    useNavigate: () => mockNavigate,
+    useLocation: () => ({ pathname: mockPathname })
   };
 });
 
@@ -46,6 +48,7 @@ describe('Header Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockPathname = '/';
     // Valor por defecto para las pruebas existentes (usuario no autenticado)
     useAuth.mockReturnValue({
       user: null,
@@ -133,5 +136,45 @@ describe('Header Component', () => {
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
+  });
+
+  it('no debe renderizar links de navegacion ni iniciar sesion en la ruta /login', () => {
+    mockPathname = '/login';
+    useAuth.mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      logout: mockLogout
+    });
+
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('link', { name: 'Inicio' })).toBeInTheDocument(); // El logotipo
+    expect(screen.queryByText('Inicio')).not.toBeInTheDocument(); // El enlace de navegación de Inicio (desktop)
+    expect(screen.queryByText('Favoritos')).not.toBeInTheDocument(); // Enlace de Favoritos
+    expect(screen.queryByRole('link', { name: 'Iniciar Sesión' })).not.toBeInTheDocument(); // Enlace de Iniciar Sesión
+  });
+
+  it('debe renderizar links de navegacion normalmente en rutas distintas a /login', () => {
+    mockPathname = '/';
+    useAuth.mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      logout: mockLogout
+    });
+
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    const homeLinks = screen.getAllByRole('link', { name: 'Inicio' });
+    expect(homeLinks.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Favoritos')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Iniciar Sesión' })).toBeInTheDocument();
   });
 });
