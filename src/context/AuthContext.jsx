@@ -50,8 +50,8 @@ export function AuthProvider({ children }) {
     try {
       const result = await authService.login(email, password);
       // Guardar token en localStorage
-      localStorage.setItem('hexa_token', result.accessToken);
-      setToken(result.accessToken);
+      localStorage.setItem('hexa_token', result.token);
+      setToken(result.token);
       setUser(result.user);
       setLoading(false);
       return result;

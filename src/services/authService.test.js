@@ -9,7 +9,7 @@ describe('authService', () => {
 
   describe('login', () => {
     it('retorna datos de usuario y token ante login exitoso', async () => {
-      const mockResponse = { accessToken: 'jwt-123', user: { id: 1, email: 'test@test.com', role: 'usuario' } };
+      const mockResponse = { token: 'jwt-123', user: { id: 1, email: 'test@test.com', role: 'usuario' } };
       globalThis.fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse

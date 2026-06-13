@@ -48,7 +48,7 @@ describe('AuthContext', () => {
 
   it('debe iniciar sesion correctamente al llamar a login', async () => {
     const mockUser = { id: 1, email: 'test@test.com', role: 'usuario' };
-    const mockLoginResponse = { accessToken: 'jwt-token', user: mockUser };
+    const mockLoginResponse = { token: 'jwt-token', user: mockUser };
     
     authService.login.mockResolvedValueOnce(mockLoginResponse);
     authService.getMe.mockResolvedValueOnce(mockUser);
@@ -102,7 +102,7 @@ describe('AuthContext', () => {
     // Simulamos que el usuario ya estaba autenticado seteandolo manualmente o iniciando sesion
     // En este caso, usaremos el mock de login primero
     const mockUser = { id: 1, email: 'test@test.com', role: 'usuario' };
-    authService.login.mockResolvedValueOnce({ accessToken: 'jwt-token', user: mockUser });
+    authService.login.mockResolvedValueOnce({ token: 'jwt-token', user: mockUser });
     
     await act(async () => {
       await authInstance.login('test@test.com', 'password123');
