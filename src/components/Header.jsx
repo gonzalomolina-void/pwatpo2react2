@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import AcercaDe from './AcercaDe';
 import ThemeToggle from './ThemeToggle';
 import LanguageSelector from './LanguageSelector';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
   const { t } = useTranslation();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -59,14 +61,36 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-6 md:flex">
-          <nav className="flex gap-6">
+          <nav className="flex gap-6 items-center">
             <Link to="/" className="text-sm font-medium tracking-wider text-slate-600 uppercase transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400">
               {t('nav.home')}
             </Link>
             <Link to="/favoritos" className="text-sm font-medium tracking-wider text-slate-600 uppercase transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400">
               {t('nav.favorites')}
             </Link>
+            
+            {isAuthenticated ? (
+              <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 max-w-[150px] truncate" title={user.email}>
+                  {user.email}
+                </span>
+                <button 
+                  onClick={logout}
+                  className="text-sm font-semibold tracking-wider text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 uppercase transition-colors cursor-pointer"
+                >
+                  {t('nav.logout')}
+                </button>
+              </div>
+            ) : (
+              <Link 
+                to="/login" 
+                className="text-sm font-semibold tracking-wider text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 uppercase transition-colors"
+              >
+                {t('nav.login')}
+              </Link>
+            )}
           </nav>
+          
           <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
             <LanguageSelector />
             <ThemeToggle />
@@ -98,11 +122,11 @@ export default function Header() {
       {/* Mobile Navigation Dropdown */}
       {isMenuOpen && (
         <div className="border-t border-slate-200 bg-white/95 backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-900/95">
-          <nav className="container mx-auto flex flex-col p-4">
+          <nav className="container mx-auto flex flex-col p-4 space-y-1">
             <Link
               to="/"
               onClick={closeMenu}
-              className="flex items-center border-b border-slate-100 py-4 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:border-slate-800 dark:text-slate-300 dark:hover:text-blue-400"
+              className="flex items-center border-b border-slate-100 py-3.5 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:border-slate-800 dark:text-slate-300 dark:hover:text-blue-400"
             >
               <span className="mr-3">🏠</span>
               {t('nav.home')}
@@ -110,14 +134,45 @@ export default function Header() {
             <Link
               to="/favoritos"
               onClick={closeMenu}
-              className="flex items-center py-4 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              className="flex items-center border-b border-slate-100 py-3.5 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
             >
               <span className="mr-3">⭐</span>
               {t('nav.favorites')}
             </Link>
+            
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center justify-between border-b border-slate-100 py-3.5 text-base font-medium text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                  <span className="truncate max-w-50">{user.email}</span>
+                  <span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-0.5 rounded-full font-bold">
+                    {user.role}
+                  </span>
+                </div>
+                <button
+                  onClick={() => {
+                    logout();
+                    closeMenu();
+                  }}
+                  className="flex items-center py-3.5 text-base font-semibold text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 w-full text-left cursor-pointer"
+                >
+                  <span className="mr-3">🚪</span>
+                  {t('nav.logout')}
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="flex items-center py-3.5 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              >
+                <span className="mr-3">🔑</span>
+                {t('nav.login')}
+              </Link>
+            )}
           </nav>
         </div>
       )}
     </header>
   );
 }
+

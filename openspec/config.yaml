@@ -1,0 +1,62 @@
+schema:spec-driven
+
+context: |
+  Tech stack: React 19, Vite 8, Tailwind CSS v4, react-router-dom v7, react-i18next, MockAPI.io.
+  Architecture: SPA with standard React hooks (useState, useEffect, useParams) for state management. Routing in src/App.jsx. Estilos en src/index.css con @import "tailwindcss".
+  Testing: Vitest for Unit/Integration, Playwright for E2E.
+  Style: ESLint (eslint.config.js).
+
+strict_tdd: true
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules/packages
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code patterns and conventions
+    - Load relevant coding skills for the project stack
+  verify:
+    - Run tests if test infrastructure exists
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)
+
+testing:
+  strict_tdd: true
+  detected_at: "2026-06-13T09:08:00-03:00"
+  test_runner:
+    command: "pnpm test:run"
+    framework: "vitest"
+  layers:
+    unit:
+      available: true
+      tool: "vitest + @testing-library/react"
+    integration:
+      available: true
+      tool: "vitest + @testing-library/react"
+    e2e:
+      available: true
+      tool: "playwright"
+  coverage:
+    available: true
+    command: "pnpm test:coverage"
+  quality_tools:
+    linter:
+      available: true
+      command: "pnpm lint"
+    type_checker:
+      available: false
+      command: ""
+    formatter:
+      available: false
+      command: ""

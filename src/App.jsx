@@ -6,9 +6,11 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Favorites from './pages/Favorites';
+import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import SplashScreen from './components/SplashScreen';
 import { preferencesService } from './services/preferencesService';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -30,7 +32,7 @@ function App() {
   };
 
   return (
-    <>
+    <AuthProvider>
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       <Router>
@@ -42,6 +44,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/detalles/:id" element={<Detail />} />
               <Route path="/favoritos" element={<Favorites />} />
+              <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -49,8 +52,9 @@ function App() {
           <Footer />
         </div>
       </Router>
-    </>
+    </AuthProvider>
   );
 }
 
 export default App;
+
