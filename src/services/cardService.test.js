@@ -6,7 +6,7 @@ import cardService from './cardService';
 describe('cardService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-
+    localStorage.clear();
     globalThis.fetch = vi.fn();
   });
 
@@ -66,6 +66,23 @@ describe('cardService', () => {
       await expect(cardService.getCards()).rejects.toThrow('Network error');
       expect(consoleSpy).toHaveBeenCalled();
     });
+
+    it('envia el token de autorizacion en las cabeceras si existe en localStorage', async () => {
+      localStorage.setItem('hexa_token', 'test-token');
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => []
+      });
+
+      await cardService.getCards({ page: 1 });
+
+      const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1`);
+      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({
+        headers: expect.objectContaining({
+          'Authorization': 'Bearer test-token'
+        })
+      }));
+    });
   });
 
   describe('getCardById', () => {
@@ -109,6 +126,25 @@ describe('cardService', () => {
 
       await expect(cardService.getCardById('1')).rejects.toThrow('Network error');
       expect(consoleSpy).toHaveBeenCalled();
+    });
+
+    it('envia el token de autorizacion en las cabeceras si existe en localStorage', async () => {
+      localStorage.setItem('hexa_token', 'test-token');
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({})
+      });
+
+      await cardService.getCardById('card-123');
+
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/cards/card-123`,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'Authorization': 'Bearer test-token'
+          })
+        })
+      );
     });
   });
 });

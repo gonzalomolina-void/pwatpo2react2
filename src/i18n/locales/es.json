@@ -1,7 +1,9 @@
 {
   "nav": {
     "home": "Home",
-    "favorites": "Favoritos"
+    "favorites": "Favoritos",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión"
   },
   "app": {
     "title": "HEXA - Enciclopedia de Cartas"
@@ -89,5 +91,24 @@
     "toggle": "Cambiar tema",
     "toLight": "Invocar Modo Luz",
     "toDark": "Abrazar las Sombras"
+  },
+  "auth": {
+    "loginTitle": "Ingresá a HEXA",
+    "loginSubtitle": "Accedé a tus favoritos y forjá cartas únicas",
+    "registerTitle": "Creá tu Cuenta",
+    "registerSubtitle": "Registrate para empezar a coleccionar",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Contraseña",
+    "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "loginButton": "Iniciar Sesión",
+    "registerButton": "Registrarse",
+    "haveAccount": "¿Ya tenés cuenta? Iniciá sesión",
+    "needAccount": "¿No tenés cuenta? Registrate",
+    "errorRequiredFields": "Todos los campos son requeridos",
+    "errorInvalidEmail": "Email no válido",
+    "errorPasswordMismatch": "Las contraseñas no coinciden",
+    "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "registerSuccess": "¡Registro exitoso! Ya podés iniciar sesión.",
+    "errorGeneral": "Ocurrió un error inesperado"
   }
 }

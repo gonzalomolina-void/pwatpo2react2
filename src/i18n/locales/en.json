@@ -1,7 +1,9 @@
 {
   "nav": {
     "home": "Home",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "login": "Log In",
+    "logout": "Log Out"
   },
   "app": {
     "title": "HEXA - Card Encyclopedia"
@@ -89,5 +91,24 @@
     "toggle": "Change theme",
     "toLight": "Summon Light Mode",
     "toDark": "Embrace the Shadows"
+  },
+  "auth": {
+    "loginTitle": "Log in to HEXA",
+    "loginSubtitle": "Access your favorites and forge unique cards",
+    "registerTitle": "Create your Account",
+    "registerSubtitle": "Register to start collecting",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "loginButton": "Log In",
+    "registerButton": "Sign Up",
+    "haveAccount": "Already have an account? Log in",
+    "needAccount": "Don't have an account? Register",
+    "errorRequiredFields": "All fields are required",
+    "errorInvalidEmail": "Invalid email address",
+    "errorPasswordMismatch": "Passwords do not match",
+    "errorPasswordTooShort": "Password must be at least 6 characters long",
+    "registerSuccess": "Registration successful! You can now log in.",
+    "errorGeneral": "An unexpected error occurred"
   }
 }

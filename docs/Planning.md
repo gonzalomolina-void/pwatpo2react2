@@ -105,6 +105,16 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Cuando ocurra un `401` por token expirado, el interceptor debe realizar una solicitud a `POST /api/auth/refresh` en segundo plano para obtener un nuevo Access Token y reintentar la petición original.
     *   Si el refresco falla, se debe desloguear al usuario automáticamente, limpiando el almacenamiento y redirigiéndolo al Login con un mensaje informativo de sesión expirada.
 
+### US15: Flujo de Autenticación y Securización de Cartas (Full-stack)
+**Como** administrador y desarrollador, **quiero** que el usuario deba loguearse obligatoriamente para ver las cartas y que la API del backend proteja esos endpoints, **para** garantizar la seguridad del catálogo y un flujo de navegación consistente.
+*   **Criterios de Aceptación:**
+    *   **Frontend:**
+        *   Luego de que la pantalla Splash finalice, el usuario debe ser redirigido a `/login` si no está autenticado, en lugar de ingresar directo a `/` (Home).
+        *   Al ejecutar la acción de "Cerrar Sesión" (Logout), la aplicación debe redirigir inmediatamente a `/login`.
+        *   Si un usuario no autenticado intenta ingresar manualmente a rutas protegidas (como `/` o `/favoritos`), debe ser redirigido a `/login`.
+    *   **Backend:**
+        *   Las rutas GET `/api/cards` y GET `/api/cards/:id` deben ser securizadas con el middleware `requireAuth`, rechazando peticiones sin token JWT válido con un error `401 Unauthorized`.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -126,6 +136,7 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 12 | Control de Acceso por Roles (US12) | **Gonzalo** | Media |
 | 13 | Interceptor HTTP y Renovación de Token (US13) | **Gonzalo** | Alta |
 | 14 | Documentación Final (README) | **Lautaro** | Baja |
+| 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
 
 ---
 
