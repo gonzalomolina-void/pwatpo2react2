@@ -31,9 +31,9 @@
   - Vincularlo para abrir el `CardFormModal` en modo Edición.
 
 ## 5. Pruebas y Validación (TDD)
-- [ ] **Task 5.1**: Escribir y ejecutar pruebas unitarias para:
+- [x] **Task 5.1**: Escribir y ejecutar pruebas unitarias para:
   - Validar el parser nativo de JWT en `tests/jwt.test.js`.
   - Validar las restricciones de `ProtectedRoute` en `tests/ProtectedRoute.test.jsx`.
   - Validar la visibilidad de los botones administrativos en `Card.test.jsx` y `Home.test.jsx`.
   - Validar la renderización y comportamiento del modal en `CardFormModal.test.jsx`.
-- [ ] **Task 5.2**: Correr linter (`pnpm lint`) y verificar que todos los tests unitarios pasen con éxito sin regresiones.
+- [x] **Task 5.2**: Correr linter (`pnpm lint`) y verificar que todos los tests unitarios pasen con éxito sin regresiones.
