@@ -4,11 +4,13 @@ import { useState, forwardRef, memo } from 'react';
 import favoritesService from '../services/favoritesService';
 import { getRarityConfig } from '../utils/rarityConfig';
 import { capitalize } from '../utils/stringUtils';
+import { useAuth } from '../context/AuthContext';
 
 const CARDS_URL = import.meta.env.VITE_CARDS_URL;
 
-const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
+const Card = memo(forwardRef(({ card, onFavoriteToggle, onEdit }, ref) => {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [isFav, setIsFav] = useState(() => favoritesService.isFavorite(card.id));
 
@@ -37,6 +39,13 @@ const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
     }
   };
 
+  const handleEdit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onEdit) {
+      onEdit(id);
+    }
+  };
 
   const { id, cost, atk, def, name, type, rarity, image } = card;
   const imageUrl = `${CARDS_URL}${image}`;
@@ -72,6 +81,19 @@ const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
         <div className="absolute top-2 right-2 rounded-full border border-slate-200 bg-white/80 px-2 py-1 text-sm font-bold text-slate-900 backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/80 dark:text-white">
           💎 {cost}
         </div>
+        {user?.role === 'admin' && (
+          <button
+            type="button"
+            data-testid="btn-edit-card"
+            onClick={handleEdit}
+            className="absolute right-2 bottom-2 z-10 cursor-pointer rounded-full border border-slate-200 bg-white/80 p-2 text-slate-600 backdrop-blur-md transition-all hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:hover:text-blue-400"
+            aria-label={t('card.admin.editCard')}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-4 w-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+            </svg>
+          </button>
+        )}
       </div>
 
       <div className="space-y-2 p-4">

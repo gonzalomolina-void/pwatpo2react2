@@ -89,13 +89,27 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Adaptar [Card.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/components/Card.jsx) y [Detail.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/pages/Detail.jsx) para leer propiedades directas (`name`, `description`, `type`, `rarity`) y quitar claves dinámicas como `nameEs` / `nameEn`.
     *   Actualizar los mocks y aserciones de la suite de tests unitarios que se vean afectados por el cambio de estructura plana.
 
-### US12: Control de Acceso basado en Roles en el Cliente (Frontend)
-**Como** usuario autenticado, **quiero** que la aplicación oculte o deshabilite las opciones administrativas si no tengo el rol de `admin`, **para** evitar errores de permisos al interactuar con la interfaz.
+### US12: Control de Acceso basado en Roles y ABM de Cartas (Administrador)
+**Como** administrador autenticado, **quiero** poder dar de alta, editar y borrar cartas directamente desde la interfaz, y que la aplicación restrinja estas opciones únicamente a usuarios con rol de `admin`, **para** mantener el catálogo actualizado de forma segura y evitar errores de permisos.
 *   **Criterios de Aceptación:**
-    *   Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
-    *   Ocultar o deshabilitar elementos del frontend para crear cartas (como la Forja o botones de edición) si el usuario no tiene rol `admin`.
-    *   Implementar un componente de ruta protegida (`ProtectedRoute`) en React Router que limite el acceso a vistas administrativas únicamente a usuarios con rol `admin`.
-    *   Redirigir a los usuarios comunes a una ruta no autorizada o al Home si intentan ingresar directamente por URL a una sección de administrador.
+    *   **Extracción de Rol:** Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
+    *   **Control de Vista en Componentes:**
+        *   Mostrar un botón de "Nueva Carta" en el Home únicamente para usuarios con el rol `admin`.
+        *   Mostrar un botón de edición (tres puntitos o lápiz) en las tarjetas de cartas (`Card.jsx`) únicamente para usuarios con el rol `admin`.
+    *   **Rutas Protegidas (ProtectedRoute):**
+        *   Extender el componente `ProtectedRoute` para que soporte restricción por roles (`allowedRoles={['admin']}`).
+        *   Proteger la ruta de creación/administración `/forja` (o el acceso a vistas administrativas) redirigiendo a los usuarios comunes al Home (`/`) si intentan ingresar directamente por URL.
+    *   **Formulario Reutilizable de Alta/Edición (Modal):**
+        *   Implementar un modal reutilizable con campos globales (`cost`, `atk`, `def`, `media.image`) e inputs localizados para todos los idiomas soportados (`name`, `description`, `type`, `rarity`).
+        *   Los dropdowns de `type` y `rarity` se renderizarán en el idioma activo del Header, pero mapearán y enviarán las traducciones correspondientes para todos los idiomas (`typeEs`/`typeEn`, etc.) al backend para evitar inconsistencias de datos.
+        *   En modo Edición, el modal debe obtener los datos originales completos y sin aplanar desde el backend consumiendo el endpoint `/api/cards/:id/edit`.
+        *   El formulario debe incluir botones de "Cancelar" y "Aceptar/Guardar" (que llamarán a `PUT /api/cards/:id` en edición o `POST /api/cards` en alta).
+    *   **Flujo de Baja (Eliminación):**
+        *   En modo Edición, incluir un botón "Eliminar". Al clickearlo, se debe abrir un segundo modal de confirmación.
+        *   Si se confirma, llamar a `DELETE /api/cards/:id` enviando el token JWT.
+    *   **UX, i18n y Sincronización:**
+        *   Todos los textos de los formularios, modales, alertas y botones deben estar internacionalizados usando `react-i18next`.
+        *   Al finalizar con éxito una operación de alta, edición o baja, mostrar un toast informativo en el idioma activo, cerrar los modales y ejecutar el callback `onSuccess` para resetear el listado del catálogo a la página 1.
 
 ### US13: Renovación de Sesión con Refresh Token en el Frontend
 **Como** usuario, **quiero** que mi sesión se mantenga activa y funcional sin interrupciones molestas mientras la app esté abierta, **para** mejorar mi experiencia de navegación.

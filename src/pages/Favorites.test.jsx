@@ -29,6 +29,10 @@ vi.mock('../services/favoritesService', () => ({
   },
 }));
 
+vi.mock('../context/AuthContext', () => ({
+  useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
+}));
+
 const mockCard = {
   id: 'card-1',
   name: 'Mago',
@@ -44,6 +48,7 @@ describe('Favorites Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockLanguage.value = 'es';
+    favoritesService.isFavorite.mockReturnValue(true);
   });
 
   it('muestra spinner de carga mientras se obtienen los favoritos', () => {

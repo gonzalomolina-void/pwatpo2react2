@@ -63,7 +63,8 @@ describe('ProtectedRoute Component', () => {
   it('debe renderizar los hijos si el usuario está autenticado', () => {
     useAuth.mockReturnValue({
       isAuthenticated: true,
-      loading: false
+      loading: false,
+      user: { email: 'user@test.com', role: 'usuario' }
     });
 
     render(
@@ -74,6 +75,43 @@ describe('ProtectedRoute Component', () => {
 
     expect(screen.getByText('Child Content')).toBeInTheDocument();
     expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('mock-navigate')).not.toBeInTheDocument();
+  });
+
+  it('debe redirigir a / si el usuario está autenticado pero no tiene un rol permitido', () => {
+    useAuth.mockReturnValue({
+      isAuthenticated: true,
+      loading: false,
+      user: { email: 'user@test.com', role: 'usuario' }
+    });
+
+    render(
+      <ProtectedRoute allowedRoles={['admin']}>
+        <div>Admin Content</div>
+      </ProtectedRoute>
+    );
+
+    const navigateEl = screen.getByTestId('mock-navigate');
+    expect(navigateEl).toBeInTheDocument();
+    expect(navigateEl.getAttribute('data-to')).toBe('/');
+    expect(navigateEl.getAttribute('data-replace')).toBe('true');
+    expect(screen.queryByText('Admin Content')).not.toBeInTheDocument();
+  });
+
+  it('debe renderizar los hijos si el usuario tiene el rol permitido', () => {
+    useAuth.mockReturnValue({
+      isAuthenticated: true,
+      loading: false,
+      user: { email: 'admin@test.com', role: 'admin' }
+    });
+
+    render(
+      <ProtectedRoute allowedRoles={['admin']}>
+        <div>Admin Content</div>
+      </ProtectedRoute>
+    );
+
+    expect(screen.getByText('Admin Content')).toBeInTheDocument();
     expect(screen.queryByTestId('mock-navigate')).not.toBeInTheDocument();
   });
 });
