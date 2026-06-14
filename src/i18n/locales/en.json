@@ -109,6 +109,7 @@
     "errorPasswordMismatch": "Passwords do not match",
     "errorPasswordTooShort": "Password must be at least 6 characters long",
     "registerSuccess": "Registration successful! You can now log in.",
+    "sessionExpired": "Your session has expired. Please log in again.",
     "errorGeneral": "An unexpected error occurred"
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -8,6 +8,8 @@ export default function Login() {
   const { t } = useTranslation();
   const { login, register, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isExpired = location.state?.expired;
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState('');
@@ -87,6 +89,12 @@ export default function Login() {
           {error && (
             <div className="rounded-lg bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400" role="alert">
               {error}
+            </div>
+          )}
+
+          {isExpired && !error && (
+            <div className="rounded-lg bg-amber-50 p-4 text-sm text-amber-600 dark:bg-amber-900/30 dark:text-amber-400" role="alert">
+              {t('auth.sessionExpired') || 'Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.'}
             </div>
           )}
 

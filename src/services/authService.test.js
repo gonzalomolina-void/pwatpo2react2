@@ -21,7 +21,7 @@ describe('authService', () => {
         `${import.meta.env.VITE_API_URL}/auth/login`,
         expect.objectContaining({
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ email: 'test@test.com', password: 'password123' })
         })
       );
@@ -53,7 +53,7 @@ describe('authService', () => {
         `${import.meta.env.VITE_API_URL}/auth/register`,
         expect.objectContaining({
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ email: 'new@test.com', password: 'password123' })
         })
       );
@@ -114,7 +114,7 @@ describe('authService', () => {
         `${import.meta.env.VITE_API_URL}/auth/me`,
         expect.objectContaining({
           method: 'GET',
-          headers: { 'Authorization': 'Bearer jwt-123' }
+          headers: expect.objectContaining({ 'Authorization': 'Bearer jwt-123' })
         })
       );
       expect(result).toEqual(mockUser);

@@ -16,9 +16,7 @@
  * @property {string} descriptionEn - Descripción en inglés.
  */
 
-import i18n from '../i18n';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import apiClient from './apiClient';
 
 const cardService = {
   /**
@@ -36,39 +34,21 @@ const cardService = {
    */
   getCards: async (params = {}, { signal } = {}) => {
     try {
-      const url = new URL(`${API_URL}/cards`);
-      
       const searchParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
           searchParams.append(key, value);
         }
       });
-      url.search = searchParams.toString();
+      const query = searchParams.toString();
+      const endpoint = `/cards${query ? `?${query}` : ''}`;
 
-      const token = localStorage.getItem('hexa_token');
-      const headers = {
-        'Accept-Language': i18n.language || 'es'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(url, { 
-        signal,
-        headers
-      });
-      
-      if (!response.ok) {
-        if (response.status === 404) return [];
-        throw new Error(`Error fetching cards: ${response.statusText}`);
-      }
-      
-      return await response.json();
+      return await apiClient.get(endpoint, { signal });
     } catch (error) {
       if (error.name === 'AbortError') throw error;
+      if (error.status === 404) return [];
       console.error('Error in cardService.getCards:', error);
-      throw error;
+      throw new Error(`Error fetching cards: ${error.message}`);
     }
   },
 
@@ -82,32 +62,14 @@ const cardService = {
    */
   getCardById: async (id, { signal } = {}) => {
     try {
-      const token = localStorage.getItem('hexa_token');
-      const headers = {
-        'Accept-Language': i18n.language || 'es'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(`${API_URL}/cards/${id}`, { 
-        signal,
-        headers
-      });
-      
-      if (!response.ok) {
-        if (response.status === 404) return null;
-        throw new Error(`Error fetching card ${id}: ${response.statusText}`);
-      }
-      
-      return await response.json();
+      return await apiClient.get(`/cards/${id}`, { signal });
     } catch (error) {
       if (error.name === 'AbortError') throw error;
+      if (error.status === 404) return null;
       console.error(`Error in cardService.getCardById(${id}):`, error);
-      throw error;
+      throw new Error(`Error fetching card ${id}: ${error.message}`);
     }
   }
 };
-
 
 export default cardService;
