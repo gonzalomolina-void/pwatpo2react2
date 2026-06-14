@@ -21,8 +21,8 @@ describe('cardService', () => {
       const result = await cardService.getCards({ page: 1, limit: 10 });
 
 
-      const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1&limit=10`);
-      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ signal: undefined }));
+      const expectedUrl = `${import.meta.env.VITE_API_URL}/cards?page=1&limit=10`;
+      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ method: 'GET' }));
 
       expect(result).toEqual(mockCards);
     });
@@ -55,8 +55,8 @@ describe('cardService', () => {
 
       await cardService.getCards({ page: 1, limit: null, search: undefined });
       
-      const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1`);
-      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ signal: undefined }));
+      const expectedUrl = `${import.meta.env.VITE_API_URL}/cards?page=1`;
+      expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({ method: 'GET' }));
     });
 
     it('loguea error si fetch falla', async () => {
@@ -76,7 +76,7 @@ describe('cardService', () => {
 
       await cardService.getCards({ page: 1 });
 
-      const expectedUrl = new URL(`${import.meta.env.VITE_API_URL}/cards?page=1`);
+      const expectedUrl = `${import.meta.env.VITE_API_URL}/cards?page=1`;
       expect(globalThis.fetch).toHaveBeenCalledWith(expectedUrl, expect.objectContaining({
         headers: expect.objectContaining({
           'Authorization': 'Bearer test-token'
@@ -94,7 +94,7 @@ describe('cardService', () => {
       });
 
       const result = await cardService.getCardById('card-1');
-      expect(globalThis.fetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_URL}/cards/card-1`, expect.objectContaining({ signal: undefined }));
+      expect(globalThis.fetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_URL}/cards/card-1`, expect.objectContaining({ method: 'GET' }));
 
       expect(result).toEqual(mockCard);
 

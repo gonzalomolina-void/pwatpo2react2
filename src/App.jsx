@@ -41,6 +41,16 @@ function AppContent() {
     }
   }, [showSplash, loading, isAuthenticated, navigate]);
 
+  // Manejo de la redireccion ante expiracion de sesion (US13)
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      navigate('/login', { replace: true, state: { expired: true } });
+    };
+
+    window.addEventListener('auth:expired', handleAuthExpired);
+    return () => window.removeEventListener('auth:expired', handleAuthExpired);
+  }, [navigate]);
+
   return (
     <>
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}

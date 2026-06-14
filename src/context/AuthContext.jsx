@@ -27,6 +27,19 @@ export function AuthProvider({ children }) {
     restoreSession();
   }, []);
 
+  // Escuchar evento global de expiracion de sesion (US13)
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      console.warn('Session expired event received, cleaning up local state');
+      localStorage.removeItem('hexa_token');
+      setToken(null);
+      setUser(null);
+    };
+
+    window.addEventListener('auth:expired', handleAuthExpired);
+    return () => window.removeEventListener('auth:expired', handleAuthExpired);
+  }, []);
+
   /**
    * Registra un nuevo usuario en la plataforma.
    */

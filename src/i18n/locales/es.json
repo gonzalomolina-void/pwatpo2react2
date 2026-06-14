@@ -109,6 +109,7 @@
     "errorPasswordMismatch": "Las contraseñas no coinciden",
     "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
     "registerSuccess": "¡Registro exitoso! Ya podés iniciar sesión.",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
     "errorGeneral": "Ocurrió un error inesperado"
   }
 }

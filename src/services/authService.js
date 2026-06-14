@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import apiClient from './apiClient';
 
 const authService = {
   /**
@@ -9,22 +9,10 @@ const authService = {
    */
   register: async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error in register: ${response.statusText}`);
-      }
-
-      return await response.json();
+      return await apiClient.post('/auth/register', { email, password });
     } catch (error) {
       console.error('Error in authService.register:', error);
-      throw error;
+      throw new Error(`Error in register: ${error.message}`);
     }
   },
 
@@ -36,22 +24,10 @@ const authService = {
    */
   login: async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error in login: ${response.statusText}`);
-      }
-
-      return await response.json();
+      return await apiClient.post('/auth/login', { email, password });
     } catch (error) {
       console.error('Error in authService.login:', error);
-      throw error;
+      throw new Error(`Error in login: ${error.message}`);
     }
   },
 
@@ -61,18 +37,11 @@ const authService = {
    */
   logout: async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/logout`, {
-        method: 'POST'
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error in logout: ${response.statusText}`);
-      }
-
+      await apiClient.post('/auth/logout');
       return true;
     } catch (error) {
       console.error('Error in authService.logout:', error);
-      throw error;
+      throw new Error(`Error in logout: ${error.message}`);
     }
   },
 
@@ -83,21 +52,11 @@ const authService = {
    */
   getMe: async (token) => {
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error fetching user profile: ${response.statusText}`);
-      }
-
-      return await response.json();
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+      return await apiClient.get('/auth/me', { headers });
     } catch (error) {
       console.error('Error in authService.getMe:', error);
-      throw error;
+      throw new Error(`Error fetching user profile: ${error.message}`);
     }
   }
 };
