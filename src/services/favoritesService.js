@@ -1,54 +1,85 @@
-import storageService from './storageService';
+import apiClient from './apiClient';
 
-const FAVORITES_KEY = 'hexa_favorites';
+let cachedFavorites = [];
 
 /**
  * Servicio para gestionar la persistencia de las cartas favoritas del usuario.
- * Ahora guarda el objeto completo de la carta para evitar N+1 requests.
+ * Ahora se conecta con el backend e implementa un cache en memoria para evitar
+ * consultas N+1 en el renderizado de cartas.
  */
 const favoritesService = {
   /**
-   * Obtiene el listado de objetos de cartas favoritas.
+   * Inicializa y obtiene el caché desde el backend.
+   * @returns {Promise<Object[]>}
+   */
+  fetchFavorites: async () => {
+    try {
+      cachedFavorites = await apiClient.get('/favorites') || [];
+      return cachedFavorites;
+    } catch (error) {
+      cachedFavorites = [];
+      throw error;
+    }
+  },
+
+  /**
+   * Obtiene el listado de objetos de cartas favoritas desde el caché local.
    * @returns {Object[]}
    */
   getFavorites: () => {
-    return storageService.get(FAVORITES_KEY) || [];
+    return cachedFavorites;
   },
 
   /**
    * Agrega una carta a favoritos.
    * @param {Object} card - Objeto completo de la carta.
-   * @returns {Object[]} - Lista actualizada de favoritos.
+   * @returns {Promise<Object[]>} - Lista actualizada de favoritos.
    */
-  addFavorite: (card) => {
-    const favorites = favoritesService.getFavorites();
-    if (!favorites.some(f => f.id === card.id)) {
-      favorites.push(card);
-      storageService.set(FAVORITES_KEY, favorites);
+  addFavorite: async (card) => {
+    // Agregar optimistamente
+    if (!cachedFavorites.some(f => String(f.id) === String(card.id))) {
+      cachedFavorites.push(card);
     }
-    return favorites;
+
+    try {
+      await apiClient.post('/favorites', { cardId: card.id });
+    } catch (error) {
+      // Rollback ante fallo de API
+      cachedFavorites = cachedFavorites.filter(f => String(f.id) !== String(card.id));
+      throw error;
+    }
+
+    return cachedFavorites;
   },
 
   /**
    * Elimina una carta de favoritos.
-   * @param {string} cardId 
-   * @returns {Object[]} - Lista actualizada de favoritos.
+   * @param {string|number} cardId 
+   * @returns {Promise<Object[]>} - Lista actualizada de favoritos.
    */
-  removeFavorite: (cardId) => {
-    const favorites = favoritesService.getFavorites();
-    const filtered = favorites.filter(f => f.id !== cardId);
-    storageService.set(FAVORITES_KEY, filtered);
-    return filtered;
+  removeFavorite: async (cardId) => {
+    const originalFavorites = [...cachedFavorites];
+    // Eliminar optimistamente
+    cachedFavorites = cachedFavorites.filter(f => String(f.id) !== String(cardId));
+
+    try {
+      await apiClient.delete(`/favorites/${cardId}`);
+    } catch (error) {
+      // Rollback ante fallo de API
+      cachedFavorites = originalFavorites;
+      throw error;
+    }
+
+    return cachedFavorites;
   },
 
   /**
    * Alterna el estado de favorito de una carta.
    * @param {Object} card - Objeto completo de la carta.
-   * @returns {Object[]} - Lista actualizada de favoritos.
+   * @returns {Promise<Object[]>} - Lista actualizada de favoritos.
    */
-  toggleFavorite: (card) => {
-    const favorites = favoritesService.getFavorites();
-    if (favorites.some(f => f.id === card.id)) {
+  toggleFavorite: async (card) => {
+    if (favoritesService.isFavorite(card.id)) {
       return favoritesService.removeFavorite(card.id);
     } else {
       return favoritesService.addFavorite(card);
@@ -56,20 +87,19 @@ const favoritesService = {
   },
 
   /**
-   * Verifica si una carta es favorita por su ID.
-   * @param {string} cardId 
+   * Verifica si una carta es favorita por su ID de forma sincrónica.
+   * @param {string|number} cardId 
    * @returns {boolean}
    */
   isFavorite: (cardId) => {
-    const favorites = favoritesService.getFavorites();
-    return favorites.some(f => f.id === cardId);
+    return cachedFavorites.some(f => String(f.id) === String(cardId));
   },
 
   /**
-   * Limpia todos los favoritos.
+   * Limpia todos los favoritos del caché en memoria.
    */
   clearFavorites: () => {
-    storageService.set(FAVORITES_KEY, []);
+    cachedFavorites = [];
   }
 };
 

@@ -49,10 +49,21 @@ export default function Detail() {
     return () => controller.abort();
   }, [id, navigate, i18n.language]);
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if (card) {
-      favoritesService.toggleFavorite(card);
-      setIsFav(!isFav);
+      const previousIsFav = isFav;
+      const newIsFav = !previousIsFav;
+      
+      // Actualización optimista de la UI
+      setIsFav(newIsFav);
+      
+      try {
+        await favoritesService.toggleFavorite(card);
+      } catch (error) {
+        console.error('Failed to toggle favorite in details:', error);
+        // Rollback ante error de la API
+        setIsFav(previousIsFav);
+      }
     }
   };
 

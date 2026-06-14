@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Card from './Card';
@@ -53,8 +53,9 @@ describe('Card Component', () => {
     expect(screen.getByText('Legendary')).toBeInTheDocument();
   });
 
-  it('handles favorite toggle', () => {
+  it('handles favorite toggle and updates optimistically', async () => {
     favoritesService.isFavorite.mockReturnValue(false);
+    favoritesService.toggleFavorite.mockResolvedValueOnce([]); // Resuelve exitoso
     
     render(
       <MemoryRouter>
@@ -65,8 +66,31 @@ describe('Card Component', () => {
     const favButton = screen.getByRole('button', { name: /card.addFavorite/i });
     fireEvent.click(favButton);
 
+    // Debe cambiar optimistamente a "removeFavorite" inmediatamente
+    expect(screen.getByRole('button', { name: /card.removeFavorite/i })).toBeInTheDocument();
     expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard);
+  });
 
+  it('reverts favorite UI state (rollback) if toggle API fails', async () => {
+    favoritesService.isFavorite.mockReturnValue(false);
+    favoritesService.toggleFavorite.mockRejectedValueOnce(new Error('Toggle Failed'));
+    
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} />
+      </MemoryRouter>
+    );
+
+    const favButton = screen.getByRole('button', { name: /card.addFavorite/i });
+    fireEvent.click(favButton);
+
+    // Setea optimistamente a favorito inmediatamente
+    expect(screen.getByRole('button', { name: /card.removeFavorite/i })).toBeInTheDocument();
+
+    // Pero al fallar el servicio, debe rollbackear a no-favorito
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /card.addFavorite/i })).toBeInTheDocument();
+    });
   });
 
   it('shows "remove favorite" aria-label when card is already favorite', () => {

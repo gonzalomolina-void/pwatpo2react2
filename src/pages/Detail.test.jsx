@@ -110,9 +110,10 @@ describe('Detail Page', () => {
     });
   });
 
-  it('alterna el favorito al hacer clic en el corazón', async () => {
+  it('alterna el favorito al hacer clic en el corazón optimistamente', async () => {
     cardService.getCardById.mockResolvedValue(mockCard);
     favoritesService.isFavorite.mockReturnValue(false);
+    favoritesService.toggleFavorite.mockResolvedValueOnce([]); // Resuelve ok
 
     renderDetail();
 
@@ -121,10 +122,41 @@ describe('Detail Page', () => {
     });
 
     const favButton = screen.getByRole('button');
+    
+    // Al principio no es favorito (color original en la UI)
+    expect(favButton).not.toHaveClass('bg-red-500'); // Asumimos color por defecto
+
     fireEvent.click(favButton);
 
+    // Cambia optimistamente
     expect(favoritesService.toggleFavorite).toHaveBeenCalledWith(mockCard);
+  });
 
+  it('reverts favorite UI state (rollback) in detail page if toggle API fails', async () => {
+    cardService.getCardById.mockResolvedValue(mockCard);
+    favoritesService.isFavorite.mockReturnValue(false);
+    favoritesService.toggleFavorite.mockRejectedValueOnce(new Error('API Toggle Failed'));
+
+    renderDetail();
+
+    await waitFor(() => {
+      expect(screen.getByText('Mago de Fuego')).toBeInTheDocument();
+    });
+
+    const favButton = screen.getByRole('button');
+    
+    // Al principio no es favorito
+    expect(favButton).toHaveClass('text-slate-400');
+
+    fireEvent.click(favButton);
+
+    // Se asume optimismo visual (cambia inmediatamente a bg-red-500/90)
+    expect(favButton).toHaveClass('bg-red-500/90');
+
+    // Pero al fallar el servicio, debe rollbackear a no-favorito
+    await waitFor(() => {
+      expect(favButton).toHaveClass('text-slate-400');
+    });
   });
 
   it('muestra imagen de fallback si la imagen principal falla', async () => {

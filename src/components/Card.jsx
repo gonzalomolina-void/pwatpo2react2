@@ -12,14 +12,28 @@ const Card = memo(forwardRef(({ card, onFavoriteToggle }, ref) => {
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
   const [isFav, setIsFav] = useState(() => favoritesService.isFavorite(card.id));
 
-  const handleFavorite = (e) => {
+  const handleFavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    favoritesService.toggleFavorite(card);
-    const newIsFav = !isFav;
+    
+    const previousIsFav = isFav;
+    const newIsFav = !previousIsFav;
+
+    // Actualización optimista de la UI
     setIsFav(newIsFav);
     if (onFavoriteToggle) {
       onFavoriteToggle(card, newIsFav);
+    }
+
+    try {
+      await favoritesService.toggleFavorite(card);
+    } catch (error) {
+      console.error('Failed to toggle favorite:', error);
+      // Rollback ante error de la API
+      setIsFav(previousIsFav);
+      if (onFavoriteToggle) {
+        onFavoriteToggle(card, previousIsFav);
+      }
     }
   };
 
