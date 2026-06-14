@@ -3,10 +3,17 @@ import { render, act } from '@testing-library/react';
 import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './AuthContext';
 import authService from '../services/authService';
+import favoritesService from '../services/favoritesService';
 
 vi.mock('../services/authService');
+vi.mock('../services/favoritesService', () => ({
+  default: {
+    fetchFavorites: vi.fn().mockResolvedValue([]),
+    clearFavorites: vi.fn()
+  }
+}));
 
-// Componente helper para interactuar con useAuth en los tests
+// Helper component
 function TestComponent({ onMount }) {
   const auth = useAuth();
   useEffect(() => {
@@ -27,11 +34,10 @@ function TestComponent({ onMount }) {
 describe('AuthContext', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
-  it('debe inicializar con user en null y loading en false por defecto', async () => {
-    authService.getMe.mockRejectedValueOnce(new Error('No session'));
-
+  it('debe inicializar con user en null y loading en false por defecto si no hay token', async () => {
     let authInstance;
     await act(async () => {
       render(
@@ -44,9 +50,30 @@ describe('AuthContext', () => {
     expect(authInstance.user).toBeNull();
     expect(authInstance.loading).toBe(false);
     expect(authInstance.isAuthenticated).toBe(false);
+    expect(favoritesService.fetchFavorites).not.toHaveBeenCalled();
   });
 
-  it('debe iniciar sesion correctamente al llamar a login', async () => {
+  it('debe restaurar la sesion y cargar favoritos si hay token en localStorage', async () => {
+    const mockUser = { id: 1, email: 'test@test.com', role: 'usuario' };
+    localStorage.setItem('hexa_token', 'saved-jwt-token');
+    authService.getMe.mockResolvedValueOnce(mockUser);
+
+    let authInstance;
+    await act(async () => {
+      render(
+        <AuthProvider>
+          <TestComponent onMount={(auth) => { authInstance = auth; }} />
+        </AuthProvider>
+      );
+    });
+
+    expect(authService.getMe).toHaveBeenCalledWith('saved-jwt-token');
+    expect(authInstance.user).toEqual(mockUser);
+    expect(authInstance.isAuthenticated).toBe(true);
+    expect(favoritesService.fetchFavorites).toHaveBeenCalled();
+  });
+
+  it('debe iniciar sesion correctamente al llamar a login y cargar favoritos', async () => {
     const mockUser = { id: 1, email: 'test@test.com', role: 'usuario' };
     const mockLoginResponse = { token: 'jwt-token', user: mockUser };
     
@@ -67,9 +94,10 @@ describe('AuthContext', () => {
     expect(authService.login).toHaveBeenCalledWith('test@test.com', 'password123');
     expect(authInstance.user).toEqual(mockUser);
     expect(authInstance.isAuthenticated).toBe(true);
+    expect(favoritesService.fetchFavorites).toHaveBeenCalled();
   });
 
-  it('debe lanzar error y mantener al usuario en null si login falla', async () => {
+  it('debe lanzar error y mantener al usuario en null si login falla sin cargar favoritos', async () => {
     authService.login.mockRejectedValueOnce(new Error('Invalid credentials'));
 
     let authInstance;
@@ -87,9 +115,10 @@ describe('AuthContext', () => {
 
     expect(authInstance.user).toBeNull();
     expect(authInstance.isAuthenticated).toBe(false);
+    expect(favoritesService.fetchFavorites).not.toHaveBeenCalled();
   });
 
-  it('debe cerrar sesion correctamente al llamar a logout', async () => {
+  it('debe cerrar sesion correctamente al llamar a logout y limpiar favoritos', async () => {
     authService.logout.mockResolvedValueOnce(true);
 
     let authInstance;
@@ -99,8 +128,6 @@ describe('AuthContext', () => {
       </AuthProvider>
     );
 
-    // Simulamos que el usuario ya estaba autenticado seteandolo manualmente o iniciando sesion
-    // En este caso, usaremos el mock de login primero
     const mockUser = { id: 1, email: 'test@test.com', role: 'usuario' };
     authService.login.mockResolvedValueOnce({ token: 'jwt-token', user: mockUser });
     
@@ -109,8 +136,8 @@ describe('AuthContext', () => {
     });
 
     expect(authInstance.user).toEqual(mockUser);
+    vi.clearAllMocks(); // Limpiar llamadas previas (del login)
 
-    // Ahora cerramos sesion
     await act(async () => {
       await authInstance.logout();
     });
@@ -118,5 +145,6 @@ describe('AuthContext', () => {
     expect(authService.logout).toHaveBeenCalled();
     expect(authInstance.user).toBeNull();
     expect(authInstance.isAuthenticated).toBe(false);
+    expect(favoritesService.clearFavorites).toHaveBeenCalled();
   });
 });

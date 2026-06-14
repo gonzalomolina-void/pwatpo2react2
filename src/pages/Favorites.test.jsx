@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import Favorites from './Favorites';
 import favoritesService from '../services/favoritesService';
 
+const mockLanguage = vi.hoisted(() => ({ value: 'es' }));
 const mockT = vi.hoisted(() => (str) => str);
 
 vi.mock('react-i18next', () => ({
@@ -11,7 +12,7 @@ vi.mock('react-i18next', () => ({
     t: mockT,
     i18n: {
       changeLanguage: () => new Promise(() => {}),
-      language: 'es'
+      language: mockLanguage.value
     },
   }),
   initReactI18next: {
@@ -22,6 +23,7 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('../services/favoritesService', () => ({
   default: {
+    fetchFavorites: vi.fn(),
     getFavorites: vi.fn(),
     isFavorite: vi.fn(),
   },
@@ -41,9 +43,24 @@ const mockCard = {
 describe('Favorites Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockLanguage.value = 'es';
   });
 
-  it('muestra mensaje de lista vacía cuando no hay favoritos', async () => {
+  it('muestra spinner de carga mientras se obtienen los favoritos', () => {
+    favoritesService.fetchFavorites.mockReturnValueOnce(new Promise(() => {}));
+    favoritesService.getFavorites.mockReturnValue([]);
+
+    render(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('favorites.loading')).toBeInTheDocument();
+  });
+
+  it('muestra mensaje de error si falla la llamada a la API', async () => {
+    favoritesService.fetchFavorites.mockRejectedValueOnce(new Error('API Error'));
     favoritesService.getFavorites.mockReturnValue([]);
 
     render(
@@ -53,15 +70,32 @@ describe('Favorites Page', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('favorites.empty')).toBeInTheDocument();
+      expect(screen.queryByText('favorites.loading')).not.toBeInTheDocument();
     });
+    expect(screen.getByText('favorites.error')).toBeInTheDocument();
+  });
+
+  it('muestra mensaje de lista vacía cuando no hay favoritos', async () => {
+    favoritesService.fetchFavorites.mockResolvedValueOnce([]);
+    favoritesService.getFavorites.mockReturnValue([]);
+
+    render(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText('favorites.loading')).not.toBeInTheDocument();
+    });
+    expect(screen.getByText('favorites.empty')).toBeInTheDocument();
     expect(screen.getByText('favorites.emptySub')).toBeInTheDocument();
     const link = screen.getByRole('link', { name: 'favorites.backToCatalog' });
     expect(link).toHaveAttribute('href', '/');
   });
 
-  it('renderiza las cartas favoritas en un grid', async () => {
-    // Ahora el servicio devuelve objetos completos
+  it('renderiza las cartas favoritas en un grid tras carga exitosa', async () => {
+    favoritesService.fetchFavorites.mockResolvedValueOnce([mockCard]);
     favoritesService.getFavorites.mockReturnValue([mockCard]);
 
     render(
@@ -71,7 +105,38 @@ describe('Favorites Page', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Mago')).toBeInTheDocument();
+      expect(screen.queryByText('favorites.loading')).not.toBeInTheDocument();
+    });
+    expect(screen.getByText('Mago')).toBeInTheDocument();
+  });
+
+  it('vuelve a solicitar los favoritos al cambiar el idioma (i18n)', async () => {
+    favoritesService.fetchFavorites.mockResolvedValue([mockCard]);
+    favoritesService.getFavorites.mockReturnValue([mockCard]);
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(favoritesService.fetchFavorites).toHaveBeenCalledTimes(1);
+    });
+
+    // Cambiar idioma en mock
+    mockLanguage.value = 'en';
+
+    // Rerenderizar para propagar el cambio de idioma
+    rerender(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      // Debería haberse llamado por segunda vez para obtener los datos en inglés
+      expect(favoritesService.fetchFavorites).toHaveBeenCalledTimes(2);
     });
   });
 });

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/authService';
+import favoritesService from '../services/favoritesService';
 
 const AuthContext = createContext(null);
 
@@ -17,9 +18,12 @@ export function AuthProvider({ children }) {
           const userData = await authService.getMe(savedToken);
           setToken(savedToken);
           setUser(userData);
+          // Cargar favoritos en cache al restaurar sesión
+          await favoritesService.fetchFavorites();
         } catch (error) {
           console.error('Session restoration failed:', error);
           localStorage.removeItem('hexa_token');
+          favoritesService.clearFavorites();
         }
       }
       setLoading(false);
@@ -27,13 +31,14 @@ export function AuthProvider({ children }) {
     restoreSession();
   }, []);
 
-  // Escuchar evento global de expiracion de sesion (US13)
+  // Escuchar evento global de expiracion de sesion
   useEffect(() => {
     const handleAuthExpired = () => {
       console.warn('Session expired event received, cleaning up local state');
       localStorage.removeItem('hexa_token');
       setToken(null);
       setUser(null);
+      favoritesService.clearFavorites();
     };
 
     window.addEventListener('auth:expired', handleAuthExpired);
@@ -66,6 +71,8 @@ export function AuthProvider({ children }) {
       localStorage.setItem('hexa_token', result.token);
       setToken(result.token);
       setUser(result.user);
+      // Cargar favoritos en cache al iniciar sesión
+      await favoritesService.fetchFavorites();
       setLoading(false);
       return result;
     } catch (error) {
@@ -87,6 +94,7 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('hexa_token');
       setToken(null);
       setUser(null);
+      favoritesService.clearFavorites();
       setLoading(false);
     }
   };
