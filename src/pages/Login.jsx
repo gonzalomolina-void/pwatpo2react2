@@ -68,7 +68,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-200 bg-white p-8 shadow-xl transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-2xl">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
@@ -104,7 +104,7 @@ export default function Login() {
                 name="email"
                 type="email"
                 required
-                className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 placeholder={t('auth.emailPlaceholder') || 'Email'}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -119,7 +119,7 @@ export default function Login() {
                 name="password"
                 type="password"
                 required
-                className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 placeholder={t('auth.passwordPlaceholder') || 'Contraseña'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -135,7 +135,7 @@ export default function Login() {
                   name="confirmPassword"
                   type="password"
                   required
-                  className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                   placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmar contraseña'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -149,7 +149,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 px-4 text-sm font-semibold text-white shadow-md transition-all hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:opacity-50 active:scale-95"
+              className="group relative flex w-full justify-center rounded-xl bg-linear-to-r from-blue-600 to-purple-600 px-4 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-blue-500/40 focus:outline-none active:scale-95 disabled:opacity-50"
             >
               {loading ? (
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />

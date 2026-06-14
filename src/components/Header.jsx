@@ -77,7 +77,7 @@ export default function Header() {
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-6 md:flex">
           {showNav && (
-            <nav className="flex gap-6 items-center">
+            <nav className="flex items-center gap-6">
               <Link to="/" className="text-sm font-medium tracking-wider text-slate-600 uppercase transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400">
                 {t('nav.home')}
               </Link>
@@ -87,12 +87,12 @@ export default function Header() {
               
               {isAuthenticated ? (
                 <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
-                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 max-w-37.5 truncate" title={user.email}>
+                  <span className="max-w-37.5 truncate rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400" title={user.email}>
                     {user.email}
                   </span>
                   <button 
                     onClick={handleLogout}
-                    className="text-sm font-semibold tracking-wider text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 uppercase transition-colors cursor-pointer"
+                    className="cursor-pointer text-sm font-semibold tracking-wider text-red-500 uppercase transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
                   >
                     {t('nav.logout')}
                   </button>
@@ -100,7 +100,7 @@ export default function Header() {
               ) : (
                 <Link 
                   to="/login" 
-                  className="text-sm font-semibold tracking-wider text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 uppercase transition-colors"
+                  className="text-sm font-semibold tracking-wider text-slate-600 uppercase transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
                 >
                   {t('nav.login')}
                 </Link>
@@ -141,7 +141,7 @@ export default function Header() {
       {/* Mobile Navigation Dropdown */}
       {showNav && isMenuOpen && (
         <div className="border-t border-slate-200 bg-white/95 backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-900/95">
-          <nav className="container mx-auto flex flex-col p-4 space-y-1">
+          <nav className="container mx-auto flex flex-col space-y-1 p-4">
             <Link
               to="/"
               onClick={closeMenu}
@@ -162,14 +162,14 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <div className="flex items-center justify-between border-b border-slate-100 py-3.5 text-base font-medium text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                  <span className="truncate max-w-50">{user.email}</span>
-                  <span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-0.5 rounded-full font-bold">
+                  <span className="max-w-50 truncate">{user.email}</span>
+                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                     {user.role}
                   </span>
                 </div>
                 <button
                   onClick={handleMobileLogout}
-                  className="flex items-center py-3.5 text-base font-semibold text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 w-full text-left cursor-pointer"
+                  className="flex w-full cursor-pointer items-center py-3.5 text-left text-base font-semibold text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
                 >
                   <span className="mr-3">🚪</span>
                   {t('nav.logout')}
