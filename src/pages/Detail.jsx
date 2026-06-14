@@ -47,7 +47,7 @@ export default function Detail() {
     fetchCard();
 
     return () => controller.abort();
-  }, [id, navigate]);
+  }, [id, navigate, i18n.language]);
 
   const handleFavorite = () => {
     if (card) {

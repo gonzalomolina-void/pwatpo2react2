@@ -5,6 +5,7 @@ import Detail from './Detail';
 import cardService from '../services/cardService';
 import favoritesService from '../services/favoritesService';
 
+const mockLanguage = vi.hoisted(() => ({ value: 'es' }));
 const mockT = vi.hoisted(() => (str) => str);
 const mockNavigate = vi.hoisted(() => vi.fn());
 
@@ -13,7 +14,7 @@ vi.mock('react-i18next', () => ({
     t: mockT,
     i18n: {
       changeLanguage: () => new Promise(() => {}),
-      language: 'es'
+      language: mockLanguage.value
     },
   }),
   initReactI18next: {
@@ -63,6 +64,7 @@ function renderDetail() {
 describe('Detail Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockLanguage.value = 'es';
   });
 
   it('muestra el spinner de carga mientras se obtiene la carta', () => {
@@ -138,5 +140,32 @@ describe('Detail Page', () => {
     fireEvent.error(img);
 
     expect(img.src).toContain('FallbackImageEs.webp');
+  });
+
+  it('vuelve a solicitar la carta al cambiar el idioma (i18n)', async () => {
+    cardService.getCardById.mockResolvedValue(mockCard);
+
+    const { rerender } = renderDetail();
+
+    await waitFor(() => {
+      expect(cardService.getCardById).toHaveBeenCalledTimes(1);
+    });
+
+    // Cambiar idioma
+    mockLanguage.value = 'en';
+
+    // Rerenderizar para reflejar el cambio de idioma en el hook reactivo
+    rerender(
+      <MemoryRouter initialEntries={['/detalles/card-1']}>
+        <Routes>
+          <Route path="/detalles/:id" element={<Detail />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      // Debe haberse ejecutado una segunda vez al cambiar de idioma
+      expect(cardService.getCardById).toHaveBeenCalledTimes(2);
+    });
   });
 });

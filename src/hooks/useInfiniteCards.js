@@ -71,7 +71,6 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       setIsLoading(true);
       setError(null);
 
-      const langKey = lang === 'es' ? 'Es' : 'En';
       const params = {
         page: targetPage,
         limit: limit,
@@ -105,7 +104,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [limit, lang]);
+  }, [limit]);
 
   useEffect(() => {
     // Si estamos restaurando de caché, el primer render NO dispara fetch
