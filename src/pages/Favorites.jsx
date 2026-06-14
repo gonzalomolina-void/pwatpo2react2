@@ -6,13 +6,13 @@ import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Favorites() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Obtener favoritos desde la API al montar
+  // Obtener favoritos desde la API al montar o cambiar el idioma
   useEffect(() => {
     const fetchFavoritesData = async () => {
       try {
@@ -28,7 +28,7 @@ export default function Favorites() {
       }
     };
     fetchFavoritesData();
-  }, []);
+  }, [i18n.language]);
 
   // Callback para remover la carta de la vista cuando se desmarca
   const handleFavoriteToggle = useCallback((card, isFav) => {

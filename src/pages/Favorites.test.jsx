@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import Favorites from './Favorites';
 import favoritesService from '../services/favoritesService';
 
+const mockLanguage = vi.hoisted(() => ({ value: 'es' }));
 const mockT = vi.hoisted(() => (str) => str);
 
 vi.mock('react-i18next', () => ({
@@ -11,7 +12,7 @@ vi.mock('react-i18next', () => ({
     t: mockT,
     i18n: {
       changeLanguage: () => new Promise(() => {}),
-      language: 'es'
+      language: mockLanguage.value
     },
   }),
   initReactI18next: {
@@ -42,10 +43,10 @@ const mockCard = {
 describe('Favorites Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockLanguage.value = 'es';
   });
 
   it('muestra spinner de carga mientras se obtienen los favoritos', () => {
-    // La promesa queda pendiente
     favoritesService.fetchFavorites.mockReturnValueOnce(new Promise(() => {}));
     favoritesService.getFavorites.mockReturnValue([]);
 
@@ -68,7 +69,6 @@ describe('Favorites Page', () => {
       </MemoryRouter>
     );
 
-    // Esperar a que se quite el estado de carga y muestre error
     await waitFor(() => {
       expect(screen.queryByText('favorites.loading')).not.toBeInTheDocument();
     });
@@ -108,5 +108,35 @@ describe('Favorites Page', () => {
       expect(screen.queryByText('favorites.loading')).not.toBeInTheDocument();
     });
     expect(screen.getByText('Mago')).toBeInTheDocument();
+  });
+
+  it('vuelve a solicitar los favoritos al cambiar el idioma (i18n)', async () => {
+    favoritesService.fetchFavorites.mockResolvedValue([mockCard]);
+    favoritesService.getFavorites.mockReturnValue([mockCard]);
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(favoritesService.fetchFavorites).toHaveBeenCalledTimes(1);
+    });
+
+    // Cambiar idioma en mock
+    mockLanguage.value = 'en';
+
+    // Rerenderizar para propagar el cambio de idioma
+    rerender(
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      // Debería haberse llamado por segunda vez para obtener los datos en inglés
+      expect(favoritesService.fetchFavorites).toHaveBeenCalledTimes(2);
+    });
   });
 });
