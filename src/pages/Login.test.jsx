@@ -16,13 +16,16 @@ vi.mock('react-i18next', () => ({
         'auth.registerTitle': 'Creá tu Cuenta',
         'auth.loginSubtitle': 'Accedé a tus favoritos y forjá cartas únicas',
         'auth.registerSubtitle': 'Registrate para empezar a coleccionar',
+        'auth.namePlaceholder': 'Nombre',
         'auth.emailPlaceholder': 'Email',
         'auth.passwordPlaceholder': 'Contraseña',
         'auth.confirmPasswordPlaceholder': 'Confirmar contraseña',
         'auth.loginButton': 'Iniciar Sesión',
         'auth.registerButton': 'Registrarse',
         'auth.needAccount': '¿No tenés cuenta? Registrate',
-        'auth.haveAccount': '¿Ya tenés cuenta? Iniciá sesión'
+        'auth.haveAccount': '¿Ya tenés cuenta? Iniciá sesión',
+        'auth.errorNameRequired': 'El nombre es obligatorio',
+        'auth.errorNameTooShort': 'El nombre debe tener al menos 2 caracteres'
       };
       return translations[key] || key;
     },
@@ -121,12 +124,14 @@ describe('Login Page', () => {
       fireEvent.click(toggleButton);
     });
 
+    const nameInput = screen.getByPlaceholderText(/nombre/i);
     const emailInput = screen.getByPlaceholderText(/email/i);
     const passwordInput = screen.getByPlaceholderText('Contraseña');
     const confirmPasswordInput = screen.getByPlaceholderText(/confirmar contraseña/i);
     const submitButton = screen.getByRole('button', { name: /registrarse/i });
 
     await act(async () => {
+      fireEvent.change(nameInput, { target: { value: 'Gonzalo' } });
       fireEvent.change(emailInput, { target: { value: 'new@test.com' } });
       fireEvent.change(passwordInput, { target: { value: 'password123' } });
       fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
@@ -136,6 +141,65 @@ describe('Login Page', () => {
       fireEvent.click(submitButton);
     });
 
-    expect(mockRegister).toHaveBeenCalledWith('new@test.com', 'password123');
+    expect(mockRegister).toHaveBeenCalledWith('new@test.com', 'Gonzalo', 'password123');
+  });
+
+  it('debe mostrar error de validacion si el nombre esta vacio al intentar registrarse', async () => {
+    renderWithRouter(<Login />);
+
+    // Cambiar a registro
+    const toggleButton = screen.getByText(/¿no tenés cuenta\? registrate/i);
+    await act(async () => {
+      fireEvent.click(toggleButton);
+    });
+
+    const emailInput = screen.getByPlaceholderText(/email/i);
+    const passwordInput = screen.getByPlaceholderText('Contraseña');
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirmar contraseña/i);
+    const submitButton = screen.getByRole('button', { name: /registrarse/i });
+
+    await act(async () => {
+      fireEvent.change(emailInput, { target: { value: 'new@test.com' } });
+      fireEvent.change(passwordInput, { target: { value: 'password123' } });
+      fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+      // Dejamos el campo name vacío
+    });
+
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+
+    expect(screen.getByText(/el nombre es obligatorio/i)).toBeInTheDocument();
+    expect(mockRegister).not.toHaveBeenCalled();
+  });
+
+  it('debe mostrar error de validacion si el nombre es demasiado corto al intentar registrarse', async () => {
+    renderWithRouter(<Login />);
+
+    // Cambiar a registro
+    const toggleButton = screen.getByText(/¿no tenés cuenta\? registrate/i);
+    await act(async () => {
+      fireEvent.click(toggleButton);
+    });
+
+    const nameInput = screen.getByPlaceholderText(/nombre/i);
+    const emailInput = screen.getByPlaceholderText(/email/i);
+    const passwordInput = screen.getByPlaceholderText('Contraseña');
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirmar contraseña/i);
+    const submitButton = screen.getByRole('button', { name: /registrarse/i });
+
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: 'G' } });
+      fireEvent.change(emailInput, { target: { value: 'new@test.com' } });
+      fireEvent.change(passwordInput, { target: { value: 'password123' } });
+      fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    });
+
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+
+    expect(screen.getByText(/el nombre debe tener al menos 2 caracteres/i)).toBeInTheDocument();
+    expect(mockRegister).not.toHaveBeenCalled();
   });
 });

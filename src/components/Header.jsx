@@ -87,8 +87,8 @@ export default function Header() {
               
               {isAuthenticated ? (
                 <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
-                  <span className="max-w-37.5 truncate rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400" title={user.email}>
-                    {user.email}
+                  <span className="max-w-37.5 truncate rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400" title={user.name || user.email}>
+                    {user.name || user.email}
                   </span>
                   <button 
                     onClick={handleLogout}
@@ -162,7 +162,7 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <div className="flex items-center justify-between border-b border-slate-100 py-3.5 text-base font-medium text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                  <span className="max-w-50 truncate">{user.email}</span>
+                  <span className="max-w-50 truncate" title={user.name || user.email}>{user.name || user.email}</span>
                   <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                     {user.role}
                   </span>

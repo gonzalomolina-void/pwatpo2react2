@@ -191,4 +191,24 @@ describe('AuthContext', () => {
     expect(authInstance.user).toEqual({ id: 1, email: 'admin@test.com', role: 'admin' });
     expect(authInstance.user.role).toBe('admin');
   });
+
+  it('debe registrar un nuevo usuario correctamente al llamar a register', async () => {
+    const mockRegisterResponse = { id: 2, email: 'new@test.com', name: 'Gonzalo', role: 'usuario' };
+    authService.register.mockResolvedValueOnce(mockRegisterResponse);
+
+    let authInstance;
+    render(
+      <AuthProvider>
+        <TestComponent onMount={(auth) => { authInstance = auth; }} />
+      </AuthProvider>
+    );
+
+    let result;
+    await act(async () => {
+      result = await authInstance.register('new@test.com', 'Gonzalo', 'password123');
+    });
+
+    expect(authService.register).toHaveBeenCalledWith('new@test.com', 'Gonzalo', 'password123');
+    expect(result).toEqual(mockRegisterResponse);
+  });
 });

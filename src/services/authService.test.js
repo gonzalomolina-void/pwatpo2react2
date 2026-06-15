@@ -47,14 +47,14 @@ describe('authService', () => {
         json: async () => mockResponse
       });
 
-      const result = await authService.register('new@test.com', 'password123');
+      const result = await authService.register('new@test.com', 'Gonzalo', 'password123');
 
       expect(globalThis.fetch).toHaveBeenCalledWith(
         `${import.meta.env.VITE_API_URL}/auth/register`,
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ email: 'new@test.com', password: 'password123' })
+          body: JSON.stringify({ email: 'new@test.com', name: 'Gonzalo', password: 'password123' })
         })
       );
       expect(result).toEqual(mockResponse);
@@ -67,7 +67,7 @@ describe('authService', () => {
         statusText: 'Bad Request'
       });
 
-      await expect(authService.register('dup@test.com', 'pwd')).rejects.toThrow('Error in register: Bad Request');
+      await expect(authService.register('dup@test.com', 'Gonzalo', 'pwd')).rejects.toThrow('Error in register: Bad Request');
     });
   });
 

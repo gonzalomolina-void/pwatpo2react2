@@ -6,18 +6,23 @@ Esta especificación define el comportamiento del sistema de autenticación de u
 ## Requirements
 
 ### Requirement: Registro de Nuevos Usuarios
-El sistema MUST permitir a los usuarios crear una cuenta ingresando un email y contraseña válidos.
+El sistema MUST permitir a los usuarios crear una cuenta ingresando un email, nombre y contraseña válidos.
 
 #### Scenario: Registro exitoso
 - GIVEN un usuario no autenticado en la página de Login
-- WHEN ingresa un email no registrado y contraseña válida y hace clic en "Registrarse"
-- THEN el sistema realiza la petición `POST /api/auth/register` al backend
+- WHEN ingresa un email no registrado, su nombre completo, una contraseña válida y hace clic en "Registrarse"
+- THEN el sistema realiza la petición `POST /api/auth/register` al backend conteniendo los campos email, name y password
 - AND muestra un mensaje de éxito redirigiendo al usuario al formulario de inicio de sesión
 
 #### Scenario: Intento de registro con email duplicado
 - GIVEN un usuario no autenticado en la página de Login
-- WHEN ingresa un email ya registrado por otro usuario y hace clic en "Registrarse"
+- WHEN ingresa un email ya registrado por otro usuario, su nombre, contraseña válida y hace clic en "Registrarse"
 - THEN el sistema muestra un mensaje de error claro provisto por la API del backend
+
+#### Scenario: Registro fallido por nombre inválido (vacío o demasiado corto)
+- GIVEN un usuario no autenticado en la página de Login intentando registrarse
+- WHEN no proporciona un nombre o proporciona uno de menos de 2 caracteres
+- THEN el sistema bloquea el envío y muestra localmente un mensaje de validación indicando el error
 
 ---
 
@@ -101,3 +106,19 @@ Cuando se disparan múltiples peticiones asíncronas de forma simultánea (ej: c
 - AND las llamadas originales de cards, favorites y auth son encoladas en memoria.
 - AND tras el éxito de la petición de refresh, el cliente reintenta las tres peticiones concurrentes encoladas usando el nuevo Access Token.
 - AND las llamadas resuelven con éxito hacia la UI de forma transparente.
+
+---
+
+### Requirement: Personalización de Perfil en la Cabecera
+La cabecera (Header) MUST renderizar el nombre del usuario si está presente en los datos de la sesión activa, utilizando el email como alternativa (fallback) si el nombre no está configurado o es vacío.
+
+#### Scenario: Visualización del nombre del usuario en el Header
+- GIVEN un usuario autenticado con datos `{ "email": "gonzalo@test.com", "name": "Gonzalo" }`
+- WHEN el Header se monta en la vista
+- THEN muestra el texto "Gonzalo" en lugar del correo electrónico en escritorio y móvil
+- AND incluye el correo electrónico "gonzalo@test.com" en el tooltip (title) del elemento
+
+#### Scenario: Fallback a correo electrónico en el Header
+- GIVEN un usuario autenticado cuyo nombre no está definido o es vacío (`""`)
+- WHEN el Header se monta en la vista
+- THEN muestra el correo electrónico "viejo@test.com" en su lugar como fallback de seguridad
