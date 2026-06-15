@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useCardForm } from './useCardForm';
 import cardService from '../services/cardService';
+import { lookupService } from '../services/lookupService';
 
 // Mock de cardService
 vi.mock('../services/cardService', () => ({
@@ -13,10 +14,19 @@ vi.mock('../services/cardService', () => ({
   }
 }));
 
+// Mock de lookupService
+vi.mock('../services/lookupService', () => ({
+  lookupService: {
+    getTypes: vi.fn(),
+    getRarities: vi.fn()
+  }
+}));
+
 // Mock de react-i18next
+const mockT = vi.fn((key) => key);
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => key,
+    t: mockT,
   })
 }));
 
@@ -34,12 +44,25 @@ describe('useCardForm Hook', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(lookupService.getTypes).mockResolvedValue([
+      { id: 1, code: 'creature', name: 'Criatura' },
+      { id: 2, code: 'spell', name: 'Hechizo' }
+    ]);
+    vi.mocked(lookupService.getRarities).mockResolvedValue([
+      { id: 1, code: 'poor', name: 'Pobre' },
+      { id: 2, code: 'common', name: 'Común' },
+      { id: 3, code: 'uncommon', name: 'Poco Común' }
+    ]);
   });
 
-  it('debería inicializar los estados vacíos al abrirse en modo creación (Alta)', () => {
+  it('debería inicializar los estados vacíos al abrirse en modo creación (Alta)', async () => {
     const { result } = renderHook(() =>
       useCardForm({ cardId: null, isOpen: true, onSuccess: onSuccessMock, onClose: onCloseMock })
     );
+
+    await waitFor(() => {
+      expect(result.current.fetching).toBe(false);
+    });
 
     expect(result.current.cost).toBe('');
     expect(result.current.atk).toBe('');
@@ -98,6 +121,10 @@ describe('useCardForm Hook', () => {
     const { result } = renderHook(() =>
       useCardForm({ cardId: null, isOpen: true, onSuccess: onSuccessMock, onClose: onCloseMock })
     );
+
+    await waitFor(() => {
+      expect(result.current.fetching).toBe(false);
+    });
 
     // Seteamos campos
     act(() => {
@@ -190,6 +217,10 @@ describe('useCardForm Hook', () => {
       useCardForm({ cardId: '123', isOpen: true, onSuccess: onSuccessMock, onClose: onCloseMock })
     );
 
+    await waitFor(() => {
+      expect(result.current.fetching).toBe(false);
+    });
+
     await act(async () => {
       await result.current.handleDelete();
     });
@@ -198,5 +229,33 @@ describe('useCardForm Hook', () => {
     expect(onSuccessMock).toHaveBeenCalledWith({ action: 'delete', cardId: '123' });
     expect(onCloseMock).toHaveBeenCalled();
     expect(result.current.showDeleteConfirm).toBe(false);
+  });
+
+  it('debería mantener fetching en true hasta que se resuelvan los lookups asíncronos', async () => {
+    let resolveTypes, resolveRarities;
+    const typesPromise = new Promise((resolve) => { resolveTypes = resolve; });
+    const raritiesPromise = new Promise((resolve) => { resolveRarities = resolve; });
+
+    vi.mocked(lookupService.getTypes).mockReturnValueOnce(typesPromise);
+    vi.mocked(lookupService.getRarities).mockReturnValueOnce(raritiesPromise);
+
+    const { result } = renderHook(() =>
+      useCardForm({ cardId: null, isOpen: true, onSuccess: onSuccessMock, onClose: onCloseMock })
+    );
+
+    expect(result.current.fetching).toBe(true);
+
+    await act(async () => {
+      resolveTypes([{ id: 1, code: 'creature', name: 'Criatura' }]);
+    });
+    expect(result.current.fetching).toBe(true);
+
+    await act(async () => {
+      resolveRarities([{ id: 1, code: 'common', name: 'Común' }]);
+    });
+
+    await waitFor(() => {
+      expect(result.current.fetching).toBe(false);
+    });
   });
 });

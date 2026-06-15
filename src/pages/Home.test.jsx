@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import Home from './Home';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
 import { useAuth } from '../context/AuthContext';
+import { lookupService } from '../services/lookupService';
 
 vi.mock('../context/AuthContext', () => ({
   useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
@@ -27,6 +28,13 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('../hooks/useInfiniteCards', () => ({
   useInfiniteCards: vi.fn(),
+}));
+
+vi.mock('../services/lookupService', () => ({
+  lookupService: {
+    getTypes: vi.fn(),
+    getRarities: vi.fn()
+  }
 }));
 
 vi.mock('../components/Card', () => ({
@@ -80,6 +88,15 @@ describe('Home Page', () => {
       user: null,
       isAuthenticated: false
     });
+    vi.mocked(lookupService.getTypes).mockResolvedValue([
+      { id: 1, code: 'creature', name: 'Criatura', labelKey: 'card.types.creature' },
+      { id: 2, code: 'spell', name: 'Hechizo', labelKey: 'card.types.spell' },
+      { id: 3, code: 'artifact', name: 'Artefacto', labelKey: 'card.types.artifact' }
+    ]);
+    vi.mocked(lookupService.getRarities).mockResolvedValue([
+      { id: 1, code: 'poor', name: 'Pobre', labelKey: 'card.rarities.poor' },
+      { id: 2, code: 'common', name: 'Común', labelKey: 'card.rarities.common' }
+    ]);
   });
 
   it('renderiza el título y la descripción', () => {
@@ -414,6 +431,48 @@ describe('Home Page', () => {
         selectedTypes: ['spell'],
         selectedRarities: []
       });
+    });
+  });
+
+  describe('Dynamic Lookups Integration (US17)', () => {
+    it('debería consultar lookupService y pasar las opciones dinámicas a SearchBar', async () => {
+      const mockTypes = [
+        { id: 1, code: 'creature', name: 'Criatura Dinámica', labelKey: 'card.types.creature' },
+        { id: 2, code: 'spell', name: 'Hechizo Dinámico', labelKey: 'card.types.spell' }
+      ];
+      const mockRarities = [
+        { id: 1, code: 'poor', name: 'Pobre Dinámica', labelKey: 'card.rarities.poor' }
+      ];
+      vi.mocked(lookupService.getTypes).mockResolvedValueOnce(mockTypes);
+      vi.mocked(lookupService.getRarities).mockResolvedValueOnce(mockRarities);
+      mockHookState();
+
+      await act(async () => {
+        render(
+          <MemoryRouter>
+            <Home />
+          </MemoryRouter>
+        );
+      });
+
+      expect(lookupService.getTypes).toHaveBeenCalled();
+      expect(lookupService.getRarities).toHaveBeenCalled();
+
+      const searchBar = screen.getByTestId('mock-searchbar');
+      expect(searchBar).toBeInTheDocument();
+      
+      const SearchBarMock = vi.mocked(await import('../components/SearchBar')).default;
+      expect(SearchBarMock.mock.calls.length).toBeGreaterThan(0);
+      const lastCallProps = SearchBarMock.mock.calls[SearchBarMock.mock.calls.length - 1][0];
+      expect(lastCallProps).toEqual(expect.objectContaining({
+        typeOptions: [
+          { value: 'creature', label: 'Criatura Dinámica' },
+          { value: 'spell', label: 'Hechizo Dinámico' }
+        ],
+        rarityOptions: [
+          { value: 'poor', label: 'Pobre Dinámica' }
+        ]
+      }));
     });
   });
 });

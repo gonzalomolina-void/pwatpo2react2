@@ -13,6 +13,21 @@ vi.mock('../services/cardService', () => ({
   }
 }));
 
+// Mock de lookupService
+vi.mock('../services/lookupService', () => ({
+  lookupService: {
+    getTypes: vi.fn(() => Promise.resolve([
+      { id: 1, code: 'creature', name: 'Criatura' },
+      { id: 2, code: 'spell', name: 'Hechizo' }
+    ])),
+    getRarities: vi.fn(() => Promise.resolve([
+      { id: 1, code: 'poor', name: 'Pobre' },
+      { id: 2, code: 'common', name: 'Común' },
+      { id: 3, code: 'uncommon', name: 'Poco Común' }
+    ]))
+  }
+}));
+
 // Mock de react-i18next
 const mockT = (key) => key;
 vi.mock('react-i18next', () => ({
@@ -51,12 +66,14 @@ describe('CardFormModal Component', () => {
     expect(screen.queryByTestId('mock-modal')).not.toBeInTheDocument();
   });
 
-  it('debe renderizar campos vacíos en modo de creación (Alta)', () => {
+  it('debe renderizar campos vacíos en modo de creación (Alta)', async () => {
     render(
       <CardFormModal isOpen={true} onClose={() => {}} />
     );
 
-    expect(screen.getByTestId('input-cost')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('input-cost')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('input-atk')).toBeInTheDocument();
     expect(screen.getByTestId('input-def')).toBeInTheDocument();
     expect(screen.getByTestId('input-image')).toBeInTheDocument();
@@ -116,6 +133,10 @@ describe('CardFormModal Component', () => {
     render(
       <CardFormModal isOpen={true} onClose={onCloseMock} onSuccess={onSuccessMock} />
     );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('input-cost')).toBeInTheDocument();
+    });
 
     // Llenar campos
     fireEvent.change(screen.getByTestId('input-cost'), { target: { value: '3' } });

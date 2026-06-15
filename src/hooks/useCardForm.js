@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import cardService from '../services/cardService';
-import { CARD_TYPES, CARD_RARITIES } from '../constants/cardConstants';
+import { lookupService } from '../services/lookupService';
 import { useToast } from '../context/ToastContext';
 
 export function useCardForm({ cardId, isOpen, onSuccess, onClose }) {
@@ -10,9 +10,23 @@ export function useCardForm({ cardId, isOpen, onSuccess, onClose }) {
 
   // Estados de carga y error
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(isOpen);
   const [error, setError] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Sincronizar fetching y error inline cuando isOpen cambia a true
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) {
+      setFetching(true);
+      setError('');
+    }
+  }
+
+  // Opciones dinámicas cargadas de la API
+  const [types, setTypes] = useState([]);
+  const [rarities, setRarities] = useState([]);
 
   // Campos globales del formulario
   const [cost, setCost] = useState('');
@@ -28,56 +42,61 @@ export function useCardForm({ cardId, isOpen, onSuccess, onClose }) {
     en: { name: '', description: '' }
   });
 
-  // Cargar datos si estamos en modo edición
+  // Cargar datos si estamos en modo edición o alta
   useEffect(() => {
-    if (isOpen && cardId) {
-      setFetching(true);
-      setError('');
-      cardService.getCardForEdit(cardId)
-        .then((data) => {
-          setCost(data.cost ?? '');
-          setAtk(data.atk ?? '');
-          setDef(data.def ?? '');
-          setImage(data.image ?? '');
-          const matchedType = CARD_TYPES.find(t => t.code === data.typeCode);
-          const matchedRarity = CARD_RARITIES.find(r => r.code === data.rarityCode);
+    if (!isOpen) return;
+
+    const typesPromise = lookupService.getTypes();
+    const raritiesPromise = lookupService.getRarities();
+    const cardPromise = cardId ? cardService.getCardForEdit(cardId) : Promise.resolve(null);
+
+    Promise.all([typesPromise, raritiesPromise, cardPromise])
+      .then(([typesData, raritiesData, cardData]) => {
+        setTypes(typesData);
+        setRarities(raritiesData);
+
+        if (cardData) {
+          setCost(cardData.cost ?? '');
+          setAtk(cardData.atk ?? '');
+          setDef(cardData.def ?? '');
+          setImage(cardData.image ?? '');
+          const matchedType = typesData.find(t => t.code === cardData.typeCode);
+          const matchedRarity = raritiesData.find(r => r.code === cardData.rarityCode);
           setTypeId(matchedType ? String(matchedType.id) : '');
           setRarityId(matchedRarity ? String(matchedRarity.id) : '');
           setTranslations({
             es: {
-              name: data.translations?.es?.name ?? '',
-              description: data.translations?.es?.description ?? ''
+              name: cardData.translations?.es?.name ?? '',
+              description: cardData.translations?.es?.description ?? ''
             },
             en: {
-              name: data.translations?.en?.name ?? '',
-              description: data.translations?.en?.description ?? ''
+              name: cardData.translations?.en?.name ?? '',
+              description: cardData.translations?.en?.description ?? ''
             }
           });
-        })
-        .catch((err) => {
-          console.error(err);
-          setError(t('card.admin.fetchError') || 'Error al cargar los datos de la carta.');
-        })
-        .finally(() => {
-          setFetching(false);
-        });
-    } else {
-      // Limpiar formulario en caso de alta
-      setCost('');
-      setAtk('');
-      setDef('');
-      setImage('');
-      setTypeId('');
-      setRarityId('');
-      setTranslations({
-        es: { name: '', description: '' },
-        en: { name: '', description: '' }
+        } else {
+          // Limpiar formulario en caso de alta
+          setCost('');
+          setAtk('');
+          setDef('');
+          setImage('');
+          setTypeId('');
+          setRarityId('');
+          setTranslations({
+            es: { name: '', description: '' },
+            en: { name: '', description: '' }
+          });
+          setShowDeleteConfirm(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(t('card.admin.fetchError') || 'Error al cargar los datos.');
+      })
+      .finally(() => {
+        setFetching(false);
       });
-      setError('');
-      setShowDeleteConfirm(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, cardId]);
+  }, [isOpen, cardId, t]);
 
   const handleTranslationChange = useCallback((lang, field, value) => {
     setTranslations((prev) => ({
@@ -165,6 +184,8 @@ export function useCardForm({ cardId, isOpen, onSuccess, onClose }) {
     translations,
     handleTranslationChange,
     handleSubmit,
-    handleDelete
+    handleDelete,
+    types,
+    rarities
   };
 }

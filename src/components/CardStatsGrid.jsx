@@ -93,7 +93,7 @@ export default function CardStatsGrid({
           <option value="">{t('search.clear') || 'Seleccionar...'}</option>
           {typeOptions.map((type) => (
             <option key={type.id} value={type.id}>
-              {t(type.labelKey)}
+              {type.name || (type.labelKey ? t(type.labelKey) : '')}
             </option>
           ))}
         </select>
@@ -113,7 +113,7 @@ export default function CardStatsGrid({
           <option value="">{t('search.clear') || 'Seleccionar...'}</option>
           {rarityOptions.map((rarity) => (
             <option key={rarity.id} value={rarity.id}>
-              {t(rarity.labelKey)}
+              {rarity.name || (rarity.labelKey ? t(rarity.labelKey) : '')}
             </option>
           ))}
         </select>

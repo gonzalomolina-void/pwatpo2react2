@@ -15,34 +15,36 @@ export default function SearchBar({
   const [selectedRarities, setSelectedRarities] = useState([]);
   const debounceTimer = useRef(null);
 
-  // Sincronizar estado interno cuando cambie la prop filters
-  useEffect(() => {
-    if (!filters) return;
+  // Sincronizar estado interno cuando cambie la prop filters (durante el renderizado)
+  const [prevFilters, setPrevFilters] = useState(null);
+  if (filters !== prevFilters) {
+    setPrevFilters(filters);
+    if (filters) {
+      const {
+        searchTerm: propSearch = '',
+        selectedTypes: propTypes = [],
+        selectedRarities: propRarities = [],
+      } = filters;
 
-    const {
-      searchTerm: propSearch = '',
-      selectedTypes: propTypes = [],
-      selectedRarities: propRarities = [],
-    } = filters;
+      if (propSearch !== searchTerm) {
+        setSearchTerm(propSearch);
+      }
 
-    if (propSearch !== searchTerm) {
-      setSearchTerm(propSearch);
+      const isTypesDiff =
+        propTypes.length !== selectedTypes.length ||
+        !propTypes.every((t) => selectedTypes.includes(t));
+      if (isTypesDiff) {
+        setSelectedTypes(propTypes);
+      }
+
+      const isRaritiesDiff =
+        propRarities.length !== selectedRarities.length ||
+        !propRarities.every((r) => selectedRarities.includes(r));
+      if (isRaritiesDiff) {
+        setSelectedRarities(propRarities);
+      }
     }
-
-    const isTypesDiff =
-      propTypes.length !== selectedTypes.length ||
-      !propTypes.every((t) => selectedTypes.includes(t));
-    if (isTypesDiff) {
-      setSelectedTypes(propTypes);
-    }
-
-    const isRaritiesDiff =
-      propRarities.length !== selectedRarities.length ||
-      !propRarities.every((r) => selectedRarities.includes(r));
-    if (isRaritiesDiff) {
-      setSelectedRarities(propRarities);
-    }
-  }, [filters]);
+  }
 
   const emitSearch = (overrides = {}) => {
     const payload = {
