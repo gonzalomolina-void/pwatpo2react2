@@ -51,3 +51,14 @@ El sistema MUST sincronizar de forma inteligente los filtros del catálogo de ca
 - WHEN recibe una prop `filters` modificada desde el padre `Home`.
 - THEN MUST actualizar su estado local interno para reflejar las props.
 - AND NOT disparar llamadas al callback `onSearch` para evitar loops de renderizado.
+
+## 3. Requirement: Arquitectura Desacoplada y Modular de CardFormModal
+
+Para garantizar la mantenibilidad y escalabilidad del módulo de administración de cartas, la lógica del formulario y su UI MUST estar completamente desacopladas siguiendo el patrón contenedor-presentacional:
+- Toda la lógica de negocio, manejo de estados, efectos y peticiones a la API (`cardService`) MUST estar centralizados dentro del Custom Hook `useCardForm.js`.
+- La UI del modal de formulario `CardFormModal.jsx` MUST estar dividida en subcomponentes presentacionales atómicos y puros:
+  - `<CardStatsGrid />`: Grilla que agrupa atributos globales (costo, ataque, defensa, imagen, tipo y rareza).
+  - `<CardTranslationsForm />`: Formulario para la carga de traducciones bilingües (Español e Inglés).
+  - `<DeleteConfirmDialog />`: Diálogo de confirmación secundario de borrado.
+- Los subcomponentes presentacionales MUST recibir sus estados y manejadores de forma exclusiva a través de props, operando de manera agnóstica a la lógica del backend o al estado del modal contenedor.
+
