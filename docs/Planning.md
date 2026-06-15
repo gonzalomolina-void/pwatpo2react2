@@ -136,6 +136,14 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Durante el tiempo en que se realiza la recarga de datos, debe mostrarse el spinner de carga temático para evitar inconsistencias visuales y mantener una buena UX.
     *   Asegurar mediante pruebas unitarias en `Detail.test.jsx` que el cambio de lenguaje gatille el refresco del fetch.
 
+### US17: Desacoplamiento de Tipos y Rarezas desde la API
+**Como** administrador y desarrollador, **quiero** obtener los listados de tipos y rarezas disponibles con sus traducciones directamente desde el backend, **para** evitar hardcodear constantes en el frontend y permitir la escalabilidad dinámica del catálogo.
+*   **Criterios de Aceptación:**
+    *   Reemplazar las constantes `CARD_TYPES` y `CARD_RARITIES` locales por consultas asíncronas a los nuevos endpoints de la API (`GET /api/types` y `GET /api/rarities`).
+    *   Implementar mecanismos de almacenamiento en caché en memoria (u hooks de contexto) para evitar consultas redundantes de red al renderizar filtros o formularios.
+    *   Adaptar el formulario `CardFormModal` para que popule los selectores de tipo y rareza a partir de los datos dinámicos del backend.
+    *   Actualizar los mocks y pruebas de los formularios y filtros para simular las llamadas asíncronas.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -159,6 +167,7 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 14 | Documentación Final (README) | **Lautaro** | Baja |
 | 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
 | 16 | Recarga de Detalle de Carta por Idioma (US16) | **Gonzalo & Juan** | Baja |
+| 17 | Desacoplamiento de Tipos y Rarezas por API (US17) | **Gonzalo & Juan** | Media |
 
 ---
 

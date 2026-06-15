@@ -42,10 +42,11 @@ Test Files  32 passed (32)
 ---
 
 ### Issues Resolved
-During verification, a test failure was found in `src/pages/Favorites.test.jsx`. The introduction of the `useAuth()` hook within the `Card` component (to conditionalize the admin edit button) caused `Favorites.test.jsx` to throw because it rendered `Card` without mocking `AuthContext`.
-This was resolved by:
-1. Mocking `useAuth` from `../context/AuthContext` inside `Favorites.test.jsx`.
-2. Initializing `favoritesService.isFavorite` default mock value to `true` in `beforeEach`.
+During verification, the following issues were found and resolved:
+1. **Favorites Auth Mock Pollution**: The introduction of the `useAuth()` hook within the `Card` component caused `Favorites.test.jsx` to throw. This was resolved by mocking `useAuth` from `../context/AuthContext` and initializing `favoritesService.isFavorite` default mock value to `true` in `beforeEach`.
+2. **Dropdown Selection Bug**: Edit mode in `CardFormModal` failed to pre-select dropdowns because the backend returns `typeCode`/`rarityCode` rather than database IDs. Resolved by mapping codes to local constants IDs.
+3. **Card Editing from Favorites**: Favorites page displayed edit button but lacked integration of edit modals. Resolved by wiring `CardFormModal` and its edit success callback directly into `Favorites.jsx`.
+4. **Accessibility (A11y)**: Tooltip titles and `aria-label` translations were added to interactive buttons on card catalog, favorites grid, and admin controls.
 
 ---
 

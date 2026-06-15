@@ -40,8 +40,10 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
           setAtk(data.atk ?? '');
           setDef(data.def ?? '');
           setImage(data.image ?? '');
-          setTypeId(data.typeId ? String(data.typeId) : '');
-          setRarityId(data.rarityId ? String(data.rarityId) : '');
+          const matchedType = CARD_TYPES.find(t => t.code === data.typeCode);
+          const matchedRarity = CARD_RARITIES.find(r => r.code === data.rarityCode);
+          setTypeId(matchedType ? String(matchedType.id) : '');
+          setRarityId(matchedRarity ? String(matchedRarity.id) : '');
           setTranslations({
             es: {
               name: data.translations?.es?.name ?? '',

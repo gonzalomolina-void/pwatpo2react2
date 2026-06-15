@@ -38,7 +38,15 @@
 | `src/pages/Home.jsx` | Modified | Added "New Card" button visible for admin roles. |
 | `src/pages/Home.test.jsx` | Modified | Added test coverage for the catalog creation modal triggers. |
 | `src/pages/Favorites.test.jsx` | Modified | Fixed mock dependencies for Card and AuthContext. |
+| `src/pages/Favorites.jsx` | Modified | Wired CardFormModal and edit callback support to edit cards from favorites. |
+| `src/components/CardFormModal.test.jsx` | Modified | Updated mockCard to return typeCode/rarityCode for correct mapping. |
+
+### QA / Hotfixes Completed
+- [x] **Fix 1**: Mapear `typeCode` y `rarityCode` a IDs locales en `CardFormModal.jsx` para resolver la pre-selección del dropdown en modo edición.
+- [x] **Fix 2**: Integrar `CardFormModal` y callback `onEdit` en `Favorites.jsx` para permitir edición y actualización de la vista.
+- [x] **A11y 1**: Agregar `title` y `aria-label` i18n al botón de favorito y de edición en `Card.jsx`.
+- [x] **A11y 2**: Agregar `title` y `aria-label` i18n al botón de creación "New Card" en `Home.jsx`.
 
 ### Test Summary
 - **Total tests in project**: 276 passed (all scenarios running successfully)
-- **Status**: 13/13 tasks complete. Ready for verification (`sdd-verify`).
+- **Status**: All original tasks and QA hotfixes completed successfully. Ready for verification (`sdd-verify`).

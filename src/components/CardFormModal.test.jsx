@@ -73,6 +73,8 @@ describe('CardFormModal Component', () => {
       image: 'http://test.com/img.png',
       typeId: 1,
       rarityId: 3,
+      typeCode: 'creature',
+      rarityCode: 'uncommon',
       translations: {
         es: { name: 'Carta Es', description: 'Desc Es' },
         en: { name: 'Card En', description: 'Desc En' }
@@ -155,6 +157,8 @@ describe('CardFormModal Component', () => {
       image: 'http://test.com/img.png',
       typeId: 1,
       rarityId: 3,
+      typeCode: 'creature',
+      rarityCode: 'uncommon',
       translations: {
         es: { name: 'Carta Es', description: 'Desc Es' },
         en: { name: 'Card En', description: 'Desc En' }
@@ -207,6 +211,8 @@ describe('CardFormModal Component', () => {
       image: 'http://test.com/img.png',
       typeId: 1,
       rarityId: 3,
+      typeCode: 'creature',
+      rarityCode: 'uncommon',
       translations: {
         es: { name: 'Carta Es', description: 'Desc Es' },
         en: { name: 'Card En', description: 'Desc En' }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import favoritesService from '../services/favoritesService';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import CardFormModal from '../components/CardFormModal';
 
 export default function Favorites() {
   const { t, i18n } = useTranslation();
@@ -11,6 +12,25 @@ export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingCardId, setEditingCardId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleEdit = useCallback((id) => {
+    setEditingCardId(id);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleEditSuccess = useCallback(async () => {
+    try {
+      setLoading(true);
+      await favoritesService.fetchFavorites();
+      setFavorites(favoritesService.getFavorites());
+    } catch (err) {
+      console.error('Failed to reload favorites after edit:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   // Obtener favoritos desde la API al montar o cambiar el idioma
   useEffect(() => {
@@ -88,10 +108,17 @@ export default function Favorites() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {favorites.map(card => (
-            <Card key={card.id} card={card} onFavoriteToggle={handleFavoriteToggle} />
+            <Card key={card.id} card={card} onFavoriteToggle={handleFavoriteToggle} onEdit={handleEdit} />
           ))}
         </div>
       )}
+
+      <CardFormModal 
+        isOpen={isModalOpen} 
+        cardId={editingCardId} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={handleEditSuccess} 
+      />
     </div>
   );
 }

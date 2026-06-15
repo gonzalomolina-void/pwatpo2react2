@@ -118,6 +118,8 @@ export default function Home() {
             <button
               onClick={() => setIsModalOpen(true)}
               className="cursor-pointer self-start rounded-xl bg-linear-to-r from-blue-600 to-purple-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-blue-700 hover:to-purple-700 active:scale-95 sm:self-center"
+              aria-label={t('card.admin.newCard')}
+              title={t('card.admin.newCard')}
             >
               {t('card.admin.newCard')}
             </button>
