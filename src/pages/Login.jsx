@@ -13,6 +13,7 @@ export default function Login() {
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,6 +22,16 @@ export default function Login() {
   // Validaciones del formulario
   const validateForm = () => {
     setError('');
+    if (isRegisterMode) {
+      if (!name || !name.trim()) {
+        setError(t('auth.errorNameRequired') || 'El nombre es obligatorio');
+        return false;
+      }
+      if (name.trim().length < 2) {
+        setError(t('auth.errorNameTooShort') || 'El nombre debe tener al menos 2 caracteres');
+        return false;
+      }
+    }
     if (!email || !password) {
       setError(t('auth.errorRequiredFields') || 'Todos los campos son requeridos');
       return false;
@@ -52,10 +63,11 @@ export default function Login() {
 
     try {
       if (isRegisterMode) {
-        await register(email, password);
+        await register(email, name, password);
         setSuccessMsg(t('auth.registerSuccess') || '¡Registro exitoso! Ya podés iniciar sesión.');
         // Reiniciar campos y pasar a modo login tras registrarse
         setIsRegisterMode(false);
+        setName('');
         setPassword('');
         setConfirmPassword('');
       } else {
@@ -85,7 +97,7 @@ export default function Login() {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
           {error && (
             <div className="rounded-lg bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400" role="alert">
               {error}
@@ -105,6 +117,23 @@ export default function Login() {
           )}
 
           <div className="space-y-4 rounded-md shadow-sm">
+            {isRegisterMode && (
+              <div>
+                <label htmlFor="name" className="sr-only">Nombre</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  className="relative block w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  placeholder={t('auth.namePlaceholder') || 'Nombre'}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
+                />
+              </div>
+            )}
+
             <div>
               <label htmlFor="email" className="sr-only">Email</label>
               <input

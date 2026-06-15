@@ -54,10 +54,10 @@ export function AuthProvider({ children }) {
   /**
    * Registra un nuevo usuario en la plataforma.
    */
-  const register = async (email, password) => {
+  const register = async (email, name, password) => {
     setLoading(true);
     try {
-      const result = await authService.register(email, password);
+      const result = await authService.register(email, name, password);
       setLoading(false);
       return result;
     } catch (error) {

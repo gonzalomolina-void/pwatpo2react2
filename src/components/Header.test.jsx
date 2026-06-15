@@ -116,6 +116,27 @@ describe('Header Component', () => {
     expect(logoutBtn).toBeInTheDocument();
   });
 
+  it('debe mostrar el nombre del usuario si esta autenticado y tiene seteado el name', () => {
+    useAuth.mockReturnValue({
+      user: { email: 'user@test.com', name: 'Gonzalo', role: 'usuario' },
+      isAuthenticated: true,
+      logout: mockLogout
+    });
+
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByRole('link', { name: 'Iniciar Sesión' })).not.toBeInTheDocument();
+    expect(screen.getByText('Gonzalo')).toBeInTheDocument();
+    expect(screen.queryByText('user@test.com')).not.toBeInTheDocument();
+    
+    const logoutBtn = screen.getByRole('button', { name: 'Cerrar Sesión' });
+    expect(logoutBtn).toBeInTheDocument();
+  });
+
   it('debe llamar a la funcion logout y redirigir a /login al hacer clic en Cerrar Sesion', async () => {
     useAuth.mockReturnValue({
       user: { email: 'user@test.com', role: 'usuario' },

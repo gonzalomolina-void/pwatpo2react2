@@ -4,12 +4,13 @@ const authService = {
   /**
    * Registra un nuevo usuario en el sistema.
    * @param {string} email 
+   * @param {string} name
    * @param {string} password 
    * @returns {Promise<Object>}
    */
-  register: async (email, password) => {
+  register: async (email, name, password) => {
     try {
-      return await apiClient.post('/auth/register', { email, password });
+      return await apiClient.post('/auth/register', { email, name, password });
     } catch (error) {
       console.error('Error in authService.register:', error);
       throw new Error(`Error in register: ${error.message}`);
