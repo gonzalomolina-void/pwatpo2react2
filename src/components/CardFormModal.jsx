@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
-import { CARD_TYPES, CARD_RARITIES } from '../constants/cardConstants';
 import LoadingSpinner from './LoadingSpinner';
 import { useCardForm } from '../hooks/useCardForm';
 import CardStatsGrid from './CardStatsGrid';
@@ -32,6 +31,8 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
     handleTranslationChange,
     handleSubmit,
     handleDelete,
+    types,
+    rarities
   } = useCardForm({ cardId, isOpen, onSuccess, onClose });
 
   if (!isOpen) return null;
@@ -68,8 +69,8 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
             setTypeId={setTypeId}
             rarityId={rarityId}
             setRarityId={setRarityId}
-            typeOptions={CARD_TYPES}
-            rarityOptions={CARD_RARITIES}
+            typeOptions={types}
+            rarityOptions={rarities}
           />
 
           {/* Tabla de Traducciones */}

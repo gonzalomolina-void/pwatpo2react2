@@ -4,7 +4,7 @@ import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
-import { TYPE_OPTIONS, RARITY_OPTIONS } from '../constants/game';
+import { lookupService } from '../services/lookupService';
 import { useAuth } from '../context/AuthContext';
 import CardFormModal from '../components/CardFormModal';
 
@@ -14,6 +14,8 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [searchFilters, setSearchFilters] = useState({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+  const [typeOptions, setTypeOptions] = useState([]);
+  const [rarityOptions, setRarityOptions] = useState([]);
 
   const handleEditCard = useCallback((id) => {
     setSelectedCardId(id);
@@ -22,16 +24,26 @@ export default function Home() {
 
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
-  // Mapeamos las constantes a sus objetos de opción { value, label }
-  const typeOptions = TYPE_OPTIONS.map(key => ({
-    value: key,
-    label: t(`home.filters.types.${key}`)
-  }));
+  // Cargar tipos y rarezas dinámicamente según el idioma
+  useEffect(() => {
+    lookupService.getTypes()
+      .then((data) => {
+        setTypeOptions(data.map(t => ({
+          value: t.code,
+          label: t.name
+        })));
+      })
+      .catch(console.error);
 
-  const rarityOptions = RARITY_OPTIONS.map(key => ({
-    value: key,
-    label: t(`home.filters.rarities.${key}`)
-  }));
+    lookupService.getRarities()
+      .then((data) => {
+        setRarityOptions(data.map(r => ({
+          value: r.code,
+          label: r.name
+        })));
+      })
+      .catch(console.error);
+  }, [i18n.language]);
 
   const {
     cards,
@@ -90,6 +102,22 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleFormSuccess = useCallback((result) => {
+    if (!result) {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+      return;
+    }
+
+    const { action, card } = result;
+
+    if (action === 'create' || action === 'delete') {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+    } else if (action === 'edit' && card) {
+      updateCardOptimistic(card);
+      triggerSearch(searchFilters);
+    }
+  }, [handleSearch, triggerSearch, searchFilters, updateCardOptimistic]);
+
   if (error) {
     return (
       <div className="py-12 text-center">
@@ -105,22 +133,6 @@ export default function Home() {
       </div>
     );
   }
-
-  const handleFormSuccess = useCallback((result) => {
-    if (!result) {
-      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
-      return;
-    }
-
-    const { action, card, cardId } = result;
-
-    if (action === 'create' || action === 'delete') {
-      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
-    } else if (action === 'edit' && card) {
-      updateCardOptimistic(card);
-      triggerSearch(searchFilters);
-    }
-  }, [handleSearch, triggerSearch, searchFilters, updateCardOptimistic]);
 
   return (
     <div className="py-12">
