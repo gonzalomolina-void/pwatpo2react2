@@ -100,7 +100,7 @@
       "deleteConfirmTitle": "Delete Card?",
       "deleteConfirmMsg": "Are you sure you want to delete the card \"{{name}}\"? This action cannot be undone.",
       "deleteConfirmBtn": "Yes, Delete",
-      "deleteCancelBtn": "No, Cancelar",
+      "deleteCancelBtn": "No, Cancel",
       "createSuccess": "Card created successfully.",
       "updateSuccess": "Card updated successfully.",
       "deleteSuccess": "Card deleted successfully.",
