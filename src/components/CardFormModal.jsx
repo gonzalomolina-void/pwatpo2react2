@@ -112,13 +112,14 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
 
     try {
       if (cardId) {
-        await cardService.updateCard(cardId, payload);
+        const updatedCard = await cardService.updateCard(cardId, payload);
         showToast(t('card.admin.updateSuccess'), 'success');
+        if (onSuccess) onSuccess({ action: 'edit', card: updatedCard });
       } else {
-        await cardService.createCard(payload);
+        const createdCard = await cardService.createCard(payload);
         showToast(t('card.admin.createSuccess'), 'success');
+        if (onSuccess) onSuccess({ action: 'create', card: createdCard });
       }
-      if (onSuccess) onSuccess();
       onClose();
     } catch (err) {
       console.error(err);
@@ -134,7 +135,7 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
     try {
       await cardService.deleteCard(cardId);
       showToast(t('card.admin.deleteSuccess'), 'success');
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess({ action: 'delete', cardId });
       setShowDeleteConfirm(false);
       onClose();
     } catch (err) {

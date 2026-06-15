@@ -146,7 +146,7 @@ describe('CardFormModal Component', () => {
           { language: 'en', name: 'Name En', description: 'Desc En' }
         ]
       });
-      expect(onSuccessMock).toHaveBeenCalled();
+      expect(onSuccessMock).toHaveBeenCalledWith({ action: 'create', card: { id: 'new-id' } });
       expect(onCloseMock).toHaveBeenCalled();
     });
   });
@@ -200,7 +200,7 @@ describe('CardFormModal Component', () => {
           { language: 'en', name: 'Card En', description: 'Desc En' }
         ]
       });
-      expect(onSuccessMock).toHaveBeenCalled();
+      expect(onSuccessMock).toHaveBeenCalledWith({ action: 'edit', card: { id: '123' } });
       expect(onCloseMock).toHaveBeenCalled();
     });
   });
@@ -246,7 +246,7 @@ describe('CardFormModal Component', () => {
 
     await waitFor(() => {
       expect(cardService.deleteCard).toHaveBeenCalledWith('123');
-      expect(onSuccessMock).toHaveBeenCalled();
+      expect(onSuccessMock).toHaveBeenCalledWith({ action: 'delete', cardId: '123' });
       expect(onCloseMock).toHaveBeenCalled();
     });
   });

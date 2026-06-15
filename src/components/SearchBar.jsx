@@ -7,12 +7,42 @@ export default function SearchBar({
   typeOptions = [],
   rarityOptions = [],
   debounceMs = 300,
+  filters = null,
 }) {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRarities, setSelectedRarities] = useState([]);
   const debounceTimer = useRef(null);
+
+  // Sincronizar estado interno cuando cambie la prop filters
+  useEffect(() => {
+    if (!filters) return;
+
+    const {
+      searchTerm: propSearch = '',
+      selectedTypes: propTypes = [],
+      selectedRarities: propRarities = [],
+    } = filters;
+
+    if (propSearch !== searchTerm) {
+      setSearchTerm(propSearch);
+    }
+
+    const isTypesDiff =
+      propTypes.length !== selectedTypes.length ||
+      !propTypes.every((t) => selectedTypes.includes(t));
+    if (isTypesDiff) {
+      setSelectedTypes(propTypes);
+    }
+
+    const isRaritiesDiff =
+      propRarities.length !== selectedRarities.length ||
+      !propRarities.every((r) => selectedRarities.includes(r));
+    if (isRaritiesDiff) {
+      setSelectedRarities(propRarities);
+    }
+  }, [filters]);
 
   const emitSearch = (overrides = {}) => {
     const payload = {
