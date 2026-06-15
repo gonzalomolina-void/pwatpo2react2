@@ -144,6 +144,20 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Adaptar el formulario `CardFormModal` para que popule los selectores de tipo y rareza a partir de los datos dinámicos del backend.
     *   Actualizar los mocks y pruebas de los formularios y filtros para simular las llamadas asíncronas.
 
+### US18: Refactorización y Modularización de CardFormModal (Frontend)
+**Como** desarrollador, **quiero** separar la lógica de negocio y dividir el modal en subcomponentes atómicos, **para** mejorar la testabilidad y el mantenimiento del formulario de administración.
+*   **Criterios de Aceptación:**
+    *   Extraer los estados locales, llamadas a API y validaciones a un custom hook `useCardForm.js`.
+    *   Dividir el modal principal `CardFormModal.jsx` en subcomponentes independientes: `CardStatsGrid` (formulario de atributos globales), `CardTranslationsForm` (gestión bilingüe de textos) y `DeleteConfirmDialog` (modal de confirmación de borrado).
+    *   Asegurar que toda la suite de pruebas siga pasando al 100% y crear tests específicos de renderizado para los nuevos subcomponentes.
+
+### US19: Sincronización de Filtros y Consistencia en Catálogo Post-ABM (Frontend)
+**Como** administrador de la app, **quiero** que la barra de búsqueda y filtros del catálogo se sincronicen de manera inteligente ante las acciones de creación, edición o borrado de cartas, **para** evitar inconsistencias visuales en la interfaz.
+*   **Criterios de Aceptación:**
+    *   Hacer de `SearchBar` un componente controlado o capaz de responder a un reinicio de estado desde `Home.jsx` mediante props.
+    *   Al **crear** o **borrar** una carta con éxito, limpiar por completo el texto del buscador y todos los filtros seleccionados, recargando el catálogo base.
+    *   Al **editar** una carta con éxito, conservar el texto del buscador y los filtros activos del usuario para mantener el contexto del catálogo, pero recargando la lista para reflejar los cambios editados optimistamente.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -168,6 +182,8 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
 | 16 | Recarga de Detalle de Carta por Idioma (US16) | **Gonzalo & Juan** | Baja |
 | 17 | Desacoplamiento de Tipos y Rarezas por API (US17) | **Gonzalo & Juan** | Media |
+| 18 | Refactorización y Modularización de CardFormModal (US18) | **Gonzalo** | Media |
+| 19 | Sincronización y Consistencia de Filtros Post-ABM (US19) | **Gonzalo** | Baja |
 
 ---
 

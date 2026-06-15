@@ -33,6 +33,12 @@ vi.mock('../context/AuthContext', () => ({
   useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
 }));
 
+vi.mock('../context/ToastContext', () => ({
+  useToast: vi.fn(() => ({
+    showToast: vi.fn()
+  }))
+}));
+
 const mockCard = {
   id: 'card-1',
   name: 'Mago',

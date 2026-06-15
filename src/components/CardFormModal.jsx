@@ -4,9 +4,11 @@ import Modal from './Modal';
 import cardService from '../services/cardService';
 import { CARD_TYPES, CARD_RARITIES } from '../constants/cardConstants';
 import LoadingSpinner from './LoadingSpinner';
+import { useToast } from '../context/ToastContext';
 
 export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
   const { t } = useTranslation();
+  const { showToast } = useToast();
 
   // Estados de carga y error
   const [loading, setLoading] = useState(false);
@@ -111,8 +113,10 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
     try {
       if (cardId) {
         await cardService.updateCard(cardId, payload);
+        showToast(t('card.admin.updateSuccess'), 'success');
       } else {
         await cardService.createCard(payload);
+        showToast(t('card.admin.createSuccess'), 'success');
       }
       if (onSuccess) onSuccess();
       onClose();
@@ -129,6 +133,7 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
     setError('');
     try {
       await cardService.deleteCard(cardId);
+      showToast(t('card.admin.deleteSuccess'), 'success');
       if (onSuccess) onSuccess();
       setShowDeleteConfirm(false);
       onClose();
@@ -380,7 +385,7 @@ export default function CardFormModal({ isOpen, cardId, onClose, onSuccess }) {
       {showDeleteConfirm && (
         <div
           data-testid="delete-confirm-dialog"
-          className="animate-in fade-in fixed inset-0 z-110 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm duration-200"
+          className="animate-in fade-in fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm duration-200"
         >
           <div className="animate-in zoom-in-95 w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl duration-200">
             <h3 className="mb-2 text-lg font-bold text-slate-100">

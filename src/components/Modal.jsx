@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return createPortal(
     <div 
-      className="animate-in fade-in fixed inset-0 z-100 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm duration-300"
+      className="animate-in fade-in fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm duration-300"
       onClick={onClose}
     >
       <section 

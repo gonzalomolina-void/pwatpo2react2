@@ -22,6 +22,12 @@ vi.mock('react-i18next', () => ({
   })
 }));
 
+vi.mock('../context/ToastContext', () => ({
+  useToast: vi.fn(() => ({
+    showToast: vi.fn()
+  }))
+}));
+
 // Mock de Modal para renderizar sus hijos directamente
 vi.mock('./Modal', () => ({
   default: ({ isOpen, children, title }) => isOpen ? (
