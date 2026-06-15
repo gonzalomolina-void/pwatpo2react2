@@ -147,5 +147,120 @@ describe('cardService', () => {
       );
     });
   });
+
+  describe('getCardForEdit', () => {
+    it('debe solicitar la carta enviando peticion GET a /cards/:id/edit', async () => {
+      const mockCardEdit = { id: '1', cost: 3, translations: { es: { name: 'Fuego' } } };
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockCardEdit
+      });
+
+      const result = await cardService.getCardForEdit('1');
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/cards/1/edit`,
+        expect.objectContaining({ method: 'GET' })
+      );
+      expect(result).toEqual(mockCardEdit);
+    });
+
+    it('debe propagar los errores de la API', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        statusText: 'Forbidden'
+      });
+
+      await expect(cardService.getCardForEdit('1')).rejects.toThrow('Error fetching card for edit 1: Forbidden');
+    });
+  });
+
+  describe('createCard', () => {
+    it('debe enviar una peticion POST a /cards con el payload', async () => {
+      const payload = { cost: 4, atk: 2, def: 2, image: 'img.png' };
+      const mockResponse = { id: 'new-id', ...payload };
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse
+      });
+
+      const result = await cardService.createCard(payload);
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/cards`,
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify(payload)
+        })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('debe propagar los errores de la API al crear', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request'
+      });
+
+      await expect(cardService.createCard({})).rejects.toThrow('Error creating card: Bad Request');
+    });
+  });
+
+  describe('updateCard', () => {
+    it('debe enviar una peticion PUT a /cards/:id con el payload', async () => {
+      const payload = { cost: 5 };
+      const mockResponse = { id: '1', cost: 5 };
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse
+      });
+
+      const result = await cardService.updateCard('1', payload);
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/cards/1`,
+        expect.objectContaining({
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('debe propagar los errores de la API al actualizar', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found'
+      });
+
+      await expect(cardService.updateCard('1', {})).rejects.toThrow('Error updating card 1: Not Found');
+    });
+  });
+
+  describe('deleteCard', () => {
+    it('debe enviar una peticion DELETE a /cards/:id', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        status: 204
+      });
+
+      const result = await cardService.deleteCard('1');
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/cards/1`,
+        expect.objectContaining({ method: 'DELETE' })
+      );
+      expect(result).toBeNull();
+    });
+
+    it('debe propagar los errores de la API al eliminar', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        statusText: 'Forbidden'
+      });
+
+      await expect(cardService.deleteCard('1')).rejects.toThrow('Error deleting card 1: Forbidden');
+    });
+  });
 });
 

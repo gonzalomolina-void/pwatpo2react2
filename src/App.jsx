@@ -12,6 +12,7 @@ import SplashScreen from './components/SplashScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import { preferencesService } from './services/preferencesService';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 
 function AppContent() {
   const { t, i18n } = useTranslation();
@@ -89,9 +90,11 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <ToastProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </ToastProvider>
     </AuthProvider>
   );
 }

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Card from './Card';
 import favoritesService from '../services/favoritesService';
+import { useAuth } from '../context/AuthContext';
 
 // Mock de favoritesService
 vi.mock('../services/favoritesService', () => ({
@@ -10,6 +11,11 @@ vi.mock('../services/favoritesService', () => ({
     isFavorite: vi.fn(),
     toggleFavorite: vi.fn(),
   },
+}));
+
+// Mock de AuthContext
+vi.mock('../context/AuthContext', () => ({
+  useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
 }));
 
 // Mock de react-i18next
@@ -34,6 +40,10 @@ describe('Card Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false
+    });
   });
 
   it('renders card information correctly', () => {
@@ -130,5 +140,57 @@ describe('Card Component', () => {
     fireEvent.error(img);
 
     expect(img.src).toContain('FallbackImageEn.webp');
+  });
+
+  it('no debe mostrar el botón de edición si el usuario no es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'user@test.com', role: 'usuario' },
+      isAuthenticated: true
+    });
+    favoritesService.isFavorite.mockReturnValue(false);
+
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByTestId('btn-edit-card')).not.toBeInTheDocument();
+  });
+
+  it('debe mostrar el botón de edición si el usuario es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    favoritesService.isFavorite.mockReturnValue(false);
+
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByTestId('btn-edit-card')).toBeInTheDocument();
+  });
+
+  it('debe llamar al callback onEdit al hacer click en el botón de edición si es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    favoritesService.isFavorite.mockReturnValue(false);
+    const onEditMock = vi.fn();
+
+    render(
+      <MemoryRouter>
+        <Card card={mockCard} onEdit={onEditMock} />
+      </MemoryRouter>
+    );
+
+    const btn = screen.getByTestId('btn-edit-card');
+    fireEvent.click(btn);
+
+    expect(onEditMock).toHaveBeenCalledWith('1');
   });
 });

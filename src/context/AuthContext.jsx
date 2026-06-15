@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/authService';
 import favoritesService from '../services/favoritesService';
+import { parseJwt } from '../utils/jwt';
 
 const AuthContext = createContext(null);
 
@@ -16,8 +17,13 @@ export function AuthProvider({ children }) {
       if (savedToken) {
         try {
           const userData = await authService.getMe(savedToken);
+          const payload = parseJwt(savedToken);
+          const userWithRole = {
+            ...userData,
+            role: payload?.role || userData?.role || 'usuario'
+          };
           setToken(savedToken);
-          setUser(userData);
+          setUser(userWithRole);
           // Cargar favoritos en cache al restaurar sesión
           await favoritesService.fetchFavorites();
         } catch (error) {
@@ -69,8 +75,15 @@ export function AuthProvider({ children }) {
       const result = await authService.login(email, password);
       // Guardar token en localStorage
       localStorage.setItem('hexa_token', result.token);
+      
+      const payload = parseJwt(result.token);
+      const userWithRole = {
+        ...result.user,
+        role: payload?.role || result.user?.role || 'usuario'
+      };
+
       setToken(result.token);
-      setUser(result.user);
+      setUser(userWithRole);
       // Cargar favoritos en cache al iniciar sesión
       await favoritesService.fetchFavorites();
       setLoading(false);

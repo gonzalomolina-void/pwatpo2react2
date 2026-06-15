@@ -3,6 +3,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Home from './Home';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
+import { useAuth } from '../context/AuthContext';
+
+vi.mock('../context/AuthContext', () => ({
+  useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
+}));
 
 const mockT = vi.hoisted(() => (str) => str);
 
@@ -26,6 +31,15 @@ vi.mock('../hooks/useInfiniteCards', () => ({
 
 vi.mock('../components/Card', () => ({
   default: vi.fn(() => <div data-testid="mock-card" />),
+}));
+
+vi.mock('../components/CardFormModal', () => ({
+  default: vi.fn(({ isOpen, onClose, onSuccess }) => isOpen ? (
+    <div data-testid="mock-card-form-modal">
+      <button data-testid="btn-close-modal" onClick={onClose}>Close</button>
+      <button data-testid="btn-success-modal" onClick={onSuccess}>Success</button>
+    </div>
+  ) : null)
 }));
 
 vi.mock('../components/SearchBar', () => ({
@@ -59,6 +73,10 @@ function mockHookState(overrides = {}) {
 describe('Home Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false
+    });
   });
 
   it('renderiza el título y la descripción', () => {
@@ -228,5 +246,64 @@ describe('Home Page', () => {
     
     expect(removeItemSpy).toHaveBeenCalledWith('home_scroll_pos');
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+  });
+
+  it('no debe mostrar el botón "Nueva Carta" si el usuario no es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'user@test.com', role: 'usuario' },
+      isAuthenticated: true
+    });
+    mockHookState();
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText('card.admin.newCard')).not.toBeInTheDocument();
+  });
+
+  it('debe mostrar el botón "Nueva Carta" si el usuario es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    mockHookState();
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('card.admin.newCard')).toBeInTheDocument();
+  });
+
+  it('debe abrir el modal al clickear "Nueva Carta" y llamar a handleSearch al guardar exitosamente', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    const handleSearchMock = vi.fn();
+    mockHookState({ handleSearch: handleSearchMock });
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const btn = screen.getByText('card.admin.newCard');
+    fireEvent.click(btn);
+
+    // Debe abrir el modal mockeado
+    expect(screen.getByTestId('mock-card-form-modal')).toBeInTheDocument();
+
+    // Simular guardado exitoso
+    fireEvent.click(screen.getByTestId('btn-success-modal'));
+
+    // Debe refrescar llamando a handleSearch
+    expect(handleSearchMock).toHaveBeenCalled();
   });
 });

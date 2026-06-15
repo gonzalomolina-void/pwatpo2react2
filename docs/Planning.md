@@ -89,13 +89,27 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Adaptar [Card.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/components/Card.jsx) y [Detail.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/pages/Detail.jsx) para leer propiedades directas (`name`, `description`, `type`, `rarity`) y quitar claves dinámicas como `nameEs` / `nameEn`.
     *   Actualizar los mocks y aserciones de la suite de tests unitarios que se vean afectados por el cambio de estructura plana.
 
-### US12: Control de Acceso basado en Roles en el Cliente (Frontend)
-**Como** usuario autenticado, **quiero** que la aplicación oculte o deshabilite las opciones administrativas si no tengo el rol de `admin`, **para** evitar errores de permisos al interactuar con la interfaz.
+### US12: Control de Acceso basado en Roles y ABM de Cartas (Administrador)
+**Como** administrador autenticado, **quiero** poder dar de alta, editar y borrar cartas directamente desde la interfaz, y que la aplicación restrinja estas opciones únicamente a usuarios con rol de `admin`, **para** mantener el catálogo actualizado de forma segura y evitar errores de permisos.
 *   **Criterios de Aceptación:**
-    *   Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
-    *   Ocultar o deshabilitar elementos del frontend para crear cartas (como la Forja o botones de edición) si el usuario no tiene rol `admin`.
-    *   Implementar un componente de ruta protegida (`ProtectedRoute`) en React Router que limite el acceso a vistas administrativas únicamente a usuarios con rol `admin`.
-    *   Redirigir a los usuarios comunes a una ruta no autorizada o al Home si intentan ingresar directamente por URL a una sección de administrador.
+    *   **Extracción de Rol:** Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
+    *   **Control de Vista en Componentes:**
+        *   Mostrar un botón de "Nueva Carta" en el Home únicamente para usuarios con el rol `admin`.
+        *   Mostrar un botón de edición (tres puntitos o lápiz) en las tarjetas de cartas (`Card.jsx`) únicamente para usuarios con el rol `admin`.
+    *   **Rutas Protegidas (ProtectedRoute):**
+        *   Extender el componente `ProtectedRoute` para que soporte restricción por roles (`allowedRoles={['admin']}`).
+        *   Proteger la ruta de creación/administración `/forja` (o el acceso a vistas administrativas) redirigiendo a los usuarios comunes al Home (`/`) si intentan ingresar directamente por URL.
+    *   **Formulario Reutilizable de Alta/Edición (Modal):**
+        *   Implementar un modal reutilizable con campos globales (`cost`, `atk`, `def`, `media.image`) e inputs localizados para todos los idiomas soportados (`name`, `description`, `type`, `rarity`).
+        *   Los dropdowns de `type` y `rarity` se renderizarán en el idioma activo del Header, pero mapearán y enviarán las traducciones correspondientes para todos los idiomas (`typeEs`/`typeEn`, etc.) al backend para evitar inconsistencias de datos.
+        *   En modo Edición, el modal debe obtener los datos originales completos y sin aplanar desde el backend consumiendo el endpoint `/api/cards/:id/edit`.
+        *   El formulario debe incluir botones de "Cancelar" y "Aceptar/Guardar" (que llamarán a `PUT /api/cards/:id` en edición o `POST /api/cards` en alta).
+    *   **Flujo de Baja (Eliminación):**
+        *   En modo Edición, incluir un botón "Eliminar". Al clickearlo, se debe abrir un segundo modal de confirmación.
+        *   Si se confirma, llamar a `DELETE /api/cards/:id` enviando el token JWT.
+    *   **UX, i18n y Sincronización:**
+        *   Todos los textos de los formularios, modales, alertas y botones deben estar internacionalizados usando `react-i18next`.
+        *   Al finalizar con éxito una operación de alta, edición o baja, mostrar un toast informativo en el idioma activo, cerrar los modales y ejecutar el callback `onSuccess` para resetear el listado del catálogo a la página 1.
 
 ### US13: Renovación de Sesión con Refresh Token en el Frontend
 **Como** usuario, **quiero** que mi sesión se mantenga activa y funcional sin interrupciones molestas mientras la app esté abierta, **para** mejorar mi experiencia de navegación.
@@ -122,6 +136,28 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Durante el tiempo en que se realiza la recarga de datos, debe mostrarse el spinner de carga temático para evitar inconsistencias visuales y mantener una buena UX.
     *   Asegurar mediante pruebas unitarias en `Detail.test.jsx` que el cambio de lenguaje gatille el refresco del fetch.
 
+### US17: Desacoplamiento de Tipos y Rarezas desde la API
+**Como** administrador y desarrollador, **quiero** obtener los listados de tipos y rarezas disponibles con sus traducciones directamente desde el backend, **para** evitar hardcodear constantes en el frontend y permitir la escalabilidad dinámica del catálogo.
+*   **Criterios de Aceptación:**
+    *   Reemplazar las constantes `CARD_TYPES` y `CARD_RARITIES` locales por consultas asíncronas a los nuevos endpoints de la API (`GET /api/types` y `GET /api/rarities`).
+    *   Implementar mecanismos de almacenamiento en caché en memoria (u hooks de contexto) para evitar consultas redundantes de red al renderizar filtros o formularios.
+    *   Adaptar el formulario `CardFormModal` para que popule los selectores de tipo y rareza a partir de los datos dinámicos del backend.
+    *   Actualizar los mocks y pruebas de los formularios y filtros para simular las llamadas asíncronas.
+
+### US18: Refactorización y Modularización de CardFormModal (Frontend)
+**Como** desarrollador, **quiero** separar la lógica de negocio y dividir el modal en subcomponentes atómicos, **para** mejorar la testabilidad y el mantenimiento del formulario de administración.
+*   **Criterios de Aceptación:**
+    *   Extraer los estados locales, llamadas a API y validaciones a un custom hook `useCardForm.js`.
+    *   Dividir el modal principal `CardFormModal.jsx` en subcomponentes independientes: `CardStatsGrid` (formulario de atributos globales), `CardTranslationsForm` (gestión bilingüe de textos) y `DeleteConfirmDialog` (modal de confirmación de borrado).
+    *   Asegurar que toda la suite de pruebas siga pasando al 100% y crear tests específicos de renderizado para los nuevos subcomponentes.
+
+### US19: Sincronización de Filtros y Consistencia en Catálogo Post-ABM (Frontend)
+**Como** administrador de la app, **quiero** que la barra de búsqueda y filtros del catálogo se sincronicen de manera inteligente ante las acciones de creación, edición o borrado de cartas, **para** evitar inconsistencias visuales en la interfaz.
+*   **Criterios de Aceptación:**
+    *   Hacer de `SearchBar` un componente controlado o capaz de responder a un reinicio de estado desde `Home.jsx` mediante props.
+    *   Al **crear** o **borrar** una carta con éxito, limpiar por completo el texto del buscador y todos los filtros seleccionados, recargando el catálogo base.
+    *   Al **editar** una carta con éxito, conservar el texto del buscador y los filtros activos del usuario para mantener el contexto del catálogo, pero recargando la lista para reflejar los cambios editados optimistamente.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -145,6 +181,9 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 14 | Documentación Final (README) | **Lautaro** | Baja |
 | 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
 | 16 | Recarga de Detalle de Carta por Idioma (US16) | **Gonzalo & Juan** | Baja |
+| 17 | Desacoplamiento de Tipos y Rarezas por API (US17) | **Gonzalo & Juan** | Media |
+| 18 | Refactorización y Modularización de CardFormModal (US18) | **Gonzalo** | Media |
+| 19 | Sincronización y Consistencia de Filtros Post-ABM (US19) | **Gonzalo** | Baja |
 
 ---
 

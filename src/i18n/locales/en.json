@@ -65,7 +65,49 @@
   },
   "card": {
     "addFavorite": "Add to favorites",
-    "removeFavorite": "Remove from favorites"
+    "removeFavorite": "Remove from favorites",
+    "types": {
+      "creature": "Creature",
+      "spell": "Spell",
+      "artifact": "Artifact"
+    },
+    "rarities": {
+      "poor": "Poor",
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "admin": {
+      "newCard": "New Card",
+      "editCard": "Edit Card",
+      "createTitle": "Create New Card",
+      "editTitle": "Edit Card",
+      "cost": "Cost",
+      "atk": "ATK",
+      "def": "DEF",
+      "image": "Image URL",
+      "type": "Card Type",
+      "rarity": "Card Rarity",
+      "translations": "Card Translations",
+      "language": "Language",
+      "name": "Name",
+      "description": "Description",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete Card",
+      "deleteConfirmTitle": "Delete Card?",
+      "deleteConfirmMsg": "Are you sure you want to delete the card \"{{name}}\"? This action cannot be undone.",
+      "deleteConfirmBtn": "Yes, Delete",
+      "deleteCancelBtn": "No, Cancel",
+      "createSuccess": "Card created successfully.",
+      "updateSuccess": "Card updated successfully.",
+      "deleteSuccess": "Card deleted successfully.",
+      "loading": "Processing...",
+      "fetchError": "Error loading card details.",
+      "saveError": "Error saving changes."
+    }
   },
   "about": {
     "title": "About us",
