@@ -12,11 +12,11 @@
 
 ## Phase 3: Formulario de Cartas (useCardForm & CardFormModal)
 
-- [ ] 3.1 (TDD - Rojo): Modificar `src/hooks/useCardForm.test.js` para mockear `lookupService` y validar el mapeo de IDs numéricos asíncronos en modo alta y edición.
-- [ ] 3.2 (TDD - Verde): Modificar `src/hooks/useCardForm.js` integrando lookups dinámicos y coordinando el flag `fetching` para retrasar el renderizado del formulario.
-- [ ] 3.3 Modificar `src/components/CardFormModal.jsx` y `src/components/CardStatsGrid.jsx` para recibir props dinámicas.
+- [x] 3.1 (TDD - Rojo): Modificar `src/hooks/useCardForm.test.js` para mockear `lookupService` y validar el mapeo de IDs numéricos asíncronos en modo alta y edición.
+- [x] 3.2 (TDD - Verde): Modificar `src/hooks/useCardForm.js` integrando lookups dinámicos y coordinando el flag `fetching` para retrasar el renderizado del formulario.
+- [x] 3.3 Modificar `src/components/CardFormModal.jsx` y `src/components/CardStatsGrid.jsx` para recibir props dinámicas.
 
 ## Phase 4: Limpieza y Verificación
 
-- [ ] 4.1 Eliminar el archivo de constantes estáticas `src/constants/cardConstants.js` y limpiar constantes obsoletas en `src/constants/game.js`.
-- [ ] 4.2 Ejecutar `pnpm lint` y correr toda la suite de pruebas unitarias (`pnpm test:run`) en verde.
+- [x] 4.1 Eliminar el archivo de constantes estáticas `src/constants/cardConstants.js` y limpiar constantes obsoletas en `src/constants/game.js`.
+- [x] 4.2 Ejecutar `pnpm lint` y correr toda la suite de pruebas unitarias (`pnpm test:run`) en verde.
