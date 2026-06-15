@@ -37,15 +37,18 @@ vi.mock('../components/CardFormModal', () => ({
   default: vi.fn(({ isOpen, onClose, onSuccess }) => isOpen ? (
     <div data-testid="mock-card-form-modal">
       <button data-testid="btn-close-modal" onClick={onClose}>Close</button>
-      <button data-testid="btn-success-modal" onClick={onSuccess}>Success</button>
+      <button data-testid="btn-success-create" onClick={() => onSuccess({ action: 'create', card: { id: '3' } })}>Success Create</button>
+      <button data-testid="btn-success-edit" onClick={() => onSuccess({ action: 'edit', card: { id: '1', nameEs: 'Carta Editada' } })}>Success Edit</button>
+      <button data-testid="btn-success-delete" onClick={() => onSuccess({ action: 'delete', cardId: '1' })}>Success Delete</button>
+      <button data-testid="btn-success-modal" onClick={() => onSuccess()}>Success Legacy</button>
     </div>
   ) : null)
 }));
 
 vi.mock('../components/SearchBar', () => ({
-  default: vi.fn(({ onSearch }) => (
-    <div data-testid="mock-searchbar">
-      <button data-testid="trigger-search" onClick={() => onSearch({ searchTerm: 'test', selectedTypes: [], selectedRarities: [] })}>
+  default: vi.fn(({ onSearch, filters }) => (
+    <div data-testid="mock-searchbar" data-filters={JSON.stringify(filters)}>
+      <button data-testid="trigger-search" onClick={() => onSearch({ searchTerm: 'test', selectedTypes: ['spell'], selectedRarities: [] })}>
         Search
       </button>
     </div>
@@ -305,5 +308,112 @@ describe('Home Page', () => {
 
     // Debe refrescar llamando a handleSearch
     expect(handleSearchMock).toHaveBeenCalled();
+  });
+
+  describe('Post-ABM Filter Synchronization (US19)', () => {
+    beforeEach(() => {
+      vi.mocked(useAuth).mockReturnValue({
+        user: { email: 'admin@test.com', role: 'admin' },
+        isAuthenticated: true
+      });
+    });
+
+    it('debe limpiar filtros y refrescar catálogo al CREAR una carta', async () => {
+      const handleSearchMock = vi.fn();
+      mockHookState({ handleSearch: handleSearchMock });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Abrir modal y disparar éxito de creación
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-create'));
+
+      // Debe resetear filtros a valores vacíos y buscar
+      expect(handleSearchMock).toHaveBeenCalledWith({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+
+      // El SearchBar debe recibir los filtros reseteados
+      const searchBar = screen.getByTestId('mock-searchbar');
+      expect(JSON.parse(searchBar.getAttribute('data-filters'))).toEqual({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+    });
+
+    it('debe limpiar filtros y refrescar catálogo al ELIMINAR una carta', async () => {
+      const handleSearchMock = vi.fn();
+      mockHookState({ handleSearch: handleSearchMock });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Abrir modal y disparar éxito de eliminación
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-delete'));
+
+      // Debe resetear filtros y buscar
+      expect(handleSearchMock).toHaveBeenCalledWith({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+    });
+
+    it('debe conservar filtros, llamar a updateCardOptimistic y refrescar catálogo al EDITAR una carta', async () => {
+      const triggerSearchMock = vi.fn();
+      const updateCardOptimisticMock = vi.fn();
+      mockHookState({ 
+        handleSearch: triggerSearchMock,
+        updateCardOptimistic: updateCardOptimisticMock
+      });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Simular que el usuario hace una búsqueda primero para establecer filtros
+      const searchBar = screen.getByTestId('mock-searchbar');
+      fireEvent.click(screen.getByText('Search')); // Dispara onSearch con { searchTerm: 'test', selectedTypes: ['spell']... }
+
+      // Limpiamos los llamados del mock para la aserción posterior
+      triggerSearchMock.mockClear();
+
+      // Abrir modal y disparar éxito de edición
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-edit'));
+
+      // Debe actualizar optimistamente la carta editada en el hook
+      expect(updateCardOptimisticMock).toHaveBeenCalledWith({
+        id: '1',
+        nameEs: 'Carta Editada'
+      });
+
+      // Debe recargar la lista de la API conservando los filtros actuales ('test', ['spell'])
+      expect(triggerSearchMock).toHaveBeenCalledWith({
+        searchTerm: 'test',
+        selectedTypes: ['spell'],
+        selectedRarities: []
+      });
+
+      // El SearchBar debe mantener sus valores en la prop filters
+      expect(JSON.parse(searchBar.getAttribute('data-filters'))).toEqual({
+        searchTerm: 'test',
+        selectedTypes: ['spell'],
+        selectedRarities: []
+      });
+    });
   });
 });

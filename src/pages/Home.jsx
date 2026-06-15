@@ -13,6 +13,7 @@ export default function Home() {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [searchFilters, setSearchFilters] = useState({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
 
   const handleEditCard = useCallback((id) => {
     setSelectedCardId(id);
@@ -39,6 +40,7 @@ export default function Home() {
     hasMore,
     page,
     handleSearch: triggerSearch,
+    updateCardOptimistic,
     lastCardElementRef
   } = useInfiniteCards({
     limit: 12,
@@ -50,6 +52,7 @@ export default function Home() {
     // Al buscar, reseteamos la posición guardada para que empiece desde arriba
     sessionStorage.removeItem('home_scroll_pos');
     window.scrollTo(0, 0);
+    setSearchFilters(newFilters);
     triggerSearch(newFilters);
   }, [triggerSearch]);
 
@@ -103,9 +106,21 @@ export default function Home() {
     );
   }
 
-  const handleCreateSuccess = () => {
-    handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
-  };
+  const handleFormSuccess = useCallback((result) => {
+    if (!result) {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+      return;
+    }
+
+    const { action, card, cardId } = result;
+
+    if (action === 'create' || action === 'delete') {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+    } else if (action === 'edit' && card) {
+      updateCardOptimistic(card);
+      triggerSearch(searchFilters);
+    }
+  }, [handleSearch, triggerSearch, searchFilters, updateCardOptimistic]);
 
   return (
     <div className="py-12">
@@ -133,6 +148,7 @@ export default function Home() {
           onSearch={handleSearch}
           typeOptions={typeOptions}
           rarityOptions={rarityOptions}
+          filters={searchFilters}
         />
       </header>
 
@@ -185,7 +201,7 @@ export default function Home() {
           setIsModalOpen(false);
           setSelectedCardId(null);
         }}
-        onSuccess={handleCreateSuccess}
+        onSuccess={handleFormSuccess}
       />
     </div>
   );
