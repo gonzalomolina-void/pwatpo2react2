@@ -299,4 +299,36 @@ describe('SearchBar Component', () => {
       expect(mockOnSearch).not.toHaveBeenCalled();
     });
   });
+
+  // ✅ TEST DE SINCRONIZACIÓN REACTIVA DE PROPS
+  describe('Reactive Props Sync', () => {
+    it('sincroniza el input local de búsqueda al cambiar la prop filters', () => {
+      const { rerender } = render(
+        <SearchBar onSearch={mockOnSearch} filters={{ searchTerm: '', selectedTypes: [], selectedRarities: [] }} />
+      );
+      const input = screen.getByPlaceholderText('search.placeholder');
+      expect(input.value).toBe('');
+
+      // Cambiamos la prop de filtros
+      rerender(
+        <SearchBar onSearch={mockOnSearch} filters={{ searchTerm: 'Dragon', selectedTypes: [], selectedRarities: [] }} />
+      );
+      expect(input.value).toBe('Dragon');
+    });
+
+    it('NO invoca el callback onSearch al actualizarse mediante la prop filters', () => {
+      const { rerender } = render(
+        <SearchBar onSearch={mockOnSearch} filters={{ searchTerm: '', selectedTypes: [], selectedRarities: [] }} />
+      );
+      mockOnSearch.mockClear();
+
+      // Rerender con nuevos filtros
+      rerender(
+        <SearchBar onSearch={mockOnSearch} filters={{ searchTerm: 'Spellcaster', selectedTypes: [], selectedRarities: [] }} />
+      );
+
+      vi.advanceTimersByTime(500); // Avanzamos cualquier posible timer
+      expect(mockOnSearch).not.toHaveBeenCalled();
+    });
+  });
 });

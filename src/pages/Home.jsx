@@ -1,25 +1,49 @@
 import { useTranslation } from 'react-i18next';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
-import { TYPE_OPTIONS, RARITY_OPTIONS } from '../constants/game';
+import { lookupService } from '../services/lookupService';
+import { useAuth } from '../context/AuthContext';
+import CardFormModal from '../components/CardFormModal';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [searchFilters, setSearchFilters] = useState({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+  const [typeOptions, setTypeOptions] = useState([]);
+  const [rarityOptions, setRarityOptions] = useState([]);
+
+  const handleEditCard = useCallback((id) => {
+    setSelectedCardId(id);
+    setIsModalOpen(true);
+  }, []);
+
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
-  // Mapeamos las constantes a sus objetos de opción { value, label }
-  const typeOptions = TYPE_OPTIONS.map(key => ({
-    value: key,
-    label: t(`home.filters.types.${key}`)
-  }));
+  // Cargar tipos y rarezas dinámicamente según el idioma
+  useEffect(() => {
+    lookupService.getTypes()
+      .then((data) => {
+        setTypeOptions(data.map(t => ({
+          value: t.code,
+          label: t.name
+        })));
+      })
+      .catch(console.error);
 
-  const rarityOptions = RARITY_OPTIONS.map(key => ({
-    value: key,
-    label: t(`home.filters.rarities.${key}`)
-  }));
+    lookupService.getRarities()
+      .then((data) => {
+        setRarityOptions(data.map(r => ({
+          value: r.code,
+          label: r.name
+        })));
+      })
+      .catch(console.error);
+  }, [i18n.language]);
 
   const {
     cards,
@@ -28,6 +52,7 @@ export default function Home() {
     hasMore,
     page,
     handleSearch: triggerSearch,
+    updateCardOptimistic,
     lastCardElementRef
   } = useInfiniteCards({
     limit: 12,
@@ -39,6 +64,7 @@ export default function Home() {
     // Al buscar, reseteamos la posición guardada para que empiece desde arriba
     sessionStorage.removeItem('home_scroll_pos');
     window.scrollTo(0, 0);
+    setSearchFilters(newFilters);
     triggerSearch(newFilters);
   }, [triggerSearch]);
 
@@ -76,6 +102,22 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleFormSuccess = useCallback((result) => {
+    if (!result) {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+      return;
+    }
+
+    const { action, card } = result;
+
+    if (action === 'create' || action === 'delete') {
+      handleSearch({ searchTerm: '', selectedTypes: [], selectedRarities: [] });
+    } else if (action === 'edit' && card) {
+      updateCardOptimistic(card);
+      triggerSearch(searchFilters);
+    }
+  }, [handleSearch, triggerSearch, searchFilters, updateCardOptimistic]);
+
   if (error) {
     return (
       <div className="py-12 text-center">
@@ -95,9 +137,21 @@ export default function Home() {
   return (
     <div className="py-12">
       <header className="mb-12">
-        <h1 className="mb-4 inline-block bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text pb-2 text-4xl font-extrabold text-transparent dark:from-blue-400 dark:to-purple-500">
-          {t('home.title')}
-        </h1>
+        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="inline-block bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text pb-2 text-4xl font-extrabold text-transparent dark:from-blue-400 dark:to-purple-500">
+            {t('home.title')}
+          </h1>
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="cursor-pointer self-start rounded-xl bg-linear-to-r from-blue-600 to-purple-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-blue-700 hover:to-purple-700 active:scale-95 sm:self-center"
+              aria-label={t('card.admin.newCard')}
+              title={t('card.admin.newCard')}
+            >
+              {t('card.admin.newCard')}
+            </button>
+          )}
+        </div>
         <p className="mb-8 max-w-3xl text-slate-600 dark:text-slate-400">
           {t('home.description')}
         </p>
@@ -106,6 +160,7 @@ export default function Home() {
           onSearch={handleSearch}
           typeOptions={typeOptions}
           rarityOptions={rarityOptions}
+          filters={searchFilters}
         />
       </header>
 
@@ -123,7 +178,14 @@ export default function Home() {
             <div className={`grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${isLoading && page === 1 ? 'opacity-50' : 'opacity-100'}`}>
               {cards.map((card, index) => {
                 const isLast = cards.length === index + 1;
-                return <Card key={card.id} card={card} ref={isLast ? lastCardElementRef : null} />;
+                return (
+                  <Card
+                    key={card.id}
+                    card={card}
+                    ref={isLast ? lastCardElementRef : null}
+                    onEdit={handleEditCard}
+                  />
+                );
               })}
             </div>
           )}
@@ -143,6 +205,16 @@ export default function Home() {
           )}
         </>
       )}
+
+      <CardFormModal
+        isOpen={isModalOpen}
+        cardId={selectedCardId}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedCardId(null);
+        }}
+        onSuccess={handleFormSuccess}
+      />
     </div>
   );
 }

@@ -35,3 +35,5 @@ coverage
 playwright-report/
 test-results/
 
+# Agent Teams Lite
+.atl/

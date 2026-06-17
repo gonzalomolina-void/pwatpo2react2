@@ -1,27 +1,85 @@
 import { useTranslation } from 'react-i18next';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import favoritesService from '../services/favoritesService';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import CardFormModal from '../components/CardFormModal';
 
 export default function Favorites() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // Los favoritos ya vienen como objetos completos desde el servicio (LocalStorage)
-  // Cargamos directamente en el estado inicial
-  const [favorites, setFavorites] = useState(() => favoritesService.getFavorites());
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editingCardId, setEditingCardId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleEdit = useCallback((id) => {
+    setEditingCardId(id);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleEditSuccess = useCallback(async () => {
+    try {
+      setLoading(true);
+      await favoritesService.fetchFavorites();
+      setFavorites(favoritesService.getFavorites());
+    } catch (err) {
+      console.error('Failed to reload favorites after edit:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Obtener favoritos desde la API al montar o cambiar el idioma
+  useEffect(() => {
+    const fetchFavoritesData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        await favoritesService.fetchFavorites();
+        setFavorites(favoritesService.getFavorites());
+      } catch (err) {
+        console.error('Failed to fetch favorites page data:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFavoritesData();
+  }, [i18n.language]);
 
   // Callback para remover la carta de la vista cuando se desmarca
   const handleFavoriteToggle = useCallback((card, isFav) => {
     if (!isFav) {
-      setFavorites(prevFavorites => prevFavorites.filter(c => c.id !== card.id));
+      setFavorites(prevFavorites => prevFavorites.filter(c => String(c.id) !== String(card.id)));
     }
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center py-12">
+        <LoadingSpinner message={t('favorites.loading')} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-12">
+        <div className="rounded-xl border border-red-200 bg-red-50/50 py-16 text-center dark:border-red-950/30 dark:bg-red-950/10">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="mx-auto mb-4 h-16 w-16 text-red-500/70">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+          </svg>
+          <p className="text-lg text-red-600 dark:text-red-400">{t('favorites.error')}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-12">
-
       <header className="mb-12">
         <h1 className="mb-4 text-4xl font-extrabold text-slate-900 dark:text-slate-100">
           {t('favorites.title')}
@@ -50,10 +108,17 @@ export default function Favorites() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {favorites.map(card => (
-            <Card key={card.id} card={card} onFavoriteToggle={handleFavoriteToggle} />
+            <Card key={card.id} card={card} onFavoriteToggle={handleFavoriteToggle} onEdit={handleEdit} />
           ))}
         </div>
       )}
+
+      <CardFormModal 
+        isOpen={isModalOpen} 
+        cardId={editingCardId} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={handleEditSuccess} 
+      />
     </div>
   );
 }

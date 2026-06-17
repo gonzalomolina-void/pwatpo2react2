@@ -1,7 +1,9 @@
 {
   "nav": {
     "home": "Home",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "login": "Log In",
+    "logout": "Log Out"
   },
   "app": {
     "title": "HEXA - Card Encyclopedia"
@@ -63,7 +65,49 @@
   },
   "card": {
     "addFavorite": "Add to favorites",
-    "removeFavorite": "Remove from favorites"
+    "removeFavorite": "Remove from favorites",
+    "types": {
+      "creature": "Creature",
+      "spell": "Spell",
+      "artifact": "Artifact"
+    },
+    "rarities": {
+      "poor": "Poor",
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "admin": {
+      "newCard": "New Card",
+      "editCard": "Edit Card",
+      "createTitle": "Create New Card",
+      "editTitle": "Edit Card",
+      "cost": "Cost",
+      "atk": "ATK",
+      "def": "DEF",
+      "image": "Image URL",
+      "type": "Card Type",
+      "rarity": "Card Rarity",
+      "translations": "Card Translations",
+      "language": "Language",
+      "name": "Name",
+      "description": "Description",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete Card",
+      "deleteConfirmTitle": "Delete Card?",
+      "deleteConfirmMsg": "Are you sure you want to delete the card \"{{name}}\"? This action cannot be undone.",
+      "deleteConfirmBtn": "Yes, Delete",
+      "deleteCancelBtn": "No, Cancel",
+      "createSuccess": "Card created successfully.",
+      "updateSuccess": "Card updated successfully.",
+      "deleteSuccess": "Card deleted successfully.",
+      "loading": "Processing...",
+      "fetchError": "Error loading card details.",
+      "saveError": "Error saving changes."
+    }
   },
   "about": {
     "title": "About us",
@@ -89,5 +133,28 @@
     "toggle": "Change theme",
     "toLight": "Summon Light Mode",
     "toDark": "Embrace the Shadows"
+  },
+  "auth": {
+    "loginTitle": "Log in to HEXA",
+    "loginSubtitle": "Access your favorites and forge unique cards",
+    "registerTitle": "Create your Account",
+    "registerSubtitle": "Register to start collecting",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "loginButton": "Log In",
+    "registerButton": "Sign Up",
+    "haveAccount": "Already have an account? Log in",
+    "needAccount": "Don't have an account? Register",
+    "errorRequiredFields": "All fields are required",
+    "errorNameRequired": "Name is required",
+    "errorNameTooShort": "Name must be at least 2 characters long",
+    "errorInvalidEmail": "Invalid email address",
+    "errorPasswordMismatch": "Passwords do not match",
+    "errorPasswordTooShort": "Password must be at least 6 characters long",
+    "registerSuccess": "Registration successful! You can now log in.",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "errorGeneral": "An unexpected error occurred"
   }
 }

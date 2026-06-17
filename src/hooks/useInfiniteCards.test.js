@@ -107,7 +107,7 @@ describe('useInfiniteCards Hook', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(cardService.getCards).toHaveBeenCalledWith(
-      expect.objectContaining({ typeEn: 'home.filters.types.unit' }),
+      expect.objectContaining({ type: 'unit' }),
       expect.objectContaining({ signal: expect.anything() })
     );
     expect(result.current.cards).toHaveLength(1);
@@ -129,7 +129,7 @@ describe('useInfiniteCards Hook', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(cardService.getCards).toHaveBeenCalledWith(
-      expect.objectContaining({ rarityEn: 'home.filters.rarities.legendary' }),
+      expect.objectContaining({ rarity: 'legendary' }),
       expect.objectContaining({ signal: expect.anything() })
     );
   });
@@ -188,7 +188,24 @@ describe('useInfiniteCards Hook', () => {
     await waitFor(() => {
       expect(cardService.getCards).toHaveBeenCalledTimes(2);
     }, { timeout: 2000 });
+  });
 
+  it('should update cards optimistically when updateCardOptimistic is called', async () => {
+    cardService.getCards.mockResolvedValue(mockCards);
+    const { result } = renderHook(() => 
+      useInfiniteCards({ limit: 2, initialFilters, lang: 'en' })
+    );
 
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.cards[0].name).toBe('Card 1');
+
+    // Ejecutamos la actualización optimista
+    act(() => {
+      result.current.updateCardOptimistic({ id: '1', name: 'Updated Card 1' });
+    });
+
+    // Verificamos que se haya actualizado el estado local inmediatamente
+    expect(result.current.cards[0].name).toBe('Updated Card 1');
+    expect(result.current.cards[1].name).toBe('Card 2'); // Sigue intacto
   });
 });

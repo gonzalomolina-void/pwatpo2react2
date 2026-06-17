@@ -52,12 +52,12 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Manejo de error 404 si el ID no existe.
     *   Diseño detallado de la vista.
 
-### US7: Gestión de Favoritos
-**Como** coleccionista, **quiero** marcar cartas como favoritas, **para** tenerlas guardadas en mi lista personal.
+### US7: Gestión de Favoritos Relacionados con el Usuario
+**Como** jugador autenticado, **quiero** marcar cartas como favoritas, **para** tenerlas guardadas en la base de datos de mi cuenta.
 *   **Criterios de Aceptación:**
     *   Botón de favorito en las cards y/o detalle.
-    *   Persistencia en `localStorage`.
-    *   Vista de `/favoritos` que consuma los datos guardados.
+    *   Consumo de los endpoints del backend (`POST /api/favorites`, `DELETE /api/favorites/:id`) enviando el token JWT.
+    *   Vista de `/favoritos` que cargue los favoritos directamente de la base de datos a través de la API (`GET /api/favorites`).
 
 ### US8: Creación de Cartas con IA (Gemini / Nano Banana)
 **Como** creador de contenido, **quiero** generar nuevas cartas automáticamente usando IA, **para** expandir el universo del juego sin esfuerzo manual.
@@ -74,6 +74,101 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Implementación de GitHub Action disparada por `release published`.
     *   Desactivación de builds automáticos en Vercel.
 
+### US10: Pantalla de Login / Registro y Gestión de Sesión (JWT)
+**Como** usuario, **quiero** registrarme e iniciar sesión en la aplicación, **para** acceder a mis favoritos de manera personalizada.
+*   **Criterios de Aceptación:**
+    *   Formulario visual de Login y Registro con validaciones en los inputs.
+    *   Guardar el token JWT devuelto por el backend en `localStorage` o cookies al iniciar sesión.
+    *   Enviar el JWT en la cabecera `Authorization: Bearer <token>` para todas las llamadas protegidas (ej. favoritos).
+    *   Header con botón de "Cerrar Sesión" e información del usuario autenticado.
+
+### US11: Adaptación de i18n y Aplanamiento en llamadas a la API
+**Como** desarrollador, **quiero** adaptar el cliente y los componentes para que envíen el idioma al backend y usen propiedades planas, **para** reducir el procesamiento en el cliente y simplificar la lógica de traducción.
+*   **Criterios de Aceptación:**
+    *   Configurar `cardService.js` para enviar el idioma actual de la aplicación (`react-i18next`) a través de la cabecera `Accept-Language` o parámetro `lang`.
+    *   Adaptar [Card.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/components/Card.jsx) y [Detail.jsx](file:///C:/Work/Uncoma/PWA/pwatpo2react2/src/pages/Detail.jsx) para leer propiedades directas (`name`, `description`, `type`, `rarity`) y quitar claves dinámicas como `nameEs` / `nameEn`.
+    *   Actualizar los mocks y aserciones de la suite de tests unitarios que se vean afectados por el cambio de estructura plana.
+
+### US12: Control de Acceso basado en Roles y ABM de Cartas (Administrador)
+**Como** administrador autenticado, **quiero** poder dar de alta, editar y borrar cartas directamente desde la interfaz, y que la aplicación restrinja estas opciones únicamente a usuarios con rol de `admin`, **para** mantener el catálogo actualizado de forma segura y evitar errores de permisos.
+*   **Criterios de Aceptación:**
+    *   **Extracción de Rol:** Decodificar el token JWT al iniciar sesión para extraer el campo `role` del usuario.
+    *   **Control de Vista en Componentes:**
+        *   Mostrar un botón de "Nueva Carta" en el Home únicamente para usuarios con el rol `admin`.
+        *   Mostrar un botón de edición (tres puntitos o lápiz) en las tarjetas de cartas (`Card.jsx`) únicamente para usuarios con el rol `admin`.
+    *   **Rutas Protegidas (ProtectedRoute):**
+        *   Extender el componente `ProtectedRoute` para que soporte restricción por roles (`allowedRoles={['admin']}`).
+        *   Proteger la ruta de creación/administración `/forja` (o el acceso a vistas administrativas) redirigiendo a los usuarios comunes al Home (`/`) si intentan ingresar directamente por URL.
+    *   **Formulario Reutilizable de Alta/Edición (Modal):**
+        *   Implementar un modal reutilizable con campos globales (`cost`, `atk`, `def`, `media.image`) e inputs localizados para todos los idiomas soportados (`name`, `description`, `type`, `rarity`).
+        *   Los dropdowns de `type` y `rarity` se renderizarán en el idioma activo del Header, pero mapearán y enviarán las traducciones correspondientes para todos los idiomas (`typeEs`/`typeEn`, etc.) al backend para evitar inconsistencias de datos.
+        *   En modo Edición, el modal debe obtener los datos originales completos y sin aplanar desde el backend consumiendo el endpoint `/api/cards/:id/edit`.
+        *   El formulario debe incluir botones de "Cancelar" y "Aceptar/Guardar" (que llamarán a `PUT /api/cards/:id` en edición o `POST /api/cards` en alta).
+    *   **Flujo de Baja (Eliminación):**
+        *   En modo Edición, incluir un botón "Eliminar". Al clickearlo, se debe abrir un segundo modal de confirmación.
+        *   Si se confirma, llamar a `DELETE /api/cards/:id` enviando el token JWT.
+    *   **UX, i18n y Sincronización:**
+        *   Todos los textos de los formularios, modales, alertas y botones deben estar internacionalizados usando `react-i18next`.
+        *   Al finalizar con éxito una operación de alta, edición o baja, mostrar un toast informativo en el idioma activo, cerrar los modales y ejecutar el callback `onSuccess` para resetear el listado del catálogo a la página 1.
+
+### US13: Renovación de Sesión con Refresh Token en el Frontend
+**Como** usuario, **quiero** que mi sesión se mantenga activa y funcional sin interrupciones molestas mientras la app esté abierta, **para** mejorar mi experiencia de navegación.
+*   **Criterios de Aceptación:**
+    *   Almacenar el Refresh Token de forma segura en el cliente (o usar el manejo automático del navegador si el backend lo setea vía cookie `httpOnly`).
+    *   Configurar un interceptor en el cliente HTTP (como Axios) para capturar errores de tipo `401 Unauthorized`.
+    *   Cuando ocurra un `401` por token expirado, el interceptor debe realizar una solicitud a `POST /api/auth/refresh` en segundo plano para obtener un nuevo Access Token y reintentar la petición original.
+    *   Si el refresco falla, se debe desloguear al usuario automáticamente, limpiando el almacenamiento y redirigiéndolo al Login con un mensaje informativo de sesión expirada.
+
+### US15: Flujo de Autenticación y Securización de Cartas (Full-stack)
+**Como** administrador y desarrollador, **quiero** que el usuario deba loguearse obligatoriamente para ver las cartas y que la API del backend proteja esos endpoints, **para** garantizar la seguridad del catálogo y un flujo de navegación consistente.
+*   **Criterios de Aceptación:**
+    *   **Frontend:**
+        *   Luego de que la pantalla Splash finalice, el usuario debe ser redirigido a `/login` si no está autenticado, en lugar de ingresar directo a `/` (Home).
+        *   Al ejecutar la acción de "Cerrar Sesión" (Logout), la aplicación debe redirigir inmediatamente a `/login`.
+        *   Si un usuario no autenticado intenta ingresar manualmente a rutas protegidas (como `/` o `/favoritos`), debe ser redirigido a `/login`.
+    *   **Backend:**
+        *   Las rutas GET `/api/cards` y GET `/api/cards/:id` deben ser securizadas con el middleware `requireAuth`, rechazando peticiones sin token JWT válido con un error `401 Unauthorized`.
+
+### US16: Recarga de Detalles de Carta al cambiar de Idioma (i18n)
+**Como** coleccionista, **quiero** que el detalle de la carta se actualice automáticamente al cambiar el idioma en el selector de la aplicación, **para** leer su lore y estadísticas en mi idioma de preferencia sin necesidad de recargar la página manualmente.
+*   **Criterios de Aceptación:**
+    *   Al cambiar de idioma en el header (evento de cambio de idioma de `react-i18next`), la vista de detalle de la carta debe reaccionar y volver a realizar la petición a la API (`getCardById`) enviando la cabecera `Accept-Language` con el nuevo idioma.
+    *   Durante el tiempo en que se realiza la recarga de datos, debe mostrarse el spinner de carga temático para evitar inconsistencias visuales y mantener una buena UX.
+    *   Asegurar mediante pruebas unitarias en `Detail.test.jsx` que el cambio de lenguaje gatille el refresco del fetch.
+
+### US17: Desacoplamiento de Tipos y Rarezas desde la API
+**Como** administrador y desarrollador, **quiero** obtener los listados de tipos y rarezas disponibles con sus traducciones directamente desde el backend, **para** evitar hardcodear constantes en el frontend y permitir la escalabilidad dinámica del catálogo.
+*   **Criterios de Aceptación:**
+    *   Reemplazar las constantes `CARD_TYPES` y `CARD_RARITIES` locales por consultas asíncronas a los nuevos endpoints de la API (`GET /api/types` y `GET /api/rarities`).
+    *   Implementar mecanismos de almacenamiento en caché en memoria (u hooks de contexto) para evitar consultas redundantes de red al renderizar filtros o formularios.
+    *   Adaptar el formulario `CardFormModal` para que popule los selectores de tipo y rareza a partir de los datos dinámicos del backend.
+    *   Actualizar los mocks y pruebas de los formularios y filtros para simular las llamadas asíncronas.
+
+### US18: Refactorización y Modularización de CardFormModal (Frontend)
+**Como** desarrollador, **quiero** separar la lógica de negocio y dividir el modal en subcomponentes atómicos, **para** mejorar la testabilidad y el mantenimiento del formulario de administración.
+*   **Criterios de Aceptación:**
+    *   Extraer los estados locales, llamadas a API y validaciones a un custom hook `useCardForm.js`.
+    *   Dividir el modal principal `CardFormModal.jsx` en subcomponentes independientes: `CardStatsGrid` (formulario de atributos globales), `CardTranslationsForm` (gestión bilingüe de textos) y `DeleteConfirmDialog` (modal de confirmación de borrado).
+    *   Asegurar que toda la suite de pruebas siga pasando al 100% y crear tests específicos de renderizado para los nuevos subcomponentes.
+
+### US19: Sincronización de Filtros y Consistencia en Catálogo Post-ABM (Frontend)
+**Como** administrador de la app, **quiero** que la barra de búsqueda y filtros del catálogo se sincronicen de manera inteligente ante las acciones de creación, edición o borrado de cartas, **para** evitar inconsistencias visuales en la interfaz.
+*   **Criterios de Aceptación:**
+    *   Hacer de `SearchBar` un componente controlado o capaz de responder a un reinicio de estado desde `Home.jsx` mediante props.
+    *   Al **crear** o **borrar** una carta con éxito, limpiar por completo el texto del buscador y todos los filtros seleccionados, recargando el catálogo base.
+    *   Al **editar** una carta con éxito, conservar el texto del buscador y los filtros activos del usuario para mantener el contexto del catálogo, pero recargando la lista para reflejar los cambios editados optimistamente.
+
+### US21: Automatización de Lanzamientos mediante Scripts de Release (Frontend)
+**Como** desarrollador, **quiero** disponer de scripts locales en PowerShell y atajos en npm para automatizar el ciclo de lanzamiento, **para** garantizar que los despliegues a producción cumplan con los controles de calidad de código y tests antes de subir la versión e impactar en Vercel.
+*   **Criterios de Aceptación:**
+    *   **Versión Base Inicial:** Actualizar manualmente la versión en el `package.json` a `1.15.0` antes de disparar el pipeline.
+    *   **Scripts de npm:** Agregar scripts de release (`release:patch`, `release:minor`, `release:major`) a `package.json` que invoquen `./scripts/Release-Project.ps1` con el tipo de release.
+    *   **Pre-flight Checks (Quality Gate):** El script debe correr `pnpm lint`, `pnpm test:run` y `pnpm test:e2e`, abortando si cualquiera falla.
+    *   **Gestión de Versión y Changelog:** Instalar `standard-version` y usarlo para el versionado, actualización de `CHANGELOG.md` y creación del commit/tag local.
+    *   **Push a Remoto y Tagging:** Empujar commits y tags a la rama activa usando `git push origin <branch> --follow-tags`.
+    *   **Publicación del Release en GitHub:** Crear el release oficial usando `gh release create` (lo que gatilla el deploy en Vercel). Asegurar que la configuración en Vercel esté lista previamente.
+    *   **Modo LocalOnly:** Permitir el flag `-LocalOnly` para correr checks y bump locales únicamente.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -83,14 +178,24 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 0 | Gestión de Kanban y Seguimiento | **Lautaro** | Media (Constante) |
 | 1 | Setup inicial, Router y Layout (US1) | **Lautaro** | Media |
 | 2 | Configuración i18n y LocalStorage (US2) | **Lautaro** | Baja |
-| 3 | Servicios de API (MockAPI) y Home (US3) | **Juan** | Alta |
+| 3 | Servicios de API y Home (US3) | **Juan** | Alta |
 | 4 | Buscador con filtrado de API (US4) | **Juan** | Media |
 | 5 | Lógica de Scroll Infinito (US5) | **Gonzalo** | Alta |
 | 6 | Página de Detalle y manejo de 404 (US6) | **Juan** | Media |
-| 7 | Sistema de Favoritos y Persistencia (US7) | **Gonzalo** | Alta |
+| 7 | Favoritos vinculados al Backend con JWT (US7) | **Gonzalo** | Alta |
 | 8 | Integración de IA para creación de cartas (US8) | **Juan** | Muy Alta |
 | 9 | Pipeline de Deployment vía GitHub Releases (US9) | **Lautaro** | Media |
-| 10 | Documentación Final (README) | **Lautaro** | Baja |
+| 10 | Pantalla de Login/Registro y Autenticación JWT (US10) | **Gonzalo** | Alta |
+| 11 | Adaptación de i18n y Aplanamiento de API (US11) | **Lautaro** | Media |
+| 12 | Control de Acceso por Roles (US12) | **Gonzalo** | Media |
+| 13 | Interceptor HTTP y Renovación de Token (US13) | **Gonzalo** | Alta |
+| 14 | Documentación Final (README) | **Lautaro** | Baja |
+| 15 | Flujo Auth y Seguridad de Cartas (US15) | **Gonzalo & Juan** | Media |
+| 16 | Recarga de Detalle de Carta por Idioma (US16) | **Gonzalo & Juan** | Baja |
+| 17 | Desacoplamiento de Tipos y Rarezas por API (US17) | **Gonzalo & Juan** | Media |
+| 18 | Refactorización y Modularización de CardFormModal (US18) | **Gonzalo** | Media |
+| 19 | Sincronización y Consistencia de Filtros Post-ABM (US19) | **Gonzalo** | Baja |
+| 21 | Pipeline de Release Local y Automatización de Deployment (US21) | **Lautaro & Gonzalo** | Media |
 
 ---
 
@@ -100,4 +205,4 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 *   **Estado:** `useState`, `useEffect`.
 *   **Navegación:** `react-router-dom`.
 *   **Traducción:** `react-i18next`.
-*   **Backend:** MockAPI.io.
+*   **Backend:** Node.js, Express, Prisma, PostgreSQL (reemplazando MockAPI.io).

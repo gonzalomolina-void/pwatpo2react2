@@ -16,7 +16,7 @@
  * @property {string} descriptionEn - Descripción en inglés.
  */
 
-const API_URL = import.meta.env.VITE_API_URL;
+import apiClient from './apiClient';
 
 const cardService = {
   /**
@@ -34,28 +34,21 @@ const cardService = {
    */
   getCards: async (params = {}, { signal } = {}) => {
     try {
-      const url = new URL(`${API_URL}/cards`);
-      
       const searchParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
           searchParams.append(key, value);
         }
       });
-      url.search = searchParams.toString();
+      const query = searchParams.toString();
+      const endpoint = `/cards${query ? `?${query}` : ''}`;
 
-      const response = await fetch(url, { signal });
-      
-      if (!response.ok) {
-        if (response.status === 404) return [];
-        throw new Error(`Error fetching cards: ${response.statusText}`);
-      }
-      
-      return await response.json();
+      return await apiClient.get(endpoint, { signal });
     } catch (error) {
       if (error.name === 'AbortError') throw error;
+      if (error.status === 404) return [];
       console.error('Error in cardService.getCards:', error);
-      throw error;
+      throw new Error(`Error fetching cards: ${error.message}`);
     }
   },
 
@@ -69,21 +62,87 @@ const cardService = {
    */
   getCardById: async (id, { signal } = {}) => {
     try {
-      const response = await fetch(`${API_URL}/cards/${id}`, { signal });
-      
-      if (!response.ok) {
-        if (response.status === 404) return null;
-        throw new Error(`Error fetching card ${id}: ${response.statusText}`);
-      }
-      
-      return await response.json();
+      return await apiClient.get(`/cards/${id}`, { signal });
     } catch (error) {
       if (error.name === 'AbortError') throw error;
+      if (error.status === 404) return null;
       console.error(`Error in cardService.getCardById(${id}):`, error);
-      throw error;
+      throw new Error(`Error fetching card ${id}: ${error.message}`);
+    }
+  },
+
+  /**
+   * Obtiene los datos de una carta para edición (traducciones completas).
+   * 
+   * @param {string} id - ID de la carta.
+   * @param {Object} [options] - Opciones adicionales.
+   * @param {AbortSignal} [options.signal] - Señal para abortar la petición.
+   * @returns {Promise<Object>} - Datos de la carta con traducciones completas.
+   */
+  getCardForEdit: async (id, { signal } = {}) => {
+    try {
+      return await apiClient.get(`/cards/${id}/edit`, { signal });
+    } catch (error) {
+      if (error.name === 'AbortError') throw error;
+      console.error(`Error in cardService.getCardForEdit(${id}):`, error);
+      throw new Error(`Error fetching card for edit ${id}: ${error.message}`);
+    }
+  },
+
+  /**
+   * Crea una nueva carta en el catálogo.
+   * 
+   * @param {Object} cardData - Datos globales y array de traducciones de la carta.
+   * @param {Object} [options] - Opciones adicionales.
+   * @param {AbortSignal} [options.signal] - Señal para abortar la petición.
+   * @returns {Promise<Object>} - Carta creada.
+   */
+  createCard: async (cardData, { signal } = {}) => {
+    try {
+      return await apiClient.post('/cards', cardData, { signal });
+    } catch (error) {
+      if (error.name === 'AbortError') throw error;
+      console.error('Error in cardService.createCard:', error);
+      throw new Error(`Error creating card: ${error.message}`);
+    }
+  },
+
+  /**
+   * Actualiza una carta existente en el catálogo.
+   * 
+   * @param {string} id - ID de la carta a actualizar.
+   * @param {Object} cardData - Datos a actualizar.
+   * @param {Object} [options] - Opciones adicionales.
+   * @param {AbortSignal} [options.signal] - Señal para abortar la petición.
+   * @returns {Promise<Object>} - Carta actualizada.
+   */
+  updateCard: async (id, cardData, { signal } = {}) => {
+    try {
+      return await apiClient.put(`/cards/${id}`, cardData, { signal });
+    } catch (error) {
+      if (error.name === 'AbortError') throw error;
+      console.error(`Error in cardService.updateCard(${id}):`, error);
+      throw new Error(`Error updating card ${id}: ${error.message}`);
+    }
+  },
+
+  /**
+   * Elimina una carta del catálogo.
+   * 
+   * @param {string} id - ID de la carta a eliminar.
+   * @param {Object} [options] - Opciones adicionales.
+   * @param {AbortSignal} [options.signal] - Señal para abortar la petición.
+   * @returns {Promise<null>} - Resolves to null on success (204 No Content).
+   */
+  deleteCard: async (id, { signal } = {}) => {
+    try {
+      return await apiClient.delete(`/cards/${id}`, { signal });
+    } catch (error) {
+      if (error.name === 'AbortError') throw error;
+      console.error(`Error in cardService.deleteCard(${id}):`, error);
+      throw new Error(`Error deleting card ${id}: ${error.message}`);
     }
   }
 };
-
 
 export default cardService;

@@ -71,7 +71,6 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       setIsLoading(true);
       setError(null);
 
-      const langKey = lang === 'es' ? 'Es' : 'En';
       const params = {
         page: targetPage,
         limit: limit,
@@ -82,13 +81,11 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       }
 
       if (filters.selectedTypes.length > 0) {
-        const typeKey = filters.selectedTypes[0];
-        params[`type${langKey}`] = tRef.current(`home.filters.types.${typeKey}`, { lng: lang });
+        params.type = filters.selectedTypes[0];
       }
 
       if (filters.selectedRarities.length > 0) {
-        const rarityKey = filters.selectedRarities[0];
-        params[`rarity${langKey}`] = tRef.current(`home.filters.rarities.${rarityKey}`, { lng: lang });
+        params.rarity = filters.selectedRarities[0];
       }
 
       const data = await cardService.getCards(params, { signal: abortControllerRef.current.signal });
@@ -107,7 +104,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [limit, lang]);
+  }, [limit]);
 
   useEffect(() => {
     // Si estamos restaurando de caché, el primer render NO dispara fetch
@@ -128,10 +125,20 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   }, []);
 
   const handleSearch = useCallback((newFilters) => {
-    setActiveFilters(newFilters);
-    setPage(1);
-    setHasMore(true);
-  }, []);
+    const filtersChanged = JSON.stringify(newFilters) !== JSON.stringify(activeFilters);
+    const pageChanged = page !== 1;
+
+    if (filtersChanged || pageChanged) {
+      setIsLoading(true);
+      setActiveFilters(newFilters);
+      setPage(1);
+      setHasMore(true);
+    } else {
+      // Si los filtros son idénticos y la página ya es 1, el useEffect no se disparará.
+      // Forzamos el refetch llamando directamente a fetchCards.
+      fetchCards(1, activeFilters);
+    }
+  }, [activeFilters, page, fetchCards]);
 
 
 
@@ -150,6 +157,19 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     if (node) observer.current.observe(node);
   }, [isLoading, hasMore]);
 
+  const updateCardOptimistic = useCallback((updatedCard) => {
+    if (!updatedCard || !updatedCard.id) return;
+
+    setCards((prevCards) => {
+      const newCards = prevCards.map((card) =>
+        card.id === updatedCard.id ? { ...card, ...updatedCard } : card
+      );
+      // Sincronizar la caché global
+      homeCache.cards = newCards;
+      return newCards;
+    });
+  }, []);
+
   return {
     cards,
     isLoading,
@@ -157,7 +177,8 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     hasMore,
     page,
     handleSearch,
-    lastCardElementRef
+    updateCardOptimistic,
+    lastCardElementRef,
   };
 };
 

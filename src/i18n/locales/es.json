@@ -1,7 +1,9 @@
 {
   "nav": {
     "home": "Home",
-    "favorites": "Favoritos"
+    "favorites": "Favoritos",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión"
   },
   "app": {
     "title": "HEXA - Enciclopedia de Cartas"
@@ -63,7 +65,49 @@
   },
   "card": {
     "addFavorite": "Agregar a favoritos",
-    "removeFavorite": "Eliminar de favoritos"
+    "removeFavorite": "Eliminar de favoritos",
+    "types": {
+      "creature": "Criatura",
+      "spell": "Hechizo",
+      "artifact": "Artefacto"
+    },
+    "rarities": {
+      "poor": "Pobre",
+      "common": "Común",
+      "uncommon": "Poco Común",
+      "rare": "Raro",
+      "epic": "Épico",
+      "legendary": "Legendario"
+    },
+    "admin": {
+      "newCard": "Nueva Carta",
+      "editCard": "Editar Carta",
+      "createTitle": "Crear Nueva Carta",
+      "editTitle": "Editar Carta",
+      "cost": "Costo",
+      "atk": "ATK",
+      "def": "DEF",
+      "image": "URL de la Imagen",
+      "type": "Tipo de Carta",
+      "rarity": "Rareza de la Carta",
+      "translations": "Traducciones de la Carta",
+      "language": "Idioma",
+      "name": "Nombre",
+      "description": "Descripción",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar Carta",
+      "deleteConfirmTitle": "¿Eliminar Carta?",
+      "deleteConfirmMsg": "¿Estás seguro de que deseas eliminar la carta \"{{name}}\"? Esta acción no se puede deshacer.",
+      "deleteConfirmBtn": "Sí, Eliminar",
+      "deleteCancelBtn": "No, Cancelar",
+      "createSuccess": "Carta creada exitosamente.",
+      "updateSuccess": "Carta actualizada exitosamente.",
+      "deleteSuccess": "Carta eliminada exitosamente.",
+      "loading": "Procesando...",
+      "fetchError": "Error al cargar los datos de la carta.",
+      "saveError": "Error al guardar los cambios."
+    }
   },
   "about": {
     "title": "Acerca de nosotros",
@@ -89,5 +133,28 @@
     "toggle": "Cambiar tema",
     "toLight": "Invocar Modo Luz",
     "toDark": "Abrazar las Sombras"
+  },
+  "auth": {
+    "loginTitle": "Ingresá a HEXA",
+    "loginSubtitle": "Accedé a tus favoritos y forjá cartas únicas",
+    "registerTitle": "Creá tu Cuenta",
+    "registerSubtitle": "Registrate para empezar a coleccionar",
+    "namePlaceholder": "Nombre",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Contraseña",
+    "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "loginButton": "Iniciar Sesión",
+    "registerButton": "Registrarse",
+    "haveAccount": "¿Ya tenés cuenta? Iniciá sesión",
+    "needAccount": "¿No tenés cuenta? Registrate",
+    "errorRequiredFields": "Todos los campos son requeridos",
+    "errorNameRequired": "El nombre es obligatorio",
+    "errorNameTooShort": "El nombre debe tener al menos 2 caracteres",
+    "errorInvalidEmail": "Email no válido",
+    "errorPasswordMismatch": "Las contraseñas no coinciden",
+    "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "registerSuccess": "¡Registro exitoso! Ya podés iniciar sesión.",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
+    "errorGeneral": "Ocurrió un error inesperado"
   }
 }

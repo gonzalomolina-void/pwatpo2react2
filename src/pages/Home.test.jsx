@@ -3,6 +3,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Home from './Home';
 import { useInfiniteCards } from '../hooks/useInfiniteCards';
+import { useAuth } from '../context/AuthContext';
+import { lookupService } from '../services/lookupService';
+
+vi.mock('../context/AuthContext', () => ({
+  useAuth: vi.fn(() => ({ user: null, isAuthenticated: false }))
+}));
 
 const mockT = vi.hoisted(() => (str) => str);
 
@@ -24,14 +30,33 @@ vi.mock('../hooks/useInfiniteCards', () => ({
   useInfiniteCards: vi.fn(),
 }));
 
+vi.mock('../services/lookupService', () => ({
+  lookupService: {
+    getTypes: vi.fn(),
+    getRarities: vi.fn()
+  }
+}));
+
 vi.mock('../components/Card', () => ({
   default: vi.fn(() => <div data-testid="mock-card" />),
 }));
 
+vi.mock('../components/CardFormModal', () => ({
+  default: vi.fn(({ isOpen, onClose, onSuccess }) => isOpen ? (
+    <div data-testid="mock-card-form-modal">
+      <button data-testid="btn-close-modal" onClick={onClose}>Close</button>
+      <button data-testid="btn-success-create" onClick={() => onSuccess({ action: 'create', card: { id: '3' } })}>Success Create</button>
+      <button data-testid="btn-success-edit" onClick={() => onSuccess({ action: 'edit', card: { id: '1', nameEs: 'Carta Editada' } })}>Success Edit</button>
+      <button data-testid="btn-success-delete" onClick={() => onSuccess({ action: 'delete', cardId: '1' })}>Success Delete</button>
+      <button data-testid="btn-success-modal" onClick={() => onSuccess()}>Success Legacy</button>
+    </div>
+  ) : null)
+}));
+
 vi.mock('../components/SearchBar', () => ({
-  default: vi.fn(({ onSearch }) => (
-    <div data-testid="mock-searchbar">
-      <button data-testid="trigger-search" onClick={() => onSearch({ searchTerm: 'test', selectedTypes: [], selectedRarities: [] })}>
+  default: vi.fn(({ onSearch, filters }) => (
+    <div data-testid="mock-searchbar" data-filters={JSON.stringify(filters)}>
+      <button data-testid="trigger-search" onClick={() => onSearch({ searchTerm: 'test', selectedTypes: ['spell'], selectedRarities: [] })}>
         Search
       </button>
     </div>
@@ -59,6 +84,19 @@ function mockHookState(overrides = {}) {
 describe('Home Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false
+    });
+    vi.mocked(lookupService.getTypes).mockResolvedValue([
+      { id: 1, code: 'creature', name: 'Criatura', labelKey: 'card.types.creature' },
+      { id: 2, code: 'spell', name: 'Hechizo', labelKey: 'card.types.spell' },
+      { id: 3, code: 'artifact', name: 'Artefacto', labelKey: 'card.types.artifact' }
+    ]);
+    vi.mocked(lookupService.getRarities).mockResolvedValue([
+      { id: 1, code: 'poor', name: 'Pobre', labelKey: 'card.rarities.poor' },
+      { id: 2, code: 'common', name: 'Común', labelKey: 'card.rarities.common' }
+    ]);
   });
 
   it('renderiza el título y la descripción', () => {
@@ -228,5 +266,213 @@ describe('Home Page', () => {
     
     expect(removeItemSpy).toHaveBeenCalledWith('home_scroll_pos');
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+  });
+
+  it('no debe mostrar el botón "Nueva Carta" si el usuario no es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'user@test.com', role: 'usuario' },
+      isAuthenticated: true
+    });
+    mockHookState();
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText('card.admin.newCard')).not.toBeInTheDocument();
+  });
+
+  it('debe mostrar el botón "Nueva Carta" si el usuario es admin', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    mockHookState();
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('card.admin.newCard')).toBeInTheDocument();
+  });
+
+  it('debe abrir el modal al clickear "Nueva Carta" y llamar a handleSearch al guardar exitosamente', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'admin@test.com', role: 'admin' },
+      isAuthenticated: true
+    });
+    const handleSearchMock = vi.fn();
+    mockHookState({ handleSearch: handleSearchMock });
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const btn = screen.getByText('card.admin.newCard');
+    fireEvent.click(btn);
+
+    // Debe abrir el modal mockeado
+    expect(screen.getByTestId('mock-card-form-modal')).toBeInTheDocument();
+
+    // Simular guardado exitoso
+    fireEvent.click(screen.getByTestId('btn-success-modal'));
+
+    // Debe refrescar llamando a handleSearch
+    expect(handleSearchMock).toHaveBeenCalled();
+  });
+
+  describe('Post-ABM Filter Synchronization (US19)', () => {
+    beforeEach(() => {
+      vi.mocked(useAuth).mockReturnValue({
+        user: { email: 'admin@test.com', role: 'admin' },
+        isAuthenticated: true
+      });
+    });
+
+    it('debe limpiar filtros y refrescar catálogo al CREAR una carta', async () => {
+      const handleSearchMock = vi.fn();
+      mockHookState({ handleSearch: handleSearchMock });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Abrir modal y disparar éxito de creación
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-create'));
+
+      // Debe resetear filtros a valores vacíos y buscar
+      expect(handleSearchMock).toHaveBeenCalledWith({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+
+      // El SearchBar debe recibir los filtros reseteados
+      const searchBar = screen.getByTestId('mock-searchbar');
+      expect(JSON.parse(searchBar.getAttribute('data-filters'))).toEqual({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+    });
+
+    it('debe limpiar filtros y refrescar catálogo al ELIMINAR una carta', async () => {
+      const handleSearchMock = vi.fn();
+      mockHookState({ handleSearch: handleSearchMock });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Abrir modal y disparar éxito de eliminación
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-delete'));
+
+      // Debe resetear filtros y buscar
+      expect(handleSearchMock).toHaveBeenCalledWith({
+        searchTerm: '',
+        selectedTypes: [],
+        selectedRarities: []
+      });
+    });
+
+    it('debe conservar filtros, llamar a updateCardOptimistic y refrescar catálogo al EDITAR una carta', async () => {
+      const triggerSearchMock = vi.fn();
+      const updateCardOptimisticMock = vi.fn();
+      mockHookState({ 
+        handleSearch: triggerSearchMock,
+        updateCardOptimistic: updateCardOptimisticMock
+      });
+
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
+
+      // Simular que el usuario hace una búsqueda primero para establecer filtros
+      const searchBar = screen.getByTestId('mock-searchbar');
+      fireEvent.click(screen.getByText('Search')); // Dispara onSearch con { searchTerm: 'test', selectedTypes: ['spell']... }
+
+      // Limpiamos los llamados del mock para la aserción posterior
+      triggerSearchMock.mockClear();
+
+      // Abrir modal y disparar éxito de edición
+      fireEvent.click(screen.getByText('card.admin.newCard'));
+      fireEvent.click(screen.getByTestId('btn-success-edit'));
+
+      // Debe actualizar optimistamente la carta editada en el hook
+      expect(updateCardOptimisticMock).toHaveBeenCalledWith({
+        id: '1',
+        nameEs: 'Carta Editada'
+      });
+
+      // Debe recargar la lista de la API conservando los filtros actuales ('test', ['spell'])
+      expect(triggerSearchMock).toHaveBeenCalledWith({
+        searchTerm: 'test',
+        selectedTypes: ['spell'],
+        selectedRarities: []
+      });
+
+      // El SearchBar debe mantener sus valores en la prop filters
+      expect(JSON.parse(searchBar.getAttribute('data-filters'))).toEqual({
+        searchTerm: 'test',
+        selectedTypes: ['spell'],
+        selectedRarities: []
+      });
+    });
+  });
+
+  describe('Dynamic Lookups Integration (US17)', () => {
+    it('debería consultar lookupService y pasar las opciones dinámicas a SearchBar', async () => {
+      const mockTypes = [
+        { id: 1, code: 'creature', name: 'Criatura Dinámica', labelKey: 'card.types.creature' },
+        { id: 2, code: 'spell', name: 'Hechizo Dinámico', labelKey: 'card.types.spell' }
+      ];
+      const mockRarities = [
+        { id: 1, code: 'poor', name: 'Pobre Dinámica', labelKey: 'card.rarities.poor' }
+      ];
+      vi.mocked(lookupService.getTypes).mockResolvedValueOnce(mockTypes);
+      vi.mocked(lookupService.getRarities).mockResolvedValueOnce(mockRarities);
+      mockHookState();
+
+      await act(async () => {
+        render(
+          <MemoryRouter>
+            <Home />
+          </MemoryRouter>
+        );
+      });
+
+      expect(lookupService.getTypes).toHaveBeenCalled();
+      expect(lookupService.getRarities).toHaveBeenCalled();
+
+      const searchBar = screen.getByTestId('mock-searchbar');
+      expect(searchBar).toBeInTheDocument();
+      
+      const SearchBarMock = vi.mocked(await import('../components/SearchBar')).default;
+      expect(SearchBarMock.mock.calls.length).toBeGreaterThan(0);
+      const lastCallProps = SearchBarMock.mock.calls[SearchBarMock.mock.calls.length - 1][0];
+      expect(lastCallProps).toEqual(expect.objectContaining({
+        typeOptions: [
+          { value: 'creature', label: 'Criatura Dinámica' },
+          { value: 'spell', label: 'Hechizo Dinámico' }
+        ],
+        rarityOptions: [
+          { value: 'poor', label: 'Pobre Dinámica' }
+        ]
+      }));
+    });
   });
 });
