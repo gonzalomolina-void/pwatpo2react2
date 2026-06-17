@@ -158,6 +158,17 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
     *   Al **crear** o **borrar** una carta con éxito, limpiar por completo el texto del buscador y todos los filtros seleccionados, recargando el catálogo base.
     *   Al **editar** una carta con éxito, conservar el texto del buscador y los filtros activos del usuario para mantener el contexto del catálogo, pero recargando la lista para reflejar los cambios editados optimistamente.
 
+### US21: Automatización de Lanzamientos mediante Scripts de Release (Frontend)
+**Como** desarrollador, **quiero** disponer de scripts locales en PowerShell y atajos en npm para automatizar el ciclo de lanzamiento, **para** garantizar que los despliegues a producción cumplan con los controles de calidad de código y tests antes de subir la versión e impactar en Vercel.
+*   **Criterios de Aceptación:**
+    *   **Versión Base Inicial:** Actualizar manualmente la versión en el `package.json` a `1.15.0` antes de disparar el pipeline.
+    *   **Scripts de npm:** Agregar scripts de release (`release:patch`, `release:minor`, `release:major`) a `package.json` que invoquen `./scripts/Release-Project.ps1` con el tipo de release.
+    *   **Pre-flight Checks (Quality Gate):** El script debe correr `pnpm lint`, `pnpm test:run` y `pnpm test:e2e`, abortando si cualquiera falla.
+    *   **Gestión de Versión y Changelog:** Instalar `standard-version` y usarlo para el versionado, actualización de `CHANGELOG.md` y creación del commit/tag local.
+    *   **Push a Remoto y Tagging:** Empujar commits y tags a la rama activa usando `git push origin <branch> --follow-tags`.
+    *   **Publicación del Release en GitHub:** Crear el release oficial usando `gh release create` (lo que gatilla el deploy en Vercel). Asegurar que la configuración en Vercel esté lista previamente.
+    *   **Modo LocalOnly:** Permitir el flag `-LocalOnly` para correr checks y bump locales únicamente.
+
 ---
 
 ## 📊 Tabla de Asignación de Tareas
@@ -184,6 +195,7 @@ Este documento detalla la estrategia de desarrollo para la aplicación **HEXA**,
 | 17 | Desacoplamiento de Tipos y Rarezas por API (US17) | **Gonzalo & Juan** | Media |
 | 18 | Refactorización y Modularización de CardFormModal (US18) | **Gonzalo** | Media |
 | 19 | Sincronización y Consistencia de Filtros Post-ABM (US19) | **Gonzalo** | Baja |
+| 21 | Pipeline de Release Local y Automatización de Deployment (US21) | **Lautaro & Gonzalo** | Media |
 
 ---
 
