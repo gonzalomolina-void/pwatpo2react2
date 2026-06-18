@@ -76,8 +76,12 @@ export default function Login() {
       }
     } catch (err) {
       // Intentar extraer el mensaje de error del backend
-      const errMsg = err.message || t('auth.errorGeneral') || 'Ocurrió un error inesperado';
-      setError(errMsg.replace('Error in login: ', '').replace('Error in register: ', ''));
+      if (isRegisterMode && err.status === 409) {
+        setError(t('auth.errorEmailAlreadyRegistered') || 'El email ya está registrado');
+      } else {
+        const errMsg = err.message || t('auth.errorGeneral') || 'Ocurrió un error inesperado';
+        setError(errMsg.replace('Error in login: ', '').replace('Error in register: ', ''));
+      }
     }
   };
 

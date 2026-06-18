@@ -141,4 +141,33 @@ describe('favoritesService with API Integration', () => {
       expect(favoritesService.isFavorite(8)).toBe(false);
     });
   });
+
+  describe('conditional rollback on specific HTTP statuses', () => {
+    it('no revierte el cache si addFavorite falla con status 409 (Conflict)', async () => {
+      const card = { id: 9, name: 'Card 9' };
+      const error = new Error('Conflict');
+      error.status = 409;
+      apiClient.post.mockRejectedValueOnce(error);
+
+      await expect(favoritesService.addFavorite(card)).rejects.toThrow('Conflict');
+      
+      // No debe revertir el cache; el favorito debe seguir ahí
+      expect(favoritesService.isFavorite(9)).toBe(true);
+    });
+
+    it('no revierte el cache si removeFavorite falla con status 404 (Not Found)', async () => {
+      const card = { id: 10, name: 'Card 10' };
+      apiClient.post.mockResolvedValueOnce({});
+      await favoritesService.addFavorite(card);
+
+      const error = new Error('Not Found');
+      error.status = 404;
+      apiClient.delete.mockRejectedValueOnce(error);
+
+      await expect(favoritesService.removeFavorite(10)).rejects.toThrow('Not Found');
+
+      // No debe revertir el cache; el favorito debe seguir removido
+      expect(favoritesService.isFavorite(10)).toBe(false);
+    });
+  });
 });
