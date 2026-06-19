@@ -20,22 +20,7 @@
     "noResults": "No results found",
     "error": "Could not load the card catalog. Please try again later.",
     "retry": "Retry",
-    "endOfCatalog": "You have reached the end of HEXA.",
-    "filters": {
-      "types": {
-        "creature": "Creature",
-        "spell": "Spell",
-        "artifact": "Artifact"
-      },
-      "rarities": {
-        "poor": "Poor",
-        "common": "Common",
-        "uncommon": "Uncommon",
-        "rare": "Rare",
-        "epic": "Epic",
-        "legendary": "Legendary"
-      }
-    }
+    "endOfCatalog": "You have reached the end of HEXA."
   },
   "detail": {
     "loading": "Summoning card from HEXA...",
@@ -66,19 +51,6 @@
   "card": {
     "addFavorite": "Add to favorites",
     "removeFavorite": "Remove from favorites",
-    "types": {
-      "creature": "Creature",
-      "spell": "Spell",
-      "artifact": "Artifact"
-    },
-    "rarities": {
-      "poor": "Poor",
-      "common": "Common",
-      "uncommon": "Uncommon",
-      "rare": "Rare",
-      "epic": "Epic",
-      "legendary": "Legendary"
-    },
     "admin": {
       "newCard": "New Card",
       "editCard": "Edit Card",

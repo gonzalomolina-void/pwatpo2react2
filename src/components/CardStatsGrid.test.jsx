@@ -11,12 +11,12 @@ vi.mock('react-i18next', () => ({
 
 describe('CardStatsGrid Component', () => {
   const typeOptions = [
-    { id: 1, labelKey: 'card.types.creature' },
-    { id: 2, labelKey: 'card.types.spell' }
+    { id: 1, name: 'Criatura', labelKey: 'card.types.creature' },
+    { id: 2, name: 'Hechizo', labelKey: 'card.types.spell' }
   ];
   const rarityOptions = [
-    { id: 1, labelKey: 'card.rarities.poor' },
-    { id: 2, labelKey: 'card.rarities.common' }
+    { id: 1, name: 'Pobre', labelKey: 'card.rarities.poor' },
+    { id: 2, name: 'Común', labelKey: 'card.rarities.common' }
   ];
 
   const mockSetCost = vi.fn();
