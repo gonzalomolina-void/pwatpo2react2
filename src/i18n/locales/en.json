@@ -155,6 +155,7 @@
     "errorPasswordTooShort": "Password must be at least 6 characters long",
     "registerSuccess": "Registration successful! You can now log in.",
     "sessionExpired": "Your session has expired. Please log in again.",
+    "errorEmailAlreadyRegistered": "The email is already registered",
     "errorGeneral": "An unexpected error occurred"
   }
 }

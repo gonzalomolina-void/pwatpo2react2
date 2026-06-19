@@ -13,7 +13,9 @@ const authService = {
       return await apiClient.post('/auth/register', { email, name, password });
     } catch (error) {
       console.error('Error in authService.register:', error);
-      throw new Error(`Error in register: ${error.message}`);
+      const err = new Error(`Error in register: ${error.message}`);
+      err.status = error.status;
+      throw err;
     }
   },
 
@@ -28,7 +30,9 @@ const authService = {
       return await apiClient.post('/auth/login', { email, password });
     } catch (error) {
       console.error('Error in authService.login:', error);
-      throw new Error(`Error in login: ${error.message}`);
+      const err = new Error(`Error in login: ${error.message}`);
+      err.status = error.status;
+      throw err;
     }
   },
 
@@ -42,7 +46,9 @@ const authService = {
       return true;
     } catch (error) {
       console.error('Error in authService.logout:', error);
-      throw new Error(`Error in logout: ${error.message}`);
+      const err = new Error(`Error in logout: ${error.message}`);
+      err.status = error.status;
+      throw err;
     }
   },
 
@@ -57,7 +63,9 @@ const authService = {
       return await apiClient.get('/auth/me', { headers });
     } catch (error) {
       console.error('Error in authService.getMe:', error);
-      throw new Error(`Error fetching user profile: ${error.message}`);
+      const err = new Error(`Error fetching user profile: ${error.message}`);
+      err.status = error.status;
+      throw err;
     }
   }
 };
