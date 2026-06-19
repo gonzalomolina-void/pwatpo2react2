@@ -20,22 +20,7 @@
     "noResults": "No se encontraron resultados",
     "error": "No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.",
     "retry": "Reintentar",
-    "endOfCatalog": "Has llegado al final de HEXA.",
-    "filters": {
-      "types": {
-        "creature": "Criatura",
-        "spell": "Hechizo",
-        "artifact": "Artefacto"
-      },
-      "rarities": {
-        "poor": "Pobre",
-        "common": "Común",
-        "uncommon": "Poco Común",
-        "rare": "Raro",
-        "epic": "Épico",
-        "legendary": "Legendario"
-      }
-    }
+    "endOfCatalog": "Has llegado al final de HEXA."
   },
   "detail": {
     "loading": "Invocando carta de HEXA...",
@@ -66,19 +51,6 @@
   "card": {
     "addFavorite": "Agregar a favoritos",
     "removeFavorite": "Eliminar de favoritos",
-    "types": {
-      "creature": "Criatura",
-      "spell": "Hechizo",
-      "artifact": "Artefacto"
-    },
-    "rarities": {
-      "poor": "Pobre",
-      "common": "Común",
-      "uncommon": "Poco Común",
-      "rare": "Raro",
-      "epic": "Épico",
-      "legendary": "Legendario"
-    },
     "admin": {
       "newCard": "Nueva Carta",
       "editCard": "Editar Carta",
