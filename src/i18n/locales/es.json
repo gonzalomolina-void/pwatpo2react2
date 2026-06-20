@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "favorites": "Favoritos",
+    "profile": "Perfil",
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión"
   },
@@ -129,5 +130,25 @@
     "sessionExpired": "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
     "errorEmailAlreadyRegistered": "El email ya está registrado",
     "errorGeneral": "Ocurrió un error inesperado"
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Gestioná la seguridad y configuraciones de tu cuenta.",
+    "infoTitle": "Datos del Usuario",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "role": "Rol de Cuenta",
+    "securityTitle": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "submit": "Actualizar Contraseña",
+    "updating": "Actualizando...",
+    "success": "Contraseña actualizada exitosamente",
+    "errors": {
+      "required": "Todos los campos son obligatorios",
+      "tooShort": "La nueva contraseña debe tener al menos 6 caracteres",
+      "mismatch": "Las contraseñas no coinciden"
+    }
   }
 }

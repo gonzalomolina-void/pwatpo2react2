@@ -130,4 +130,38 @@ describe('authService', () => {
       await expect(authService.getMe('expired-token')).rejects.toThrow('Error fetching user profile: Unauthorized');
     });
   });
+
+  describe('changePassword', () => {
+    it('retorna mensaje de exito ante cambio de contraseña exitoso', async () => {
+      const mockResponse = { message: 'Contraseña actualizada exitosamente' };
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse
+      });
+
+      const result = await authService.changePassword('oldPwd123', 'newPwd123');
+
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        `${import.meta.env.VITE_API_URL}/auth/change-password`,
+        expect.objectContaining({
+          method: 'PUT',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify({ currentPassword: 'oldPwd123', newPassword: 'newPwd123' })
+        })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('lanza un error si la petición PUT responde con código de error (ej: 400)', async () => {
+      globalThis.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request'
+      });
+
+      await expect(authService.changePassword('wrongPwd', 'newPwd123')).rejects.toThrow('Error in changePassword: Bad Request');
+    });
+  });
 });

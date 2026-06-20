@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "favorites": "Favorites",
+    "profile": "Profile",
     "login": "Log In",
     "logout": "Log Out"
   },
@@ -129,5 +130,25 @@
     "sessionExpired": "Your session has expired. Please log in again.",
     "errorEmailAlreadyRegistered": "The email is already registered",
     "errorGeneral": "An unexpected error occurred"
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your account security and settings.",
+    "infoTitle": "User Information",
+    "name": "Name",
+    "email": "Email Address",
+    "role": "Account Role",
+    "securityTitle": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "submit": "Update Password",
+    "updating": "Updating...",
+    "success": "Password updated successfully",
+    "errors": {
+      "required": "All fields are required",
+      "tooShort": "The new password must be at least 6 characters",
+      "mismatch": "Passwords do not match"
+    }
   }
 }
