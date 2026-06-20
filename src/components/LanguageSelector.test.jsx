@@ -15,10 +15,24 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
+const mockUpdatePreferences = vi.fn();
+let mockAuthValue = null;
+
+vi.mock('../context/AuthContext', () => ({
+  useAuth: () => {
+    if (mockAuthValue === null) {
+      throw new Error('No provider');
+    }
+    return mockAuthValue;
+  }
+}));
+
 describe('LanguageSelector Component', () => {
   beforeEach(() => {
     mockChangeLanguage.mockClear();
     mockI18n.language = 'es';
+    mockAuthValue = null;
+    mockUpdatePreferences.mockClear();
   });
 
   // ✅ CAMBIAR IDIOMA TESTS
@@ -166,6 +180,39 @@ describe('LanguageSelector Component', () => {
       expect(mockChangeLanguage).toHaveBeenNthCalledWith(1, 'en');
       expect(mockChangeLanguage).toHaveBeenNthCalledWith(2, 'es');
       expect(mockChangeLanguage).toHaveBeenNthCalledWith(3, 'en');
+    });
+  });
+
+  // ✅ PRUEBAS DE INTEGRACIÓN CON AUTHCONTEXT (US107)
+  describe('Integración con AuthContext (US107)', () => {
+    it('debe inicializarse con el lenguaje provisto por el contexto de autenticación', () => {
+      mockAuthValue = {
+        language: 'en',
+        updatePreferences: mockUpdatePreferences
+      };
+
+      render(<LanguageSelector />);
+
+      // Botón de inglés (EN) debe estar activo
+      const enButton = screen.getByRole('button', { name: /Change to English/i });
+      expect(enButton).toHaveClass('bg-white');
+      expect(enButton).toHaveClass('text-blue-600');
+    });
+
+    it('debe llamar a updatePreferences con el idioma seleccionado al hacer click si está autenticado', () => {
+      mockAuthValue = {
+        language: 'es',
+        updatePreferences: mockUpdatePreferences
+      };
+
+      render(<LanguageSelector />);
+      const enButton = screen.getByRole('button', { name: /Change to English/i });
+      fireEvent.click(enButton);
+
+      // Debe haber llamado al contexto
+      expect(mockUpdatePreferences).toHaveBeenCalledWith({ language: 'en' });
+      // Y no debería haber llamado a i18n directamente desde el componente local
+      expect(mockChangeLanguage).not.toHaveBeenCalled();
     });
   });
 });

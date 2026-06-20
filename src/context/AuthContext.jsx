@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/authService';
 import favoritesService from '../services/favoritesService';
+import profileService from '../services/profileService';
+import { preferencesService } from '../services/preferencesService';
+import i18n from 'i18next';
 import { parseJwt } from '../utils/jwt';
 
 const AuthContext = createContext(null);
@@ -9,6 +12,46 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [theme, setThemeState] = useState(() => preferencesService.getTheme());
+  const [language, setLanguageState] = useState(() => preferencesService.getLanguage());
+
+  // Sincronizar perfil del backend con preferencias locales
+  const syncProfile = async () => {
+    try {
+      const profile = await profileService.getProfile();
+      const localTheme = preferencesService.getTheme();
+      const localLang = preferencesService.getLanguage();
+
+      const isServerDefault = !profile.darkMode && profile.language === 'es';
+      const isLocalDefault = localTheme === 'dark' && localLang === 'es';
+
+      if (profile.darkMode !== (localTheme === 'dark') || profile.language !== localLang) {
+        if (isServerDefault && !isLocalDefault) {
+          // Servidor tiene defaults pero cliente tiene configs personalizadas: subir al servidor
+          await profileService.updateProfile({
+            darkMode: localTheme === 'dark',
+            language: localLang
+          });
+        } else {
+          // Servidor tiene configs personalizadas: descargar y aplicar en cliente
+          const newTheme = profile.darkMode ? 'dark' : 'light';
+          preferencesService.setTheme(newTheme);
+          setThemeState(newTheme);
+          preferencesService.setLanguage(profile.language);
+          setLanguageState(profile.language);
+          i18n.changeLanguage(profile.language);
+
+          if (newTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to sync profile:', error);
+    }
+  };
 
   // Intentar restaurar la sesión al montar
   useEffect(() => {
@@ -26,6 +69,8 @@ export function AuthProvider({ children }) {
           setUser(userWithRole);
           // Cargar favoritos en cache al restaurar sesión
           await favoritesService.fetchFavorites();
+          // Sincronizar perfil remota-local
+          await syncProfile();
         } catch (error) {
           console.error('Session restoration failed:', error);
           localStorage.removeItem('hexa_token');
@@ -86,6 +131,8 @@ export function AuthProvider({ children }) {
       setUser(userWithRole);
       // Cargar favoritos en cache al iniciar sesión
       await favoritesService.fetchFavorites();
+      // Sincronizar perfil remota-local
+      await syncProfile();
       setLoading(false);
       return result;
     } catch (error) {
@@ -112,8 +159,54 @@ export function AuthProvider({ children }) {
     }
   };
 
+  /**
+   * Actualiza el idioma y tema unificados local y remotamente.
+   */
+  const updatePreferences = async (updates) => {
+    const currentTheme = preferencesService.getTheme();
+    const currentLang = preferencesService.getLanguage();
+
+    const nextTheme = updates.darkMode !== undefined 
+      ? (updates.darkMode ? 'dark' : 'light') 
+      : currentTheme;
+
+    const nextLang = updates.language !== undefined 
+      ? updates.language 
+      : currentLang;
+
+    // 1. Aplicación local
+    if (updates.darkMode !== undefined) {
+      preferencesService.setTheme(nextTheme);
+      setThemeState(nextTheme);
+      if (nextTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    if (updates.language !== undefined) {
+      preferencesService.setLanguage(nextLang);
+      setLanguageState(nextLang);
+      i18n.changeLanguage(nextLang);
+    }
+
+    // 2. Propagación al servidor si hay token y sesión activa
+    const tokenExists = localStorage.getItem('hexa_token');
+    if (tokenExists) {
+      try {
+        await profileService.updateProfile({
+          darkMode: nextTheme === 'dark',
+          language: nextLang
+        });
+      } catch (error) {
+        console.error('Failed to sync preferences to remote server:', error);
+      }
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, theme, language, updatePreferences, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

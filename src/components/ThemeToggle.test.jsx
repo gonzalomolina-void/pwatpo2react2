@@ -4,12 +4,25 @@ import userEvent from '@testing-library/user-event';
 import ThemeToggle from './ThemeToggle';
 import { preferencesService } from '../services/preferencesService';
 
+const mockUpdatePreferences = vi.fn();
+let mockAuthValue = null;
+
 // Mock de preferencesService
 vi.mock('../services/preferencesService', () => ({
   preferencesService: {
     getTheme: vi.fn(),
     setTheme: vi.fn(),
   },
+}));
+
+// Mock de useAuth condicional
+vi.mock('../context/AuthContext', () => ({
+  useAuth: () => {
+    if (mockAuthValue === null) {
+      throw new Error('No provider');
+    }
+    return mockAuthValue;
+  }
 }));
 
 // Mock de react-i18next
@@ -22,6 +35,8 @@ vi.mock('react-i18next', () => ({
 describe('ThemeToggle Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockAuthValue = null;
+    mockUpdatePreferences.mockClear();
     // Limpiar las clases y estilos del documento antes de cada test
     document.documentElement.classList.remove('dark');
     document.documentElement.style.colorScheme = '';
@@ -321,6 +336,38 @@ describe('ThemeToggle Component', () => {
       expect(document.documentElement.style.colorScheme).toBe('dark');
       expect(preferencesService.setTheme).toHaveBeenCalledWith('dark');
       expect(screen.getByText('🌙')).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PRUEBAS DE INTEGRACIÓN CON AUTHCONTEXT (US107)
+  describe('Integración con AuthContext (US107)', () => {
+    it('debe inicializarse con el tema provisto por el contexto de autenticación', () => {
+      mockAuthValue = {
+        theme: 'dark',
+        updatePreferences: mockUpdatePreferences
+      };
+
+      render(<ThemeToggle />);
+
+      // Debe mostrar luna por ser dark
+      expect(screen.getByText('🌙')).toBeInTheDocument();
+      expect(document.documentElement.classList.contains('dark')).toBe(true);
+    });
+
+    it('debe llamar a updatePreferences en lugar de cambiar estado local al hacer click si está autenticado', () => {
+      mockAuthValue = {
+        theme: 'light',
+        updatePreferences: mockUpdatePreferences
+      };
+
+      render(<ThemeToggle />);
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+
+      // Debe haber llamado a la actualización del contexto con el valor opuesto (light -> true para darkMode)
+      expect(mockUpdatePreferences).toHaveBeenCalledWith({ darkMode: true });
+      // Y no debería haber tocado preferencesService directamente desde el manejador de click local
+      expect(preferencesService.setTheme).not.toHaveBeenCalled();
     });
   });
 });
