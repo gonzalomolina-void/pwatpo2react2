@@ -4,8 +4,31 @@ import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './AuthContext';
 import authService from '../services/authService';
 import favoritesService from '../services/favoritesService';
+import profileService from '../services/profileService';
+import { preferencesService } from '../services/preferencesService';
+import i18n from 'i18next';
 
 vi.mock('../services/authService');
+vi.mock('../services/profileService', () => ({
+  default: {
+    getProfile: vi.fn().mockResolvedValue({ darkMode: false, language: 'es' }),
+    updateProfile: vi.fn().mockResolvedValue({})
+  }
+}));
+vi.mock('../services/preferencesService', () => ({
+  preferencesService: {
+    getTheme: vi.fn().mockReturnValue('dark'),
+    setTheme: vi.fn(),
+    getLanguage: vi.fn().mockReturnValue('es'),
+    setLanguage: vi.fn()
+  }
+}));
+vi.mock('i18next', () => ({
+  default: {
+    language: 'es',
+    changeLanguage: vi.fn().mockResolvedValue(true)
+  }
+}));
 vi.mock('../services/favoritesService', () => ({
   default: {
     fetchFavorites: vi.fn().mockResolvedValue([]),
@@ -210,5 +233,113 @@ describe('AuthContext', () => {
 
     expect(authService.register).toHaveBeenCalledWith('new@test.com', 'Gonzalo', 'password123');
     expect(result).toEqual(mockRegisterResponse);
+  });
+
+  // ✅ PRUEBAS DE SINCRONIZACIÓN DE PERFIL & PREFERENCIAS (US107)
+  describe('Sincronización de Perfil (US107)', () => {
+    it('debe aplicar las preferencias personalizadas del backend si difieren de las locales por defecto', async () => {
+      // Configurar que el backend tiene perfil custom
+      profileService.getProfile.mockResolvedValueOnce({ darkMode: true, language: 'en' });
+      // Configurar que el cliente tiene defaults (dark / es)
+      preferencesService.getTheme.mockReturnValue('dark');
+      preferencesService.getLanguage.mockReturnValue('es');
+
+      localStorage.setItem('hexa_token', 'jwt-token-107');
+      authService.getMe.mockResolvedValueOnce({ id: 1, email: 'test@test.com' });
+
+      await act(async () => {
+        render(
+          <AuthProvider>
+            <TestComponent />
+          </AuthProvider>
+        );
+      });
+
+      // Debe descargar y aplicar
+      expect(profileService.getProfile).toHaveBeenCalled();
+      expect(preferencesService.setTheme).toHaveBeenCalledWith('dark');
+      expect(preferencesService.setLanguage).toHaveBeenCalledWith('en');
+      expect(i18n.changeLanguage).toHaveBeenCalledWith('en');
+      expect(profileService.updateProfile).not.toHaveBeenCalled();
+    });
+
+    it('debe subir las preferencias locales al backend si el servidor retorna defaults (isServerDefault) y el cliente tiene custom', async () => {
+      // Servidor con default (darkMode: false, language: 'es')
+      profileService.getProfile.mockResolvedValueOnce({ darkMode: false, language: 'es' });
+      // Cliente con configuraciones modificadas locales (light / en)
+      preferencesService.getTheme.mockReturnValue('light');
+      preferencesService.getLanguage.mockReturnValue('en');
+
+      localStorage.setItem('hexa_token', 'jwt-token-107');
+      authService.getMe.mockResolvedValueOnce({ id: 1, email: 'test@test.com' });
+
+      await act(async () => {
+        render(
+          <AuthProvider>
+            <TestComponent />
+          </AuthProvider>
+        );
+      });
+
+      // Debe detectar discrepancia y subir
+      expect(profileService.getProfile).toHaveBeenCalled();
+      expect(profileService.updateProfile).toHaveBeenCalledWith({
+        darkMode: false,
+        language: 'en'
+      });
+    });
+
+    it('debe actualizar preferencias localmente y en el servidor al llamar a updatePreferences estando autenticado', async () => {
+      let authInstance;
+      localStorage.setItem('hexa_token', 'jwt-token-107');
+      authService.getMe.mockResolvedValueOnce({ id: 1, email: 'test@test.com' });
+
+      await act(async () => {
+        render(
+          <AuthProvider>
+            <TestComponent onMount={(auth) => { authInstance = auth; }} />
+          </AuthProvider>
+        );
+      });
+
+      vi.clearAllMocks(); // Limpiar llamadas del restore inicial
+      
+      // Simular cambio a dark mode y lenguaje inglés
+      await act(async () => {
+        await authInstance.updatePreferences({ darkMode: true, language: 'en' });
+      });
+
+      expect(preferencesService.setTheme).toHaveBeenCalledWith('dark');
+      expect(preferencesService.setLanguage).toHaveBeenCalledWith('en');
+      expect(i18n.changeLanguage).toHaveBeenCalledWith('en');
+      expect(profileService.updateProfile).toHaveBeenCalledWith({
+        darkMode: true,
+        language: 'en'
+      });
+    });
+
+    it('debe actualizar preferencias únicamente en local al llamar a updatePreferences estando anónimo', async () => {
+      let authInstance;
+      // Sin token ni sesión
+      await act(async () => {
+        render(
+          <AuthProvider>
+            <TestComponent onMount={(auth) => { authInstance = auth; }} />
+          </AuthProvider>
+        );
+      });
+
+      vi.clearAllMocks();
+
+      await act(async () => {
+        await authInstance.updatePreferences({ darkMode: false, language: 'es' });
+      });
+
+      expect(preferencesService.setTheme).toHaveBeenCalledWith('light');
+      expect(preferencesService.setLanguage).toHaveBeenCalledWith('es');
+      expect(i18n.changeLanguage).toHaveBeenCalledWith('es');
+      // NO debe intentar subir al backend
+      expect(profileService.updateProfile).not.toHaveBeenCalled();
+    });
   });
 });
