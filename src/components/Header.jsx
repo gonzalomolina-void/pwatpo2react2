@@ -87,9 +87,13 @@ export default function Header() {
               
               {isAuthenticated ? (
                 <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
-                  <span className="max-w-37.5 truncate rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400" title={user.name || user.email}>
-                    {user.name || user.email}
-                  </span>
+                  <Link 
+                    to="/perfil" 
+                    className="max-w-37.5 truncate rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 hover:bg-slate-200 hover:border-blue-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:border-blue-500 transition-colors" 
+                    title={t('nav.profile')}
+                  >
+                    👤 {user.name || user.email}
+                  </Link>
                   <button 
                     onClick={handleLogout}
                     className="cursor-pointer text-sm font-semibold tracking-wider text-red-500 uppercase transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
@@ -161,6 +165,14 @@ export default function Header() {
             
             {isAuthenticated ? (
               <>
+                <Link
+                  to="/perfil"
+                  onClick={closeMenu}
+                  className="flex items-center border-b border-slate-100 py-3.5 text-base font-medium text-slate-600 transition-colors hover:text-blue-600 dark:border-slate-800 dark:text-slate-300 dark:hover:text-blue-400"
+                >
+                  <span className="mr-3">👤</span>
+                  {t('nav.profile')}
+                </Link>
                 <div className="flex items-center justify-between border-b border-slate-100 py-3.5 text-base font-medium text-slate-500 dark:border-slate-800 dark:text-slate-400">
                   <span className="max-w-50 truncate" title={user.name || user.email}>{user.name || user.email}</span>
                   <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">

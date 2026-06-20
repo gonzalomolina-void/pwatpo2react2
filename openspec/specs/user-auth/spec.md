@@ -122,3 +122,42 @@ La cabecera (Header) MUST renderizar el nombre del usuario si está presente en 
 - GIVEN un usuario autenticado cuyo nombre no está definido o es vacío (`""`)
 - WHEN el Header se monta en la vista
 - THEN muestra el correo electrónico "viejo@test.com" en su lugar como fallback de seguridad
+
+---
+
+### Requirement: Vista de Perfil y Cambio de Contraseña
+El sistema MUST proveer una vista de perfil protegida (`/perfil`) que muestre la información básica del usuario logueado (nombre, email, rol) y un formulario que permita cambiar su contraseña de forma segura, con controles independientes para alternar la visibilidad de los caracteres escritos.
+
+#### Scenario: Renderizar información del perfil de usuario
+- GIVEN un usuario autenticado con nombre `"Gonzalo"`, email `"gonzalo@example.com"` y rol `"usuario"`
+- WHEN el usuario ingresa a la ruta `/perfil`
+- THEN la aplicación muestra la página de Perfil con el nombre `"Gonzalo"`, el email `"gonzalo@example.com"` y el rol del usuario de solo lectura
+
+#### Scenario: Alternar visibilidad de las contraseñas de forma independiente
+- GIVEN un usuario en la página `/perfil` con texto ingresado en el campo "Contraseña Actual"
+- WHEN hace click en el botón de visibilidad (icono de ojo) al lado de este campo
+- THEN la aplicación cambia el tipo de input del campo de `"password"` a `"text"`
+- AND al hacer click de nuevo, revierte el tipo de input a `"password"`
+- AND la visibilidad de cada uno de los tres campos de contraseña se controla de manera independiente
+
+#### Scenario: Validación de contraseñas no coincidentes
+- GIVEN un usuario en la página `/perfil` que ingresó una contraseña actual, e ingresó `"Nueva123"` en nueva contraseña y `"Diferente123"` en la confirmación
+- WHEN el usuario presiona el botón "Actualizar Contraseña"
+- THEN la aplicación cancela el envío del formulario, muestra un mensaje de error indicando que las contraseñas no coinciden, y no realiza ninguna llamada a la API
+
+#### Scenario: Validación de longitud de nueva contraseña
+- GIVEN un usuario en la página `/perfil` que ingresó `"123"` en el campo de nueva contraseña
+- WHEN el usuario presiona el botón "Actualizar Contraseña"
+- THEN la aplicación cancela el envío del formulario, muestra un mensaje de error indicando que la contraseña debe tener al menos 6 caracteres, y no realiza ninguna llamada a la API
+
+#### Scenario: Cambio de contraseña exitoso
+- GIVEN un usuario autenticado en la página `/perfil`
+- WHEN ingresa su contraseña actual correcta, una nueva contraseña válida (6+ caracteres), confirma la nueva contraseña y presiona "Actualizar Contraseña"
+- THEN la aplicación realiza una petición `PUT /auth/change-password` enviando la contraseña actual y la nueva contraseña
+- AND ante una respuesta exitosa (HTTP 200), limpia todos los campos del formulario y muestra un mensaje de confirmación exitosa
+
+#### Scenario: Falla por contraseña actual incorrecta
+- GIVEN un usuario autenticado en la página `/perfil`
+- WHEN ingresa una contraseña actual incorrecta, contraseñas nuevas válidas y presiona "Actualizar Contraseña"
+- THEN la aplicación realiza la llamada a la API
+- AND al recibir un error de credenciales incorrectas (HTTP 400/401), muestra el mensaje de error correspondiente y mantiene los datos ingresados en el formulario

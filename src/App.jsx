@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Favorites from './pages/Favorites';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import SplashScreen from './components/SplashScreen';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -74,6 +75,11 @@ function AppContent() {
             <Route path="/favoritos" element={
               <ProtectedRoute>
                 <Favorites />
+              </ProtectedRoute>
+            } />
+            <Route path="/perfil" element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />

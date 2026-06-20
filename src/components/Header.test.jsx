@@ -25,7 +25,8 @@ vi.mock('react-i18next', () => ({
         'nav.favorites': 'Favoritos',
         'about.title': 'Acerca de',
         'nav.login': 'Iniciar Sesión',
-        'nav.logout': 'Cerrar Sesión'
+        'nav.logout': 'Cerrar Sesión',
+        'nav.profile': 'Perfil'
       };
       return translations[key] || key;
     },
@@ -110,7 +111,7 @@ describe('Header Component', () => {
     );
 
     expect(screen.queryByRole('link', { name: 'Iniciar Sesión' })).not.toBeInTheDocument();
-    expect(screen.getByText('user@test.com')).toBeInTheDocument();
+    expect(screen.getByText(/user@test\.com/)).toBeInTheDocument();
     
     const logoutBtn = screen.getByRole('button', { name: 'Cerrar Sesión' });
     expect(logoutBtn).toBeInTheDocument();
@@ -130,8 +131,8 @@ describe('Header Component', () => {
     );
 
     expect(screen.queryByRole('link', { name: 'Iniciar Sesión' })).not.toBeInTheDocument();
-    expect(screen.getByText('Gonzalo')).toBeInTheDocument();
-    expect(screen.queryByText('user@test.com')).not.toBeInTheDocument();
+    expect(screen.getByText(/Gonzalo/)).toBeInTheDocument();
+    expect(screen.queryByText(/user@test\.com/)).not.toBeInTheDocument();
     
     const logoutBtn = screen.getByRole('button', { name: 'Cerrar Sesión' });
     expect(logoutBtn).toBeInTheDocument();
@@ -197,5 +198,33 @@ describe('Header Component', () => {
     expect(homeLinks.length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Favoritos')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Iniciar Sesión' })).toBeInTheDocument();
+  });
+
+  it('debe renderizar enlaces al perfil (/perfil) en desktop y mobile cuando esta autenticado', () => {
+    useAuth.mockReturnValue({
+      user: { email: 'user@test.com', name: 'Gonzalo', role: 'usuario' },
+      isAuthenticated: true,
+      logout: mockLogout
+    });
+
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    // Desktop: El badge de usuario es un Link que apunta a /perfil
+    const desktopProfileLink = screen.getByRole('link', { name: /Gonzalo/ });
+    expect(desktopProfileLink).toBeInTheDocument();
+    expect(desktopProfileLink.getAttribute('href')).toBe('/perfil');
+
+    // Abrir menú mobile
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+
+    // Mobile: Debe haber un enlace con texto "Perfil" que apunte a /perfil
+    const mobileProfileLink = screen.getByRole('link', { name: /Perfil/ });
+    expect(mobileProfileLink).toBeInTheDocument();
+    expect(mobileProfileLink.getAttribute('href')).toBe('/perfil');
   });
 });
