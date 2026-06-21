@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "favorites": "Favoritos",
+    "profile": "Perfil",
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión"
   },
@@ -20,22 +21,7 @@
     "noResults": "No se encontraron resultados",
     "error": "No se pudo cargar el catálogo de cartas. Por favor, reintenta más tarde.",
     "retry": "Reintentar",
-    "endOfCatalog": "Has llegado al final de HEXA.",
-    "filters": {
-      "types": {
-        "creature": "Criatura",
-        "spell": "Hechizo",
-        "artifact": "Artefacto"
-      },
-      "rarities": {
-        "poor": "Pobre",
-        "common": "Común",
-        "uncommon": "Poco Común",
-        "rare": "Raro",
-        "epic": "Épico",
-        "legendary": "Legendario"
-      }
-    }
+    "endOfCatalog": "Has llegado al final de HEXA."
   },
   "detail": {
     "loading": "Invocando carta de HEXA...",
@@ -66,19 +52,6 @@
   "card": {
     "addFavorite": "Agregar a favoritos",
     "removeFavorite": "Eliminar de favoritos",
-    "types": {
-      "creature": "Criatura",
-      "spell": "Hechizo",
-      "artifact": "Artefacto"
-    },
-    "rarities": {
-      "poor": "Pobre",
-      "common": "Común",
-      "uncommon": "Poco Común",
-      "rare": "Raro",
-      "epic": "Épico",
-      "legendary": "Legendario"
-    },
     "admin": {
       "newCard": "Nueva Carta",
       "editCard": "Editar Carta",
@@ -155,6 +128,27 @@
     "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
     "registerSuccess": "¡Registro exitoso! Ya podés iniciar sesión.",
     "sessionExpired": "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
+    "errorEmailAlreadyRegistered": "El email ya está registrado",
     "errorGeneral": "Ocurrió un error inesperado"
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Gestioná la seguridad y configuraciones de tu cuenta.",
+    "infoTitle": "Datos del Usuario",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "role": "Rol de Cuenta",
+    "securityTitle": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "submit": "Actualizar Contraseña",
+    "updating": "Actualizando...",
+    "success": "Contraseña actualizada exitosamente",
+    "errors": {
+      "required": "Todos los campos son obligatorios",
+      "tooShort": "La nueva contraseña debe tener al menos 6 caracteres",
+      "mismatch": "Las contraseñas no coinciden"
+    }
   }
 }

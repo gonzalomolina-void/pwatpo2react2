@@ -44,8 +44,10 @@ const favoritesService = {
     try {
       await apiClient.post('/favorites', { cardId: card.id });
     } catch (error) {
-      // Rollback ante fallo de API
-      cachedFavorites = cachedFavorites.filter(f => String(f.id) !== String(card.id));
+      // Rollback ante fallo de API (excepto si es un 409 Conflict, lo que indica que ya está en favoritos)
+      if (error.status !== 409) {
+        cachedFavorites = cachedFavorites.filter(f => String(f.id) !== String(card.id));
+      }
       throw error;
     }
 
@@ -65,8 +67,10 @@ const favoritesService = {
     try {
       await apiClient.delete(`/favorites/${cardId}`);
     } catch (error) {
-      // Rollback ante fallo de API
-      cachedFavorites = originalFavorites;
+      // Rollback ante fallo de API (excepto si es un 404 Not Found, lo que indica que ya fue eliminado)
+      if (error.status !== 404) {
+        cachedFavorites = originalFavorites;
+      }
       throw error;
     }
 

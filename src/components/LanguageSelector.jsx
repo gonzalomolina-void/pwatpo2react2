@@ -1,11 +1,27 @@
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 
 export default function LanguageSelector() {
   const { i18n } = useTranslation();
-  const currentLang = i18n.language.split('-')[0]; // Maneja variaciones como 'es-AR'
+
+  // Consumir el contexto de forma segura para no romper entornos de test sin provider
+  let authContext = null;
+  try {
+    authContext = useAuth();
+  } catch (error) {
+    // Fallback silencioso si no está dentro de AuthProvider
+  }
+
+  const currentLang = authContext 
+    ? authContext.language.split('-')[0] 
+    : i18n.language.split('-')[0];
 
   const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
+    if (authContext) {
+      authContext.updatePreferences({ language: lang });
+    } else {
+      i18n.changeLanguage(lang);
+    }
   };
 
   const getBtnClass = (lang) => {

@@ -25,7 +25,8 @@ vi.mock('react-i18next', () => ({
         'auth.needAccount': '¿No tenés cuenta? Registrate',
         'auth.haveAccount': '¿Ya tenés cuenta? Iniciá sesión',
         'auth.errorNameRequired': 'El nombre es obligatorio',
-        'auth.errorNameTooShort': 'El nombre debe tener al menos 2 caracteres'
+        'auth.errorNameTooShort': 'El nombre debe tener al menos 2 caracteres',
+        'auth.errorEmailAlreadyRegistered': 'El email ya está registrado'
       };
       return translations[key] || key;
     },
@@ -201,5 +202,39 @@ describe('Login Page', () => {
 
     expect(screen.getByText(/el nombre debe tener al menos 2 caracteres/i)).toBeInTheDocument();
     expect(mockRegister).not.toHaveBeenCalled();
+  });
+
+  it('debe mostrar "El email ya está registrado" cuando register responde con un error 409 (Conflict)', async () => {
+    const error = new Error('Conflict');
+    error.status = 409;
+    mockRegister.mockRejectedValueOnce(error);
+
+    renderWithRouter(<Login />);
+
+    // Cambiar a registro
+    const toggleButton = screen.getByText(/¿no tenés cuenta\? registrate/i);
+    await act(async () => {
+      fireEvent.click(toggleButton);
+    });
+
+    const nameInput = screen.getByPlaceholderText(/nombre/i);
+    const emailInput = screen.getByPlaceholderText(/email/i);
+    const passwordInput = screen.getByPlaceholderText('Contraseña');
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirmar contraseña/i);
+    const submitButton = screen.getByRole('button', { name: /registrarse/i });
+
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: 'Gonzalo' } });
+      fireEvent.change(emailInput, { target: { value: 'dup@test.com' } });
+      fireEvent.change(passwordInput, { target: { value: 'password123' } });
+      fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    });
+
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+
+    expect(mockRegister).toHaveBeenCalledWith('dup@test.com', 'Gonzalo', 'password123');
+    expect(screen.getByText('El email ya está registrado')).toBeInTheDocument();
   });
 });
