@@ -4,15 +4,9 @@ import { useAuth } from '../context/AuthContext';
 export default function LanguageSelector() {
   const { i18n } = useTranslation();
 
-  // Consumir el contexto de forma segura para no romper entornos de test sin provider
-  let authContext = null;
-  try {
-    authContext = useAuth();
-  } catch (error) {
-    // Fallback silencioso si no está dentro de AuthProvider
-  }
+  const authContext = useAuth();
 
-  const currentLang = authContext 
+  const currentLang = authContext?.language 
     ? authContext.language.split('-')[0] 
     : i18n.language.split('-')[0];
 

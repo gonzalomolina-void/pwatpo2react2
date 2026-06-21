@@ -17,12 +17,7 @@ vi.mock('../services/preferencesService', () => ({
 
 // Mock de useAuth condicional
 vi.mock('../context/AuthContext', () => ({
-  useAuth: () => {
-    if (mockAuthValue === null) {
-      throw new Error('No provider');
-    }
-    return mockAuthValue;
-  }
+  useAuth: () => mockAuthValue
 }));
 
 // Mock de react-i18next

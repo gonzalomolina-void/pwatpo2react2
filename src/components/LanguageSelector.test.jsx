@@ -19,12 +19,7 @@ const mockUpdatePreferences = vi.fn();
 let mockAuthValue = null;
 
 vi.mock('../context/AuthContext', () => ({
-  useAuth: () => {
-    if (mockAuthValue === null) {
-      throw new Error('No provider');
-    }
-    return mockAuthValue;
-  }
+  useAuth: () => mockAuthValue
 }));
 
 describe('LanguageSelector Component', () => {
