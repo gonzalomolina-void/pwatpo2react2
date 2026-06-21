@@ -6,16 +6,10 @@ import { useAuth } from '../context/AuthContext';
 export default function ThemeToggle() {
   const { t } = useTranslation();
   
-  // Consumir el contexto de forma segura para no romper entornos de test sin provider
-  let authContext = null;
-  try {
-    authContext = useAuth();
-  } catch (error) {
-    // Fallback silencioso si no está dentro de AuthProvider
-  }
+  const authContext = useAuth();
 
   const [localTheme, setLocalTheme] = useState(() => preferencesService.getTheme());
-  const currentTheme = authContext ? authContext.theme : localTheme;
+  const currentTheme = authContext?.theme ? authContext.theme : localTheme;
 
   // Aplicar tema en el DOM para entornos sin contexto
   useEffect(() => {
