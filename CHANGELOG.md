@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.17.1](https://github.com/gonzalomolina-void/pwatpo2react2/compare/v1.16.1...v1.17.1) (2026-06-21)
+
+
+### Features
+
+* **auth:** add error handling for already registered email and update services for conditional rollback ([45029be](https://github.com/gonzalomolina-void/pwatpo2react2/commit/45029be7f58ec509e0fe1097a02a07b409771cea))
+* **profile:** implement password change and visibility toggles and archive changes ([4873331](https://github.com/gonzalomolina-void/pwatpo2react2/commit/48733313f67128bac8a63938a3e4f7c408da8f90))
+* **profile:** integrate /api/profile and sync preferences ([43d0436](https://github.com/gonzalomolina-void/pwatpo2react2/commit/43d0436d0c4883ef9af061dc765ea7166e4102ad))
+
+
+### Bug Fixes
+
+* **package:** update version to 1.17.0 ([75c2130](https://github.com/gonzalomolina-void/pwatpo2react2/commit/75c2130a95c23ae991d776d3dd539bd5c616dcd9))
+* **tooling:** fix react-hook and unused-vars violations in LanguageSelector and ThemeToggle ([e4d01f4](https://github.com/gonzalomolina-void/pwatpo2react2/commit/e4d01f4cebb5a190ec43aba7dc3ba7eee7fbbfda))
+
 ### [1.16.1](https://github.com/gonzalomolina-void/pwatpo2react2/compare/v1.16.0...v1.16.1) (2026-06-17)
 
 ## [1.16.0](https://github.com/gonzalomolina-void/pwatpo2react2/compare/v1.0.7...v1.16.0) (2026-06-17)
