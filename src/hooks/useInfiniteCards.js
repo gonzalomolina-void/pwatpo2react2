@@ -16,6 +16,7 @@ import cardService from '../services/cardService';
 let homeCache = {
   cards: [],
   page: 1,
+  cursor: null,
   hasMore: true,
   filters: null,
   lang: null
@@ -30,7 +31,6 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   }, [t]);
 
   // Decidimos si restauramos en el primer render para que sea estable
-  // Usamos useMemo para que el valor sea persistente durante la vida del componente
   const isRestoring = useMemo(() => {
     return !!(homeCache.filters && 
       homeCache.cards.length > 0 &&
@@ -43,6 +43,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
   const [error, setError] = useState(null);
   const [activeFilters, setActiveFilters] = useState(isRestoring ? homeCache.filters : initialFilters);
   const [page, setPage] = useState(isRestoring ? homeCache.page : 1);
+  const [cursor, setCursor] = useState(isRestoring ? homeCache.cursor : null);
   const [hasMore, setHasMore] = useState(isRestoring ? homeCache.hasMore : true);
   
   const abortControllerRef = useRef(null);
@@ -54,14 +55,15 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       homeCache = {
         cards,
         page,
+        cursor,
         hasMore,
         filters: activeFilters,
         lang
       };
     }
-  }, [cards, page, hasMore, activeFilters, lang]);
+  }, [cards, page, cursor, hasMore, activeFilters, lang]);
 
-  const fetchCards = useCallback(async (targetPage, filters) => {
+  const fetchCards = useCallback(async (targetCursor, filters) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -72,9 +74,12 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       setError(null);
 
       const params = {
-        page: targetPage,
         limit: limit,
       };
+
+      if (targetCursor !== null) {
+        params.cursor = targetCursor;
+      }
 
       if (filters.searchTerm) {
         params.search = filters.searchTerm;
@@ -91,7 +96,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       const data = await cardService.getCards(params, { signal: abortControllerRef.current.signal });
 
       setCards(prevCards => {
-        if (targetPage === 1) return data;
+        if (targetCursor === null) return data;
         const newCards = data.filter(newCard => !prevCards.some(pc => pc.id === newCard.id));
         return [...prevCards, ...newCards];
       });
@@ -113,8 +118,8 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
       if (isRestoring) return;
     }
 
-    fetchCards(page, activeFilters);
-  }, [page, activeFilters, fetchCards, isRestoring]);
+    fetchCards(cursor, activeFilters);
+  }, [cursor, activeFilters, fetchCards, isRestoring]);
 
   useEffect(() => {
     return () => {
@@ -126,21 +131,19 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
 
   const handleSearch = useCallback((newFilters) => {
     const filtersChanged = JSON.stringify(newFilters) !== JSON.stringify(activeFilters);
-    const pageChanged = page !== 1;
+    const cursorChanged = cursor !== null;
 
-    if (filtersChanged || pageChanged) {
+    if (filtersChanged || cursorChanged) {
       setIsLoading(true);
       setActiveFilters(newFilters);
+      setCursor(null);
       setPage(1);
       setHasMore(true);
     } else {
-      // Si los filtros son idénticos y la página ya es 1, el useEffect no se disparará.
-      // Forzamos el refetch llamando directamente a fetchCards.
-      fetchCards(1, activeFilters);
+      // Si los filtros son idénticos y el cursor ya es null, forzamos refetch
+      fetchCards(null, activeFilters);
     }
-  }, [activeFilters, page, fetchCards]);
-
-
+  }, [activeFilters, cursor, fetchCards]);
 
   const observer = useRef();
   const lastCardElementRef = useCallback(node => {
@@ -149,13 +152,15 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries[0].isIntersecting && hasMore && cards.length > 0) {
+        const lastCard = cards[cards.length - 1];
+        setCursor(lastCard.id);
         setPage(prevPage => prevPage + 1);
       }
     });
 
     if (node) observer.current.observe(node);
-  }, [isLoading, hasMore]);
+  }, [isLoading, hasMore, cards]);
 
   const updateCardOptimistic = useCallback((updatedCard) => {
     if (!updatedCard || !updatedCard.id) return;
@@ -176,6 +181,7 @@ export const useInfiniteCards = ({ limit = 12, initialFilters, lang }) => {
     error,
     hasMore,
     page,
+    cursor,
     handleSearch,
     updateCardOptimistic,
     lastCardElementRef,
