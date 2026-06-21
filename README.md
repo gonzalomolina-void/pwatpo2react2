@@ -115,6 +115,42 @@ Para ejecutar las pruebas localmente:
 
 ---
 
+## 🏷️ Versionado y Publicación de Releases
+
+El frontend cuenta con un sistema automatizado para el versionado semántico (SemVer) y la publicación de releases oficiales en GitHub. El flujo garantiza que solo el código que pase de forma exitosa las pruebas de calidad pueda publicarse y desplegarse en producción.
+
+### Prerrequisitos
+Para realizar una publicación de release a remoto, el mantenedor debe tener:
+1. La CLI de GitHub (`gh`) instalada y autenticada en su máquina (`gh auth login`).
+2. Permisos de escritura (push) en el repositorio remoto.
+
+### Scripts de Lanzamiento (Local & CI)
+Se pueden ejecutar los siguientes comandos en la terminal desde la raíz del proyecto para automatizar el lanzamiento:
+
+```bash
+# Publicar una versión tipo PATCH (e.g. 1.16.1 -> 1.16.2) para corrección de bugs
+pnpm run release:patch
+
+# Publicar una versión tipo MINOR (e.g. 1.16.1 -> 1.17.0) para nuevas funcionalidades
+pnpm run release:minor
+
+# Publicar una versión tipo MAJOR (e.g. 1.16.1 -> 2.0.0) para breaking changes
+pnpm run release:major
+```
+
+### Flujo de Ejecución del Script (`Release-Project.ps1`)
+Al ejecutar cualquiera de los comandos anteriores, se ejecuta un script de PowerShell que realiza la siguiente secuencia:
+1. **Pre-flight Checks (Quality Gate)**: Ejecuta el linter (`pnpm lint`) y la suite completa de pruebas unitarias (`pnpm test:run`). Si cualquiera de las dos falla, el proceso de release se cancela de forma inmediata.
+2. **Version Bump & Changelog**: Invoca a `standard-version` para calcular el incremento según la matemática de SemVer, actualizar el `package.json`, autogenerar el historial de cambios en `CHANGELOG.md` y clavar el tag de Git local correspondiente (ej. `v1.17.0`).
+3. **Git Push**: Sube los commits y tags generados a la rama remota activa (`git push origin <rama> --follow-tags`).
+4. **GitHub Release**: Utiliza la CLI de GitHub para publicar el Release oficial en la web de GitHub (`gh release create`) bajo el tag correspondiente y autogenerando las notas de lanzamiento.
+
+### Despliegue Automático en Vercel
+* El proyecto está configurado en Vercel con el comportamiento `Don't build anything` por defecto para evitar deploys innecesarios en cada push simple.
+* El despliegue de producción se gatilla **únicamente** cuando se publica un **Release oficial** en GitHub. Esto activa una GitHub Action (`.github/workflows/deploy-release.yml`) que compila la aplicación inyectando la versión y el hash de commit Git correspondientes, y sube el build compilado a Vercel de forma segura.
+
+---
+
 ## 📄 Licencia
 
 Este proyecto es para fines educativos bajo los requerimientos de la UNCOMA. El arte conceptual pertenece a sus respectivos creadores dentro del universo de HEXA.
