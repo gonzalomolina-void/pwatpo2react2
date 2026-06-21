@@ -82,7 +82,7 @@ export default function Profile() {
     <div className="mx-auto max-w-4xl py-8">
       {/* Encabezado */}
       <div className="mb-8 text-center md:text-left">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl">
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl dark:text-white">
           {t('profile.title')}
         </h1>
         <p className="mt-2 text-slate-500 dark:text-slate-400">
@@ -114,7 +114,7 @@ export default function Profile() {
             {/* Datos detallados */}
             <div className="mt-6 flex flex-col gap-4">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                <label className="text-xs font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
                   {t('profile.email')}
                 </label>
                 <p className="mt-1 truncate text-sm font-medium text-slate-700 dark:text-slate-300" title={user?.email}>
@@ -134,12 +134,12 @@ export default function Profile() {
 
             {/* Alertas */}
             {success && (
-              <div className="mb-6 animate-fadeIn rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm font-semibold text-emerald-600 dark:border-emerald-500/30 dark:text-emerald-400">
+              <div className="animate-fadeIn mb-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm font-semibold text-emerald-600 dark:border-emerald-500/30 dark:text-emerald-400">
                 {success}
               </div>
             )}
             {error && (
-              <div className="mb-6 animate-fadeIn rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm font-semibold text-red-600 dark:border-red-500/30 dark:text-red-400">
+              <div className="animate-fadeIn mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm font-semibold text-red-600 dark:border-red-500/30 dark:text-red-400">
                 {error}
               </div>
             )}
@@ -162,7 +162,7 @@ export default function Profile() {
                   <button
                     type="button"
                     onClick={() => setShowCurrent(!showCurrent)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
                     aria-label="Alternar visibilidad de contraseña actual"
                   >
                     {renderEyeIcon(showCurrent)}
@@ -187,7 +187,7 @@ export default function Profile() {
                   <button
                     type="button"
                     onClick={() => setShowNew(!showNew)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
                     aria-label="Alternar visibilidad de nueva contraseña"
                   >
                     {renderEyeIcon(showNew)}
@@ -212,7 +212,7 @@ export default function Profile() {
                   <button
                     type="button"
                     onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-200"
                     aria-label="Alternar visibilidad de confirmación de contraseña"
                   >
                     {renderEyeIcon(showConfirm)}
@@ -224,7 +224,7 @@ export default function Profile() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 flex w-full items-center justify-center rounded-xl bg-blue-600 py-3 text-sm font-bold tracking-wide text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:bg-blue-600/50"
+                className="mt-2 flex w-full items-center justify-center rounded-xl bg-blue-600 py-3 text-sm font-bold tracking-wide text-white transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:cursor-not-allowed disabled:bg-blue-600/50"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
