@@ -157,3 +157,5 @@ Este proyecto es para fines educativos bajo los requerimientos de la UNCOMA. El 
 
 ---
 *Desarrollado con ❤️ para PWA - Universidad Nacional del Comahue*
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/gonzalomolina-void/pwatpo2react2)
